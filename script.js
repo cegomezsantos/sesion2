@@ -1,146 +1,120 @@
+// script.js (CORRECTO - PARA LA RAÍZ DEL PROYECTO)
+
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Obtener referencias a los elementos ---
-  const promptInput = document.getElementById('prompt-input');
-  const evaluateButton = document.getElementById('evaluate-button');
-  const loadingIndicator = document.getElementById('loading-indicator');
-  const feedbackArea = document.getElementById('feedback-area');
-  const buttonArea = document.querySelector('.button-area'); // Contenedor de botones
+    // --- Obtener referencias a los elementos ---
+    const promptInput = document.getElementById('prompt-input');
+    const evaluateButton = document.getElementById('evaluate-button');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const feedbackArea = document.getElementById('feedback-area');
+    const buttonArea = document.querySelector('.button-area'); // Contenedor de botones
 
-  // --- Función para simular la evaluación (Aquí iría tu llamada a la API/Netlify Function) ---
-  async function evaluatePrompt(promptText) {
-      console.log("Evaluando:", promptText);
-      // Simular una demora de red/procesamiento
-      await new Promise(resolve => setTimeout(resolve, 1500)); // Espera 1.5 segundos
+    // --- Función para LLAMAR a la Netlify Function ---
+    async function evaluatePrompt(promptText) {
+        console.log("Llamando a la función Netlify para evaluar:", promptText);
 
-      // --- ¡IMPORTANTE! ---
-      // Aquí es donde harías la llamada real a tu backend o Netlify Function
-      // Ejemplo con fetch (necesitarás crear la Netlify Function '/.netlify/functions/evaluate'):
-      /*
-      try {
-          const response = await fetch('/.netlify/functions/evaluate', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ prompt: promptText })
-          });
+        // Construye la URL con el prompt como query parameter
+        const functionUrl = `/.netlify/functions/consulta?prompt=${encodeURIComponent(promptText)}`;
+        console.log("URL de función:", functionUrl); // Log para verificar la URL
 
-          if (!response.ok) {
-              const errorData = await response.json(); // O response.text()
-              throw new Error(errorData.message || `Error ${response.status}`);
-          }
+        try {
+            // --- ¡LLAMADA REAL A LA FUNCIÓN NETLIFY! ---
+            const response = await fetch(functionUrl); // Usamos GET
 
-          const result = await response.json();
-          // Asume que la función devuelve { success: true, feedback: "Tu feedback aquí" }
-          // o { success: false, message: "Mensaje de error" }
-          if (result.success) {
-               return { success: true, feedback: result.feedback };
-          } else {
-               throw new Error(result.message || "Error desconocido en la evaluación.");
-          }
+            // Primero, verifica si la respuesta HTTP fue exitosa (ej: 200 OK)
+            if (!response.ok) {
+                let errorMsg = `Error HTTP ${response.status}: ${response.statusText}`;
+                try {
+                    const errorData = await response.json();
+                    errorMsg = errorData.message || JSON.stringify(errorData);
+                } catch (e) {
+                    errorMsg = await response.text();
+                }
+                 throw new Error(`La función de evaluación falló: ${errorMsg}`);
+            }
 
-      } catch (error) {
-          console.error("Error al llamar a la función de evaluación:", error);
-          return { success: false, feedback: `Error en la conexión: ${error.message}` };
-      }
-      */
+            // Si la respuesta HTTP es OK (2xx), parsea el JSON que envía la función
+            const result = await response.json();
+            console.log("Respuesta JSON recibida del backend:", result); // Log para ver qué llegó
 
-      // --- Respuesta Simulada (elimina esto cuando uses la llamada real) ---
-      if (promptText.toLowerCase().includes("cuestionario")) {
-          return {
-              success: true,
-              feedback: `¡Buen intento!\nHas solicitado un cuestionario.\n\nFeedback simulado:\n- Podrías especificar el tema (ej. "historia romana").\n- Indica el nivel (ej. "para 5º grado").\n- ¿Cuántas preguntas quieres?`
-          };
-      } else if (promptText.trim() === "") {
-           return {
-              success: false,
-              feedback: "El prompt no puede estar vacío."
-          };
-      } else {
-          return {
-              success: true, // O false si quieres simular un error para otros prompts
-              feedback: `Feedback simulado para:\n"${promptText}"\n\nConsidera ser más específico sobre el propósito.`
-          };
-      }
-      // --- Fin de la Respuesta Simulada ---
-  }
+            // La función devuelve { success: true/false, feedback/message: ... }
+            return result;
 
-  // --- Función para manejar el clic en "Evaluar Prompt" ---
-  async function handleEvaluateClick() {
-      const promptText = promptInput.value;
+        } catch (error) {
+            console.error("Error al llamar o procesar la función de evaluación:", error);
+            return { success: false, message: `Error en la comunicación: ${error.message}` };
+        }
+    }
 
-      // Limpiar feedback anterior y mostrar carga
-      feedbackArea.innerHTML = '';
-      feedbackArea.style.display = 'none'; // Ocultar mientras carga
-      loadingIndicator.style.display = 'flex'; // Mostrar indicador (usamos flex por el spinner)
-      evaluateButton.disabled = true;
-      // Limpiar botón de reintento si existiera
-      const existingRetryButton = document.getElementById('retry-button');
-      if (existingRetryButton) {
-          existingRetryButton.remove();
-      }
+    // --- Función para manejar el clic en "Evaluar Prompt" ---
+    async function handleEvaluateClick() {
+        const promptText = promptInput.value;
 
-      // Llamar a la función de evaluación (simulada o real)
-      const result = await evaluatePrompt(promptText);
+        if (!promptText.trim()) {
+            feedbackArea.innerHTML = '<p class="error">Por favor, escribe un prompt antes de evaluar.</p>';
+            feedbackArea.style.display = 'block';
+            feedbackArea.classList.add('error');
+            return;
+        }
 
-      // Ocultar carga
-      loadingIndicator.style.display = 'none';
+        feedbackArea.innerHTML = '';
+        feedbackArea.style.display = 'none';
+        loadingIndicator.style.display = 'flex';
+        evaluateButton.disabled = true;
+        const existingRetryButton = document.getElementById('retry-button');
+        if (existingRetryButton) {
+            existingRetryButton.remove();
+        }
 
-      // Mostrar resultado
-      feedbackArea.style.display = 'block'; // Mostrar área de feedback
-      if (result.success) {
-          feedbackArea.innerHTML = `<p>${result.feedback}</p>`; // Usar <p> para formato
-          feedbackArea.classList.remove('error');
-      } else {
-          feedbackArea.innerHTML = `<p class="error">Error: ${result.feedback}</p>`;
-          feedbackArea.classList.add('error'); // Opcional: añadir clase para estilo de error
-      }
+        // Llamar a la función de evaluación (REAL)
+        const result = await evaluatePrompt(promptText);
 
-      // Crear y añadir el botón "Volver a Intentar"
-      createRetryButton();
-  }
+        loadingIndicator.style.display = 'none';
+        feedbackArea.style.display = 'block';
 
-  // --- Función para crear y añadir el botón "Volver a Intentar" ---
-  function createRetryButton() {
-       // Eliminar si ya existe (por si acaso)
-      const existingRetryButton = document.getElementById('retry-button');
-      if (existingRetryButton) {
-          existingRetryButton.remove();
-      }
+        if (result.success && typeof result.feedback === 'string') {
+            // Usamos <pre> para preservar formato del feedback
+            feedbackArea.innerHTML = `<pre>${result.feedback.trim()}</pre>`;
+            feedbackArea.classList.remove('error');
+        } else {
+            const errorMessage = result.message || "Error desconocido al obtener feedback.";
+            feedbackArea.innerHTML = `<p class="error">Error: ${errorMessage}</p>`;
+            feedbackArea.classList.add('error');
+        }
 
-      const retryButton = document.createElement('button');
-      retryButton.id = 'retry-button';
-      retryButton.type = 'button';
-      retryButton.textContent = 'Volver a Intentar';
-      retryButton.addEventListener('click', handleRetryClick);
-      buttonArea.appendChild(retryButton); // Añadir al contenedor de botones
-  }
+        createRetryButton();
+    }
 
+    // --- Función para crear y añadir el botón "Volver a Intentar" ---
+    function createRetryButton() {
+        const existingRetryButton = document.getElementById('retry-button');
+        if (existingRetryButton) {
+            existingRetryButton.remove();
+        }
+        const retryButton = document.createElement('button');
+        retryButton.id = 'retry-button';
+        retryButton.type = 'button';
+        retryButton.textContent = 'Volver a Intentar';
+        retryButton.addEventListener('click', handleRetryClick);
+        buttonArea.appendChild(retryButton);
+    }
 
-  // --- Función para manejar el clic en "Volver a Intentar" ---
-  function handleRetryClick() {
-      // Limpiar prompt y feedback
-      // promptInput.value = ''; // Descomenta si quieres borrar el prompt anterior
-      feedbackArea.innerHTML = '';
-      feedbackArea.style.display = 'none'; // Ocultar de nuevo
-      feedbackArea.classList.remove('error');
+    // --- Función para manejar el clic en "Volver a Intentar" ---
+    function handleRetryClick() {
+        feedbackArea.innerHTML = '';
+        feedbackArea.style.display = 'none';
+        feedbackArea.classList.remove('error');
+        const retryButton = document.getElementById('retry-button');
+        if (retryButton) {
+            retryButton.remove();
+        }
+        evaluateButton.disabled = false;
+        promptInput.focus();
+    }
 
-
-      // Quitar botón de reintento
-      const retryButton = document.getElementById('retry-button');
-      if (retryButton) {
-          retryButton.remove();
-      }
-
-      // Habilitar botón de evaluar
-      evaluateButton.disabled = false;
-
-      // Poner foco en el input
-      promptInput.focus();
-  }
-
-  // --- Añadir el Event Listener al botón inicial ---
-  if (evaluateButton) {
-      evaluateButton.addEventListener('click', handleEvaluateClick);
-  } else {
-      console.error("¡Error! No se encontró el botón 'evaluate-button'");
-  }
+    // --- Añadir el Event Listener al botón inicial ---
+    if (evaluateButton) {
+        evaluateButton.addEventListener('click', handleEvaluateClick);
+    } else {
+        console.error("¡Error! No se encontró el botón 'evaluate-button'");
+    }
 });
