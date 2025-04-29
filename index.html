@@ -1,11 +1,47 @@
-<!doctype html>
-<html lang="es"><head>
-  <meta charset="utf-8">
-  <title>Prueba DeepSeek</title>
-</head><body>
-  <h1>DeepSeek demo</h1>
-  <input id="prompt" placeholder="Escribe algo…" />
-  <button onclick="consultar()">Enviar</button>
-  <pre id="respuesta"></pre>
-  <script src="script.js"></script>
-</body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluador de Prompts</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <h1>Bienvenido al sandbox de la sesión 1</h1>
+        <p class="instructions">
+            Sigue las instrucciones e intenta escribir un buen prompt y después cópialo y llévalo a los modelos que aparecerán abajo
+        </p>
+
+        <!-- Contenedor del Evaluador -->
+        <div class="evaluator-container">
+            <h2>Evaluador de Prompts para Profesores</h2>
+            <p>Escribe un prompt para solicitar "un cuestionario para tus clases" y haz clic en "Evaluar".</p>
+
+            <label for="prompt-input">Tu Prompt:</label>
+            <textarea id="prompt-input" name="prompt" rows="5" placeholder="Escribe tu prompt aquí..."></textarea>
+
+            <div class="button-area">
+                 <button id="evaluate-button" type="button">Evaluar Prompt</button>
+                 <!-- El botón de reintento se mostrará aquí por JS -->
+            </div>
+
+
+            <div id="loading-indicator" class="loading" style="display: none;">
+                Evaluando... <span class="spinner"></span>
+            </div>
+
+            <div id="feedback-area" class="feedback">
+                <!-- El feedback aparecerá aquí -->
+            </div>
+        </div>
+
+        <!-- Puedes duplicar el bloque 'evaluator-container' si necesitas otro -->
+        <!-- <div class="evaluator-container"> ... </div> -->
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
