@@ -1,80 +1,133 @@
-// netlify/functions/consulta.js
+// script.js (CORREGIDO)
 
-export async function handler(event) {
-  // Recibe el prompt específico escrito por el profesor desde el frontend
-  const userPrompt = event.queryStringParameters.prompt || "Hola"; // Usamos "Hola" si no llega nada
+document.addEventListener('DOMContentLoaded', () => {
+  // --- Obtener referencias a los elementos ---
+  const promptInput = document.getElementById('prompt-input');
+  const evaluateButton = document.getElementById('evaluate-button');
+  const loadingIndicator = document.getElementById('loading-indicator');
+  const feedbackArea = document.getElementById('feedback-area');
+  const buttonArea = document.querySelector('.button-area'); // Contenedor de botones
 
-  // 1️⃣ Verifica que la API key esté configurada en las variables de entorno de Netlify
-  if (!process.env.DEEPSEEK_KEY) {
-    console.error("Error: DEEPSEEK_KEY environment variable not set.");
-    return { statusCode: 500, body: "Error de configuración: Falta la clave API del servidor." };
-  }
+  // --- Función para LLAMAR a la Netlify Function ---
+  async function evaluatePrompt(promptText) {
+      console.log("Llamando a la función Netlify para evaluar:", promptText);
 
-  // El prompt de sistema que define el rol y la tarea de la IA
-  const systemPrompt = `Eres un evaluador experto en pedagogia y docencia. Estas asesorando a un profesor que esta aprendiendo ia y quiere aprender a plantear a hacer un prompt correcto para producir un cuestionario para su curso de educacion secundaria. Tienes que darle un feedback con sugerencias de mejora que puede aplicar hasta que encuentres que es un prompt satisfactorio y preciso`;
+      // Construye la URL con el prompt como query parameter
+      const functionUrl = `/.netlify/functions/consulta?prompt=${encodeURIComponent(promptText)}`;
 
-  try {
-    const resp = await fetch("https://api.deepseek.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.DEEPSEEK_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "deepseek-chat", // Puedes cambiar a "deepseek-coder" si es más adecuado
-        messages: [
-          // ----- INICIO: Mensajes para la IA -----
-          {
-            role: "system",
-            content: systemPrompt // <-- Aquí inyectamos las instrucciones generales
-          },
-          {
-            role: "user",
-            content: userPrompt // <-- Aquí va el prompt específico del profesor
+      try {
+          // --- ¡LLAMADA REAL A LA FUNCIÓN NETLIFY! ---
+          const response = await fetch(functionUrl); // Usamos GET porque pasamos el prompt en la URL
+
+          // Primero, verifica si la respuesta HTTP fue exitosa (ej: 200 OK)
+          if (!response.ok) {
+              // Intenta obtener más detalles del error si el backend los envió
+              let errorMsg = `Error HTTP ${response.status}: ${response.statusText}`;
+              try {
+                  const errorData = await response.json(); // El backend ahora envía JSON para errores también
+                  errorMsg = errorData.message || JSON.stringify(errorData);
+              } catch (e) {
+                  // Si el cuerpo del error no es JSON, usa el texto
+                  errorMsg = await response.text();
+              }
+               throw new Error(`La función de evaluación falló: ${errorMsg}`);
           }
-          // ----- FIN: Mensajes para la IA -----
-        ]
-        // ----- OPCIONAL: Puedes añadir otros parámetros aquí -----
-        // temperature: 0.7, // Controla la creatividad (0=determinista, 1=más creativo)
-        // max_tokens: 500, // Límite de longitud de la respuesta de la IA
-        // ----- FIN OPCIONAL -----
-      })
-    });
 
-    // Verifica si la respuesta de la API fue exitosa
-    if (!resp.ok) {
-      // Intenta leer el cuerpo del error para más detalles
-      const errorBody = await resp.text();
-      console.error(`Error ${resp.status} de la API DeepSeek: ${errorBody}`);
-      return { statusCode: resp.status, body: `Error al contactar la IA: ${resp.statusText} - ${errorBody}` };
-    }
+          // Si la respuesta HTTP es OK (2xx), parsea el JSON que envía la función
+          const result = await response.json();
 
-    // Obtiene la respuesta de la IA
-    // Usamos .json() si esperamos una estructura JSON, .text() si esperamos texto plano
-    // La API de Chat Completions usualmente devuelve JSON
-    const data = await resp.json();
+          // La función devuelve { success: true/false, feedback/message: ... }
+          return result; // Devolvemos directamente el objeto { success, feedback/message }
 
-    // Extrae el contenido de la respuesta de la IA (ajusta según la estructura real de 'data')
-    // Revisa la documentación de DeepSeek para la estructura exacta, pero usualmente es algo así:
-    const feedbackContent = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
-                             ? data.choices[0].message.content
-                             : JSON.stringify(data); // Fallback si la estructura no es la esperada
+      } catch (error) {
+          console.error("Error al llamar o procesar la función de evaluación:", error);
+          // Devuelve un objeto con formato de error consistente
+          return { success: false, message: `Error en la comunicación: ${error.message}` };
+      }
 
-
-    // Devuelve el feedback al frontend
-    return {
-      statusCode: 200,
-      // Enviamos un objeto JSON al frontend para que sea más fácil de manejar
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ success: true, feedback: feedbackContent })
-     };
-
-  } catch (error) {
-    console.error("Error en la función Netlify:", error);
-    return {
-       statusCode: 500,
-       headers: { "Content-Type": "application/json" },
-       body: JSON.stringify({ success: false, message: `Error interno del servidor: ${error.message}` })
-      };
+      // --- SE ELIMINÓ TODA LA LÓGICA DE "Respuesta Simulada" ---
   }
-}
+
+  // --- Función para manejar el clic en "Evaluar Prompt" (sin cambios aquí) ---
+  async function handleEvaluateClick() {
+      const promptText = promptInput.value;
+
+      // Validar que el prompt no esté vacío antes de enviar
+      if (!promptText.trim()) {
+          feedbackArea.innerHTML = '<p class="error">Por favor, escribe un prompt antes de evaluar.</p>';
+          feedbackArea.style.display = 'block';
+          feedbackArea.classList.add('error');
+          return; // Detener si está vacío
+      }
+
+
+      // Limpiar feedback anterior y mostrar carga
+      feedbackArea.innerHTML = '';
+      feedbackArea.style.display = 'none';
+      loadingIndicator.style.display = 'flex';
+      evaluateButton.disabled = true;
+      const existingRetryButton = document.getElementById('retry-button');
+      if (existingRetryButton) {
+          existingRetryButton.remove();
+      }
+
+      // Llamar a la función de evaluación (AHORA ES LA REAL)
+      const result = await evaluatePrompt(promptText);
+
+      // Ocultar carga
+      loadingIndicator.style.display = 'none';
+
+      // Mostrar resultado
+      feedbackArea.style.display = 'block';
+      if (result.success) {
+          // Usamos <pre> para preservar mejor los saltos de línea y espacios del feedback de la IA
+          feedbackArea.innerHTML = `<pre>${result.feedback}</pre>`;
+          feedbackArea.classList.remove('error');
+      } else {
+          // Mostramos el mensaje de error que devolvió la función o el catch
+          feedbackArea.innerHTML = `<p class="error">Error: ${result.message}</p>`;
+          feedbackArea.classList.add('error');
+      }
+
+      // Crear y añadir el botón "Volver a Intentar"
+      createRetryButton(); // No necesita cambios
+  }
+
+  // --- Función para crear y añadir el botón "Volver a Intentar" (sin cambios) ---
+  function createRetryButton() {
+      const existingRetryButton = document.getElementById('retry-button');
+      if (existingRetryButton) {
+          existingRetryButton.remove();
+      }
+
+      const retryButton = document.createElement('button');
+      retryButton.id = 'retry-button';
+      retryButton.type = 'button';
+      retryButton.textContent = 'Volver a Intentar';
+      retryButton.addEventListener('click', handleRetryClick);
+      buttonArea.appendChild(retryButton);
+  }
+
+
+  // --- Función para manejar el clic en "Volver a Intentar" (sin cambios) ---
+  function handleRetryClick() {
+      feedbackArea.innerHTML = '';
+      feedbackArea.style.display = 'none';
+      feedbackArea.classList.remove('error');
+
+      const retryButton = document.getElementById('retry-button');
+      if (retryButton) {
+          retryButton.remove();
+      }
+
+      evaluateButton.disabled = false;
+      promptInput.focus();
+  }
+
+  // --- Añadir el Event Listener al botón inicial (sin cambios) ---
+  if (evaluateButton) {
+      evaluateButton.addEventListener('click', handleEvaluateClick);
+  } else {
+      console.error("¡Error! No se encontró el botón 'evaluate-button'");
+  }
+});
