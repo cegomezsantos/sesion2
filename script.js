@@ -1,94 +1,93 @@
 document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------
-  // Paso 4: Análisis con Deepseek
+  // Paso 4: Calentamiento de prompts con Deepseek
   // --------------------------------------------------
   const analyzeBtn = document.getElementById('analyzeBtn');
-  const feedback = document.getElementById('step4Feedback') || document.getElementById('feedback');
-  const progressBar = document.getElementById('progress');
-
-  // Crear botón de reintento
-  const retryBtn = document.createElement('button');
-  retryBtn.id = 'retryBtn';
-  retryBtn.textContent = 'Reintentar';
-  retryBtn.classList.add('retry-button');
-  retryBtn.style.display = 'none';
-  analyzeBtn.insertAdjacentElement('afterend', retryBtn);
+  const retryBtn   = document.getElementById('retryBtn');
+  const feedback   = document.getElementById('step4Feedback');
+  const progress   = document.getElementById('progress');
+  const paso4      = document.getElementById('paso4');
 
   analyzeBtn.addEventListener('click', async () => {
-    // Leer valores del formulario
-    const rol = document.querySelector('[name="rol"]').value.trim();
-    const objetivo = document.querySelector('[name="objetivo"]').value.trim();
-    const contexto = document.querySelector('[name="contexto"]').value.trim();
-
     // Mostrar estado de carga
     feedback.textContent = 'Evaluando el prompt, espera un momento...';
-    feedback.className = 'feedback feedback--loading';
+    feedback.className   = 'feedback feedback--loading';
     retryBtn.style.display = 'none';
 
-    // Validar campos
+    // Leer y validar campos
+    const rol      = document.querySelector('[name="rol"]').value.trim();
+    const objetivo = document.querySelector('[name="objetivo"]').value.trim();
+    const contexto = document.querySelector('[name="contexto"]').value.trim();
     if (!rol || !objetivo || !contexto) {
       feedback.textContent = 'Por favor, completa todos los campos.';
-      feedback.className = 'feedback feedback--bad';
+      feedback.className   = 'feedback feedback--bad';
+      paso4.scrollIntoView();
       return;
     }
 
     try {
-      // Llamada al backend
-      const res = await fetch('/api/analyze', {
+      const res  = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rol, objetivo, contexto })
       });
       const data = await res.json();
 
-      // Mostrar sugerencias
+      // Mostrar sugerencias HTML
       feedback.innerHTML = data.suggestions;
-
       // Determinar clase de estado
-      let stateClass = 'feedback--bad';
-      if (data.ok) stateClass = 'feedback--good';
-      else if (typeof data.score === 'number' && data.score >= 50) stateClass = 'feedback--okay';
-      feedback.className = `feedback ${stateClass}`;
+      let cls = 'feedback--bad';
+      if (data.ok) cls = 'feedback--good';
+      else if (typeof data.score === 'number' && data.score >= 50) cls = 'feedback--okay';
+      feedback.className = `feedback ${cls}`;
 
-      // Actualizar barra de progreso si aplica
-      if (progressBar && typeof data.score === 'number') {
-        progressBar.value = data.score;
+      // Actualizar barra de progreso
+      if (progress && typeof data.score === 'number') {
+        progress.value = data.score;
       }
-
-      // Mostrar botón de reintento si no cumple criterios
+      // Mostrar botón de reintento si falla
       if (!data.ok) retryBtn.style.display = 'inline-block';
     } catch (err) {
       console.error(err);
-      feedback.textContent = 'Error al analizar. Intenta de nuevo.';
-      feedback.className = 'feedback feedback--bad';
+      feedback.textContent   = 'Error al analizar. Intenta de nuevo.';
+      feedback.className     = 'feedback feedback--bad';
       retryBtn.style.display = 'inline-block';
     }
+
+    // Desplazar suavemente al inicio del paso 4
+    paso4.scrollIntoView({ behavior: 'smooth' });
   });
 
-  // Reintento: limpiar feedback
+  // Reintentar: limpia el feedback y oculta el botón
   retryBtn.addEventListener('click', () => {
-    feedback.textContent = '';
-    feedback.className = 'feedback';
+    feedback.textContent   = '';
+    feedback.className     = 'feedback';
     retryBtn.style.display = 'none';
+    paso4.scrollIntoView({ behavior: 'smooth' });
   });
 
   // --------------------------------------------------
-  // Paso 5: Evaluación semáforo estudiante
+  // Paso 5: Evaluación semáforo del estudiante
   // --------------------------------------------------
-  const evaluateBtn = document.getElementById('evaluatePrompt');
+  const evaluateBtn      = document.getElementById('evaluatePrompt');
   if (evaluateBtn) {
     const challengeFeedback = document.getElementById('challengeFeedback');
-    const trafficLights = document.querySelectorAll('#trafficLight .light');
+    const trafficLights     = document.querySelectorAll('#trafficLight .light');
+    const paso5             = document.getElementById('paso5');
 
     evaluateBtn.addEventListener('click', async () => {
+      // Leer y validar prompt del estudiante
       const studentPrompt = document.getElementById('studentPrompt').value.trim();
       if (!studentPrompt) {
         challengeFeedback.textContent = 'Escribe tu prompt antes de evaluar.';
+        challengeFeedback.className   = 'feedback feedback--bad';
+        paso5.scrollIntoView({ behavior: 'smooth' });
         return;
       }
 
+      // Mostrar estado de carga
       challengeFeedback.textContent = 'Evaluando prompt...';
-      challengeFeedback.className = 'feedback feedback--loading';
+      challengeFeedback.className   = 'feedback feedback--loading';
 
       try {
         const res2 = await fetch('/api/evaluate', {
@@ -100,21 +99,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Reset semáforo
         trafficLights.forEach(light => light.style.opacity = 0.3);
-        // Mostrar nivel activo
-        const active = Array.from(trafficLights).find(light =>
-          light.classList.contains(info.level)
-        );
+        // Iluminar nivel correspondiente (red/yellow/green)
+        const active = Array.from(trafficLights)
+          .find(light => light.classList.contains(info.level));
         if (active) active.style.opacity = 1;
 
-        // Feedback a estudiante
+        // Mostrar feedback con color según nivel
         challengeFeedback.textContent = info.feedback;
-        // Aplicar clase de color según nivel
-        challengeFeedback.className = `feedback feedback--${info.level}`;
+        challengeFeedback.className   = `feedback feedback--${info.level}`;
       } catch (e) {
         console.error(e);
         challengeFeedback.textContent = 'Error al evaluar. Intenta más tarde.';
-        challengeFeedback.className = 'feedback feedback--bad';
+        challengeFeedback.className   = 'feedback feedback--bad';
       }
+
+      // Desplazar al inicio del paso 5
+      paso5.scrollIntoView({ behavior: 'smooth' });
     });
   }
 });

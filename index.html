@@ -77,12 +77,24 @@
     <!-- Paso 4: Calentamiento de prompts -->
     <section id="paso4">
       <h2>Paso 4 – Calentamiento de prompts</h2>
+    
       <form id="warmupForm">
-        <label>Rol<input type="text" name="rol" placeholder="E.g.: Eres un tutor de matemáticas"></label>
-        <label>Objetivo<input type="text" name="objetivo" placeholder="E.g.: Explicar fracciones sencillas"></label>
-        <label>Contexto<textarea name="contexto" placeholder="Describe la situación del alumno..."></textarea></label>
-        <button type="button" id="analyzeBtn">Analizar prompt</button>
+        <label>Rol
+          <input type="text" name="rol" placeholder="E.g.: Eres un tutor de matemáticas">
+        </label>
+        <label>Objetivo
+          <input type="text" name="objetivo" placeholder="E.g.: Explicar fracciones sencillas">
+        </label>
+        <label>Contexto
+          <textarea name="contexto" placeholder="Describe la situación del alumno..."></textarea>
+        </label>
+    
+        <div class="button-group">
+          <button type="button" id="analyzeBtn" class="btn-primary">Analizar prompt</button>
+          <button type="button" id="retryBtn" class="btn-secondary" style="display:none;">Reintentar</button>
+        </div>
       </form>
+    
       <div id="step4Feedback" class="feedback"></div>
     </section>
 
