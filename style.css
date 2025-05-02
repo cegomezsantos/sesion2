@@ -141,3 +141,27 @@
     .container { padding: 0.5rem; }
   }
   
+  /* Estilos para el Paso 5 – Reto (cuestionario breve) */
+#paso5 {
+  background-color: #f0f4ff;
+  border-left: 4px solid #667eea;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Ajustes internos */
+#paso5 h2 {
+  margin-bottom: 0.75rem;
+  color: #434190;
+}
+
+#paso5 .student-exercise textarea {
+  width: 100%;
+  min-height: 6rem;
+  margin-top: 0.5rem;
+}
+
+#paso5 .student-exercise button {
+  margin-top: 0.75rem;
+}
