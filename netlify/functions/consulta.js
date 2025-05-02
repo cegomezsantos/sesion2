@@ -1,95 +1,82 @@
-// netlify/functions/consulta.js (CORRECTO - PARA LA CARPETA netlify/functions)
+// consulta.js - Backend de Node.js con Express y OpenAI
+const express = require('express');
+const { Configuration, OpenAIApi } = require('openai');
 
-export async function handler(event) {
-  // --- LOG INICIAL ---
-  console.log("Función 'consulta' iniciada.");
-  // console.log("Evento completo recibido:", JSON.stringify(event, null, 2)); // Descomentar si necesitas ver todo el evento
+// Configuración de OpenAI con la clave en variable de entorno
+const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAIApi(configuration);
 
-  // Recibe el prompt específico escrito por el profesor desde el frontend
-  const rawUserPrompt = event.queryStringParameters?.prompt; // Usamos optional chaining
-  console.log("[consulta.js] Valor crudo de event.queryStringParameters.prompt:", rawUserPrompt);
+const router = express.Router();
+router.use(express.json());
 
-  // Usa el prompt recibido o "Hola" como fallback si no llega nada o está vacío
-  const userPrompt = (rawUserPrompt && rawUserPrompt.trim()) ? rawUserPrompt.trim() : "Hola";
-  console.log("[consulta.js] Valor final de userPrompt (después de fallback):", userPrompt);
-
-  // 1️⃣ Verifica que la API key esté configurada
-  if (!process.env.DEEPSEEK_KEY) {
-    console.error("[consulta.js] Error: DEEPSEEK_KEY environment variable not set.");
-    return {
-      statusCode: 500,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ success: false, message: "Error de configuración: Falta la clave API del servidor." })
-    };
-  }
-
-  // El prompt de sistema que define el rol y la tarea de la IA
-  const systemPrompt = `Eres un evaluador experto en pedagogia y docencia. Estas asesorando a un profesor que esta aprendiendo ia y quiere aprender a plantear a hacer un prompt correcto para producir un cuestionario para su curso de educacion secundaria. Tienes que darle un feedback con sugerencias de mejora que puede aplicar hasta que encuentres que es un prompt satisfactorio y preciso`;
-
-  // Construye los mensajes para la IA
-  const messages = [
-    { role: "system", content: systemPrompt },
-    { role: "user", content: userPrompt } // Usa el userPrompt procesado
-  ];
-  console.log("[consulta.js] Mensajes que se enviarán a DeepSeek:", JSON.stringify(messages, null, 2));
-
+// POST /api/analyze - analiza rol, objetivo y contexto para sugerencias y score
+router.post('/analyze', async (req, res) => {
   try {
-    console.log("[consulta.js] Enviando petición a la API de DeepSeek...");
-    const resp = await fetch("https://api.deepseek.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.DEEPSEEK_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "deepseek-chat",
-        messages: messages
-        // Añade aquí parámetros como temperature si los necesitas
-      })
+    const { rol, objetivo, contexto } = req.body;
+    const prompt = `Eres un evaluador de prompts. Recomienda mejoras al siguiente prompt dividido en roles:
+- Rol: "${rol}"
+- Objetivo: "${objetivo}"
+- Contexto: "${contexto}"
+Proporciona:
+1. Una lista de sugerencias HTML (<ul><li>...) para mejorar claridad, detalle y contexto.
+2. Una puntuación de 0 a 100 indicando calidad general.`;
+
+    const completion = await openai.createChatCompletion({
+      model: 'gpt-4o-mini',
+      messages: [ { role: 'system', content: 'Eres un asistente experto en prompt engineering.' },
+                  { role: 'user', content: prompt } ],
+      temperature: 0.3,
+      frequency_penalty: 0.25,
+      max_tokens: 300
     });
-    console.log("[consulta.js] Respuesta recibida de DeepSeek. Status:", resp.status);
 
-    // Verifica si la respuesta de la API fue exitosa
-    if (!resp.ok) {
-      const errorBody = await resp.text();
-      console.error(`[consulta.js] Error ${resp.status} de la API DeepSeek: ${errorBody}`);
-      return {
-        statusCode: resp.status,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ success: false, message: `Error al contactar la IA (${resp.status}): ${errorBody}` })
-       };
-    }
+    // Parsear respuesta esperada en dos partes: suggestions HTML y score
+    const text = completion.data.choices[0].message.content;
+    const parts = text.split(/\n2\./);
+    const suggestions = parts[0].replace(/^1\./, '').trim();
+    const scoreMatch = parts[1].match(/(\d{1,3})/);
+    const score = scoreMatch ? parseInt(scoreMatch[1], 10) : 0;
 
-    const data = await resp.json();
-    // console.log("[consulta.js] Datos JSON recibidos de DeepSeek:", JSON.stringify(data, null, 2)); // Descomentar si necesitas ver la respuesta completa
-
-    // Extrae el contenido de la respuesta de la IA de forma segura
-    const feedbackContent = data?.choices?.[0]?.message?.content ?? null; // Usa optional chaining y nullish coalescing
-    console.log("[consulta.js] Feedback extraído:", feedbackContent);
-
-    if (feedbackContent === null) {
-         console.error("[consulta.js] No se pudo extraer feedback de la respuesta de la IA:", JSON.stringify(data));
-         return {
-             statusCode: 500,
-             headers: { "Content-Type": "application/json" },
-             body: JSON.stringify({ success: false, message: "Error al procesar la respuesta de la IA." })
-         };
-    }
-
-    // Devuelve el feedback al frontend
-    console.log("[consulta.js] Enviando respuesta exitosa al frontend.");
-    return {
-      statusCode: 200,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ success: true, feedback: feedbackContent })
-     };
-
+    res.json({ suggestions, score });
   } catch (error) {
-    console.error("[consulta.js] Error DENTRO del bloque try/catch:", error);
-    return {
-       statusCode: 500,
-       headers: { "Content-Type": "application/json" },
-       body: JSON.stringify({ success: false, message: `Error interno del servidor: ${error.message}` })
-      };
+    console.error('Error /api/analyze:', error);
+    res.status(500).json({ error: 'Error en análisis de prompt' });
   }
-}
+});
+
+// POST /api/evaluate - evalúa prompt del estudiante y retorna nivel y feedback
+router.post('/evaluate', async (req, res) => {
+  try {
+    const { prompt: studentPrompt } = req.body;
+    const prompt = `Eres un asistente pedagógico que evalúa prompts en tres niveles: red (débil), yellow (aceptable), green (óptimo). Para el siguiente prompt de estudiante:
+"""
+${studentPrompt}
+"""
+Proporciona:
+- feedback: sugerencia breve.
+- level: una de las palabras 'red', 'yellow' o 'green'.`;
+
+    const completion = await openai.createChatCompletion({
+      model: 'gpt-4o-mini',
+      messages: [ { role: 'system', content: 'Eres un evaluador de prompts educativos.' },
+                  { role: 'user', content: prompt } ],
+      temperature: 0.3,
+      max_tokens: 150
+    });
+
+    // Extraer JSON sin parsing estricto
+    const content = completion.data.choices[0].message.content;
+    // Suponiendo formato: "level: green\nfeedback: ..."
+    const levelMatch = content.match(/level:\s*(red|yellow|green)/i);
+    const feedbackMatch = content.match(/feedback:\s*([\s\S]*)/i);
+    const level = levelMatch ? levelMatch[1].toLowerCase() : 'red';
+    const feedbackText = feedbackMatch ? feedbackMatch[1].trim() : content;
+
+    res.json({ level, feedback: feedbackText });
+  } catch (error) {
+    console.error('Error /api/evaluate:', error);
+    res.status(500).json({ error: 'Error en evaluación de prompt' });
+  }
+});
+
+module.exports = router;
