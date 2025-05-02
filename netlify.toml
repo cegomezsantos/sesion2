@@ -1,6 +1,6 @@
 [build]
   functions = "netlify/functions"
-  publish   = "public"  # o la carpeta donde publiques tu front-end
+  publish   = "."  # o la carpeta donde publiques tu front-end
 
 [dev]
   functions = "netlify/functions"
