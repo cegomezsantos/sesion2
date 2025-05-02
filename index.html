@@ -5,91 +5,68 @@
   <title>Sandbox Inteligente – Práctica de Prompts</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Estilos externos -->
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="container">
 
     <!-- Paso 1: ¿Qué es un prompt? -->
     <section id="paso1" class="prompt-definition">
-      <h2>Paso 1 – ¿Qué es un prompt?</h2>
+      <h2>Paso 1 – ¿Qué es un prompt?</h2>
       <p>Un <strong>prompt</strong> es la <em>instrucción o pregunta</em> que das a la IA para guiar su respuesta. Cuanto más claro seas en <u>quién habla</u>, <u>qué necesitas</u> y <u>en qué contexto</u>, mejores resultados obtendrás.</p>
     </section>
 
     <!-- Paso 2: Partes de un buen prompt -->
     <section id="paso2">
-      <h2>Paso 2 – Partes de un buen prompt</h2>
+      <h2>Paso 2 – Partes de un buen prompt</h2>
       <div class="example-parts">
         <p><strong>Rol:</strong> <span>Eres un tutor de matemáticas paciente</span></p>
-        <p><strong>Objetivo:</strong> <span>Explicar fracciones a un alumno de 12 años</span></p>
+        <p><strong>Objetivo:</strong> <span>Explicar fracciones a un alumno de 12 años</span></p>
         <p><strong>Contexto:</strong> <span>El alumno confunde numerador y denominador</span></p>
       </div>
       <div class="example-full-prompt">
         <p><strong>Prompt completo:</strong></p>
-        <div>
-          Eres un tutor de matemáticas paciente. Explica fracciones a un alumno de 12 años que confunde numerador y denominador. Usa ejemplos con pizza y termina con un ejercicio práctico.
+        <div class="prompt-text">
+          Eres un tutor de matemáticas paciente. Explica fracciones a un alumno de 12 años que confunde numerador y denominador. Usa ejemplos con pizza y termina con un ejercicio práctico.
         </div>
       </div>
       <div class="example-output">
-        <p><h1>¿Qué es una fracción?</h1>
+        <h3>Salida de la IA (resultado completo):</h3>
+        <div class="output-content">
+          <h4>¿Qué es una fracción?</h4>
           <p>Una <strong>fracción</strong> es una forma de representar partes de un todo. Siempre tiene dos números:</p>
           <ul>
-            <li>El número de <strong>arriba</strong> se llama <strong>numerador</strong>.</li>
-            <li>El número de <strong>abajo</strong> se llama <strong>denominador</strong>.</li>
+            <li><strong>Numerador:</strong> número de arriba, indica las partes que tienes.</li>
+            <li><strong>Denominador:</strong> número de abajo, indica en cuántas partes se dividió el todo.</li>
           </ul>
-          <p>Vamos a verlo con pizza 🍕.</p>
-        
-          <h2>Ejemplo 1</h2>
-          <p>Si una pizza se divide en <strong>8 partes iguales</strong> y tú comes <strong>3</strong>, la fracción es: 
-            <span class="fraccion">3/8</span>.</p>
-          <ul>
-            <li><strong>Numerador</strong>: 3 (los pedazos que comiste).</li>
-            <li><strong>Denominador</strong>: 8 (total de pedazos).</li>
-          </ul>
-        
-          <h2>Ejemplo 2</h2>
-          <p>Otra pizza se divide en <strong>4 partes</strong>, y comes <strong>1</strong> parte. La fracción es:
-            <span class="fraccion">1/4</span>.</p>
-        
-          <h2>Resumen</h2>
-          <table>
-            <tr>
-              <th>Numerador (arriba)</th>
-              <th>Denominador (abajo)</th>
-              <th>¿Qué significa?</th>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>5</td>
-              <td>2 pedazos de una pizza dividida en 5</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>La mitad de una pizza</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>6</td>
-              <td>4 pedazos de una pizza dividida en 6</td>
-            </tr>
+          <p>Ejemplos con pizza:</p>
+          <h5>Ejemplo 1</h5>
+          <p>Si una pizza se divide en <strong>8 partes iguales</strong> y comes <strong>3</strong>, la fracción es <span class="fraccion">3/8</span>.</p>
+          <h5>Ejemplo 2</h5>
+          <p>Si una pizza se divide en <strong>4 partes</strong> y comes <strong>1</strong>, la fracción es <span class="fraccion">1/4</span>.</p>
+          <h4>Resumen</h4>
+          <table class="summary-table">
+            <thead>
+              <tr><th>Numerador</th><th>Denominador</th><th>Significado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>2</td><td>5</td><td>2 pedazos de una pizza dividida en 5</td></tr>
+              <tr><td>1</td><td>2</td><td>La mitad de una pizza</td></tr>
+              <tr><td>4</td><td>6</td><td>4 pedazos de una pizza dividida en 6</td></tr>
+            </tbody>
           </table>
-        
           <div class="ejercicio">
-            <h2>Ejercicio práctico 🍕</h2>
-            <p>Una pizza está dividida en <strong>10 pedazos iguales</strong>. Tú comiste <strong>4</strong> de ellos.</p>
-            <p><strong>¿Qué fracción representa los pedazos que comiste?</strong></p>
+            <h4>Ejercicio práctico</h4>
+            <p>Una pizza está dividida en <strong>10 pedazos iguales</strong>. Comes <strong>4</strong>. ¿Qué fracción representa los pedazos que comiste?</p>
             <p>Respuesta: <span class="fraccion">4/10</span></p>
-          </div></p>
-        <div>
-          <!-- Ejemplo de salida detallada aquí -->
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Paso 3: Recordemos lo esencial -->
     <section id="paso3">
-      <h2>Paso 3 – Recordemos lo esencial</h2>
+      <h2>Paso 3 – Recordemos lo esencial</h2>
       <ul>
         <li>¿La IA viene a quitarnos el trabajo? ¡Para nada!</li>
         <li>¿Basta con escribir cualquier cosa? No.</li>
@@ -99,35 +76,28 @@
 
     <!-- Paso 4: Calentamiento de prompts -->
     <section id="paso4">
-      <h2>Paso 4 – Calentamiento de prompts</h2>
+      <h2>Paso 4 – Calentamiento de prompts</h2>
       <form id="warmupForm">
-        <label>Rol <input type="text" name="rol" placeholder="E.g.: Eres un tutor de matemáticas"></label>
-        <label>Objetivo <input type="text" name="objetivo" placeholder="E.g.: Explicar fracciones sencillas"></label>
-        <label>Contexto <textarea name="contexto" placeholder="Describe la situación del alumno..."></textarea></label>
+        <label>Rol<input type="text" name="rol" placeholder="E.g.: Eres un tutor de matemáticas"></label>
+        <label>Objetivo<input type="text" name="objetivo" placeholder="E.g.: Explicar fracciones sencillas"></label>
+        <label>Contexto<textarea name="contexto" placeholder="Describe la situación del alumno..."></textarea></label>
         <button type="button" id="analyzeBtn">Analizar prompt</button>
       </form>
-      <div id="feedback"></div>
-      <!-- Contenedor para carga y resultado -->
       <div id="step4Feedback" class="feedback"></div>
     </section>
 
- 
-
     <!-- Paso 5: Reto – Cuestionario Guerra del Pacífico -->
     <section id="paso5">
-      <h2>Paso 5 – Reto: genera un cuestionario breve</h2>
+      <h2>Paso 5 – Reto: genera un cuestionario breve</h2>
       <div class="example-case">
         <h3>Ejemplo resuelto</h3>
         <p><strong>Caso:</strong> Un cuestionario de 5 preguntas de opción múltiple sobre la <em>Guerra del Pacífico</em> para alumnos de secundaria.</p>
-        <div>
-          <!-- Prompt experto aquí -->
-        </div>
       </div>
       <div class="student-exercise">
-        <p>Redacta tu <strong>prompt</strong> para que la IA genere un cuestionario breve (5 preguntas) sobre la Guerra del Pacífico.</p>
-        <textarea id="studentPrompt" placeholder="E.g.: 'Genera un cuestionario de 5 preguntas de opción múltiple sobre la Guerra del Pacífico para alumnos de 4.º de secundaria'"></textarea>
+        <p>Redacta tu <strong>prompt</strong> para que la IA genere un cuestionario breve sobre la Guerra del Pacífico.</p>
+        <textarea id="studentPrompt" placeholder="Ej.: 'Genera un cuestionario de 5 preguntas de opción múltiple sobre la Guerra del Pacífico para alumnos de secundaria'"></textarea>
         <button id="evaluatePrompt">Evaluar prompt</button>
-        <div id="challengeFeedback"></div>
+        <div id="challengeFeedback" class="feedback"></div>
         <div id="trafficLight">
           <span class="light red"></span>
           <span class="light yellow"></span>
@@ -138,8 +108,7 @@
 
   </main>
 
-  <!-- Scripts -->
-  </body>
-</html> <!-- End HTML -->
+  <!-- Cargar script al final para asegurar que los elementos existan -->
+  <script src="script.js"></script>
 </body>
 </html>
