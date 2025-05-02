@@ -1,63 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Selectores de elementos
+  // BOTÓN Y FEEDBACK PASO 4
   const analyzeBtn = document.getElementById('analyzeBtn');
-  const feedback = document.getElementById('feedback');
+  const fbContainer = document.getElementById('step4Feedback') || document.getElementById('feedback');
   const progressBar = document.getElementById('progress');
 
-  // Crear botón de reintento dinámicamente
+  // Crear botón de reintento
   const retryBtn = document.createElement('button');
   retryBtn.id = 'retryBtn';
   retryBtn.textContent = 'Reintentar';
-  retryBtn.style.display = 'none';
   retryBtn.className = 'retry-button';
+  retryBtn.style.display = 'none';
   analyzeBtn.insertAdjacentElement('afterend', retryBtn);
 
-  // Paso 4: Análisis con Deepseek
   analyzeBtn.addEventListener('click', async () => {
     const rol = document.querySelector('[name="rol"]').value.trim();
     const objetivo = document.querySelector('[name="objetivo"]').value.trim();
     const contexto = document.querySelector('[name="contexto"]').value.trim();
+    const fb = fbContainer;
 
+    // Mostrar estado de carga
+    fb.textContent = 'Evaluando el prompt, espera un momento...';
+    fb.className = 'feedback feedback--loading';
+    retryBtn.style.display = 'none';
+
+    // Validación básica
     if (!rol || !objetivo || !contexto) {
-      feedback.textContent = 'Por favor, completa todos los campos.';
+      fb.textContent = 'Por favor, completa todos los campos.';
+      fb.className = 'feedback feedback--bad';
       return;
     }
 
-    feedback.textContent = 'Analizando prompt con Deepseek...';
-    retryBtn.style.display = 'none';
-
     try {
       const res = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rol, objetivo, contexto })
       });
       const data = await res.json();
 
-      // Mostrar sugerencias
-      feedback.innerHTML = data.suggestions;
-      // Actualizar barra de progreso si existe
-      if (data.score !== undefined && progressBar) {
-        progressBar.value = data.score;
-      }
-      // Si no cumple (ok = false), mostrar botón reintentar
-      if (!data.ok) {
-        retryBtn.style.display = 'inline-block';
-      }
+      // Mostrar sugerencias HTML
+      fb.innerHTML = data.suggestions;
+      // Determinar clase según score/ok
+      let stateClass = 'feedback--bad';
+      if (data.ok) stateClass = 'feedback--good';
+      else if (data.score >= 50) stateClass = 'feedback--okay';
+      fb.className = `feedback ${stateClass}`;
+
+      // Actualizar barra de progreso
+      if (progressBar && data.score !== undefined) progressBar.value = data.score;
+
+      // Mostrar botón reintentar si no pasó
+      if (!data.ok) retryBtn.style.display = 'inline-block';
     } catch (err) {
       console.error(err);
-      feedback.textContent = 'Error al analizar. Intenta de nuevo.';
+      fb.textContent = 'Error al analizar. Intenta de nuevo.';
+      fb.className = 'feedback feedback--bad';
       retryBtn.style.display = 'inline-block';
     }
   });
 
-  // Lógica de reintento: limpia feedback y oculta el botón
+  // Reintentar: limpia feedback
   retryBtn.addEventListener('click', () => {
-    feedback.textContent = '';
+    fbContainer.textContent = '';
+    fbContainer.className = 'feedback';
     retryBtn.style.display = 'none';
   });
 
-  // Paso 6: Evaluación de prompt del estudiante (semáforo)
+  // PASO 5: Evaluación semáforo estudiante
   const evaluateBtn = document.getElementById('evaluatePrompt');
   const challengeFeedback = document.getElementById('challengeFeedback');
   const trafficLights = document.querySelectorAll('#trafficLight .light');
@@ -70,19 +78,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     challengeFeedback.textContent = 'Evaluando prompt...';
+    challengeFeedback.className = '';
+
     try {
       const res = await fetch('/api/evaluate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: promptText })
       });
       const data = await res.json();
 
       // Actualizar semáforo
       trafficLights.forEach(light => light.style.opacity = 0.3);
-      const levelLight = Array.from(trafficLights)
-        .find(light => light.classList.contains(data.level));
-      if (levelLight) levelLight.style.opacity = 1;
+      const active = Array.from(trafficLights).find(light => light.classList.contains(data.level));
+      if (active) active.style.opacity = 1;
 
       // Mostrar feedback
       challengeFeedback.textContent = data.feedback;
