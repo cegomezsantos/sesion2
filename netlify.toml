@@ -1,10 +1,2 @@
 # netlify.toml
 
-# Configuración para las funciones serverless
-[functions]
-  # Establece el tiempo máximo de ejecución en segundos para TODAS las funciones.
-  # El valor por defecto es 10 segundos.
-  # Prueba con un valor mayor, como 25 segundos.
-  # ¡Importante! Revisa los límites de tu plan en Netlify, el máximo
-  # en planes gratuitos suele ser 26 segundos, pero podría variar.
-  timeout = 25
