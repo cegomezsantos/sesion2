@@ -162,6 +162,12 @@
   margin-top: 0.5rem;
 }
 
+#paso5 .studentPrompt textarea {
+  width: 100%;
+  min-height: 6rem;
+  margin-top: 0.5rem;
+}
+
 #paso5 .student-exercise button {
   margin-top: 0.75rem;
 }
