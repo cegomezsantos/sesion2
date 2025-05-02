@@ -1,89 +1,92 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Sandbox Inteligente – Práctica de Prompts</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Estilos externos -->
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-  <main class="container">
+// consulta.js – Backend Node.js para Deepseek y OpenAI
+const express = require('express');
+const axios = require('axios');
+const { Configuration, OpenAIApi } = require('openai');
 
-    <!-- Paso 1: ¿Qué es un prompt? -->
-    <section id="paso1" class="prompt-definition">
-      <h2>Paso 1 – ¿Qué es un prompt?</h2>
-      <p>Un <strong>prompt</strong> es la <em>instrucción o pregunta</em> que das a la IA para guiar su respuesta. Cuanto más claro seas en <u>quién habla</u>, <u>qué necesitas</u> y <u>en qué contexto</u>, mejores resultados obtendrás.</p>
-    </section>
+// Cargar claves desde variables de entorno
+const DEEPSEEK_KEY = process.env.DEEPSEEK_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-    <!-- Paso 2: Partes de un buen prompt -->
-    <section id="paso2">
-      <h2>Paso 2 – Partes de un buen prompt</h2>
-      <div class="example-parts">
-        <p><strong>Rol:</strong> <span>Eres un tutor de matemáticas paciente</span></p>
-        <p><strong>Objetivo:</strong> <span>Explicar fracciones a un alumno de 12 años</span></p>
-        <p><strong>Contexto:</strong> <span>El alumno confunde numerador y denominador</span></p>
-      </div>
-      <div class="example-full-prompt">
-        <p><strong>Prompt completo:</strong></p>
-        <div>
-          Eres un tutor de matemáticas paciente. Explica fracciones a un alumno de 12 años que confunde numerador y denominador. Usa ejemplos con pizza y termina con un ejercicio práctico.
-        </div>
-      </div>
-      <div class="example-output">
-        <p><strong>Salida de la IA (resultado completo):</strong></p>
-        <div>
-          <!-- Ejemplo de salida detallada aquí -->
-        </div>
-      </div>
-    </section>
+// Configurar cliente OpenAI
+const openai = new OpenAIApi(new Configuration({ apiKey: OPENAI_API_KEY }));
 
-    <!-- Paso 3: Recordemos lo esencial -->
-    <section id="paso3">
-      <h2>Paso 3 – Recordemos lo esencial</h2>
-      <ul>
-        <li>¿La IA viene a quitarnos el trabajo? ¡Para nada!</li>
-        <li>¿Basta con escribir cualquier cosa? No.</li>
-        <li>¿Necesito ser programador? En absoluto.</li>
-      </ul>
-    </section>
+const router = express.Router();
+router.use(express.json());
 
-    <!-- Paso 4: Calentamiento de prompts -->
-    <section id="paso4">
-      <h2>Paso 4 – Calentamiento de prompts</h2>
-      <form id="warmupForm">
-        <label>Rol <input type="text" name="rol" placeholder="E.g.: Eres un tutor de matemáticas"></label>
-        <label>Objetivo <input type="text" name="objetivo" placeholder="E.g.: Explicar fracciones sencillas"></label>
-        <label>Contexto <textarea name="contexto" placeholder="Describe la situación del alumno..."></textarea></label>
-        <button type="button" id="analyzeBtn">Analizar prompt</button>
-      </form>
-      <div id="feedback"></div>
-    </section>
+/**
+ * POST /api/analyze
+ * Analiza un prompt estructuralmente usando Deepseek:
+ *   - suggestions: recomendaciones en HTML
+ *   - score: valoración numérica (0-100)
+ *   - ok: boolean si pasa criterios mínimos
+ */
+router.post('/api/analyze', async (req, res) => {
+  try {
+    const { rol, objetivo, contexto } = req.body;
+    // Construir payload para Deepseek
+    const payload = {
+      role: rol,
+      objective: objetivo,
+      context: contexto,
+      analysis_type: 'structural',       // evaluación estructural detallada
+      include_recommendations: true      // incluir sugerencias
+    };
+    // Llamada a Deepseek
+    const dsRes = await axios.post(
+      'https://api.deepseek.ai/v1/prompt/evaluate',
+      payload,
+      { headers: { Authorization: `Bearer ${DEEPSEEK_KEY}`, 'Content-Type': 'application/json' } }
+    );
+    const { suggestions, score, ok } = dsRes.data;
+    return res.json({ suggestions, score, ok });
+  } catch (error) {
+    console.error('Error en /api/analyze:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Fallo en análisis de prompt con Deepseek' });
+  }
+});
 
-    <!-- Paso 5: Reto – Cuestionario Guerra del Pacífico -->
-    <section id="paso5">
-      <h2>Paso 5 – Reto: genera un cuestionario breve</h2>
-      <div class="example-case">
-        <h3>Ejemplo resuelto</h3>
-        <p><strong>Caso:</strong> Un cuestionario de 5 preguntas de opción múltiple sobre la <em>Guerra del Pacífico</em> para alumnos de secundaria.</p>
-        <div>
-          <!-- Prompt experto aquí -->
-        </div>
-      </div>
-      <div class="student-exercise">
-        <p>Redacta tu <strong>prompt</strong> para que la IA genere un cuestionario breve (5 preguntas) sobre la Guerra del Pacífico.</p>
-        <textarea id="studentPrompt" placeholder="E.g.: 'Genera un cuestionario de 5 preguntas de opción múltiple sobre la Guerra del Pacífico para alumnos de 4.º de secundaria'"></textarea>
-        <button id="evaluatePrompt">Evaluar prompt</button>
-        <div id="challengeFeedback"></div>
-        <div id="trafficLight">
-          <span class="light red"></span>
-          <span class="light yellow"></span>
-          <span class="light green"></span>
-        </div>
-      </div>
-    </section>
+/**
+ * POST /api/evaluate
+ * Evalúa el prompt escrito por el estudiante usando OpenAI:
+ *   - level: 'red' | 'yellow' | 'green'
+ *   - feedback: sugerencia breve de mejora
+ */
+router.post('/api/evaluate', async (req, res) => {
+  try {
+    const { prompt: studentPrompt } = req.body;
+    // Prompt interno para evaluación
+    const evaluationPrompt = `Eres un asistente pedagógico experto en prompt engineering.
+Evalúa este prompt de estudiante:
+\"\"\"
+${studentPrompt}
+\"\"\"
+Devuelve un JSON con las claves:
+- "level": "red"|"yellow"|"green"
+- "feedback": "una sugerencia clara de mejora en una o dos frases"`;
 
-  </main>
+    // Llamada a OpenAI
+    const aiRes = await openai.createChatCompletion({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: 'Eres un evaluador de prompts educativos.' },
+        { role: 'user', content: evaluationPrompt }
+      ],
+      temperature: 0.3,
+      max_tokens: 200
+    });
 
-  <!-- Scripts -->
-  <script src="script.js"></script
+    const content = aiRes.data.choices[0].message.content;
+    // Extraer campos JSON del texto
+    const levelMatch = content.match(/\"level\"\s*[:=]\s*\"?(red|yellow|green)\"?/i);
+    const feedbackMatch = content.match(/\"feedback\"\s*[:=]\s*\"([\s\S]*?)\"/i);
+    const level = levelMatch ? levelMatch[1].toLowerCase() : 'red';
+    const feedbackText = feedbackMatch ? feedbackMatch[1] : content;
+
+    res.json({ level, feedback: feedbackText });
+  } catch (error) {
+    console.error('Error en /api/evaluate:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Fallo en evaluación de prompt' });
+  }
+});
+
+module.exports = router;
