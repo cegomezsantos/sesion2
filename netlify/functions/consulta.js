@@ -1,81 +1,91 @@
-// consulta.js - Backend de Node.js con Express y OpenAI
+// consulta.js - Backend Node.js para Deepseek y OpenAI
 const express = require('express');
+const axios = require('axios');
 const { Configuration, OpenAIApi } = require('openai');
 
-// Configuración de OpenAI con la clave en variable de entorno
-const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
-const openai = new OpenAIApi(configuration);
+// Cargar claves desde variables de entorno
+const DEEPSEEK_KEY = process.env.DEEPSEEK_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
+// Configurar cliente OpenAI
+const openai = new OpenAIApi(new Configuration({ apiKey: OPENAI_API_KEY }));
 
 const router = express.Router();
 router.use(express.json());
 
-// POST /api/analyze - analiza rol, objetivo y contexto para sugerencias y score
-router.post('/analyze', async (req, res) => {
+/**
+ * POST /api/analyze
+ * Analiza un prompt estructuralmente usando Deepseek:
+ *   - suggestions: recomendaciones en HTML
+ *   - score: valoración numérica (0-100)
+ *   - ok: boolean si pasa criterios mínimos
+ */
+router.post('/api/analyze', async (req, res) => {
   try {
     const { rol, objetivo, contexto } = req.body;
-    const prompt = `Eres un evaluador de prompts. Recomienda mejoras al siguiente prompt dividido en roles:
-- Rol: "${rol}"
-- Objetivo: "${objetivo}"
-- Contexto: "${contexto}"
-Proporciona:
-1. Una lista de sugerencias HTML (<ul><li>...) para mejorar claridad, detalle y contexto.
-2. Una puntuación de 0 a 100 indicando calidad general.`;
-
-    const completion = await openai.createChatCompletion({
-      model: 'gpt-4o-mini',
-      messages: [ { role: 'system', content: 'Eres un asistente experto en prompt engineering.' },
-                  { role: 'user', content: prompt } ],
-      temperature: 0.3,
-      frequency_penalty: 0.25,
-      max_tokens: 300
-    });
-
-    // Parsear respuesta esperada en dos partes: suggestions HTML y score
-    const text = completion.data.choices[0].message.content;
-    const parts = text.split(/\n2\./);
-    const suggestions = parts[0].replace(/^1\./, '').trim();
-    const scoreMatch = parts[1].match(/(\d{1,3})/);
-    const score = scoreMatch ? parseInt(scoreMatch[1], 10) : 0;
-
-    res.json({ suggestions, score });
+    // Construir payload para Deepseek
+    const payload = {
+      role: rol,
+      objective: objetivo,
+      context: contexto,
+      analysis_type: 'structural',       // evaluación estructural detallada
+      include_recommendations: true      // incluir sugerencias
+    };
+    // Llamada a Deepseek
+    const dsRes = await axios.post(
+      'https://api.deepseek.ai/v1/prompt/evaluate',
+      payload,
+      { headers: { Authorization: `Bearer ${DEEPSEEK_KEY}`, 'Content-Type': 'application/json' } }
+    );
+    const { suggestions, score, ok } = dsRes.data;
+    return res.json({ suggestions, score, ok });
   } catch (error) {
-    console.error('Error /api/analyze:', error);
-    res.status(500).json({ error: 'Error en análisis de prompt' });
+    console.error('Error en /api/analyze:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Fallo en análisis de prompt con Deepseek' });
   }
 });
 
-// POST /api/evaluate - evalúa prompt del estudiante y retorna nivel y feedback
-router.post('/evaluate', async (req, res) => {
+/**
+ * POST /api/evaluate
+ * Evalúa el prompt escrito por el estudiante usando OpenAI:
+ *   - level: 'red' | 'yellow' | 'green'
+ *   - feedback: sugerencia breve de mejora
+ */
+router.post('/api/evaluate', async (req, res) => {
   try {
     const { prompt: studentPrompt } = req.body;
-    const prompt = `Eres un asistente pedagógico que evalúa prompts en tres niveles: red (débil), yellow (aceptable), green (óptimo). Para el siguiente prompt de estudiante:
+    // Prompt interno para evaluación
+    const evaluationPrompt = `Eres un asistente pedagógico experto en prompt engineering.
+Evalúa este prompt de estudiante:
 """
 ${studentPrompt}
 """
-Proporciona:
-- feedback: sugerencia breve.
-- level: una de las palabras 'red', 'yellow' o 'green'.`;
+Devuelve un JSON con las claves:
+- "level": "red"|"yellow"|"green"
+- "feedback": "una sugerencia clara de mejora en una o dos frases"`;
 
-    const completion = await openai.createChatCompletion({
+    // Llamada a OpenAI
+    const aiRes = await openai.createChatCompletion({
       model: 'gpt-4o-mini',
-      messages: [ { role: 'system', content: 'Eres un evaluador de prompts educativos.' },
-                  { role: 'user', content: prompt } ],
+      messages: [
+        { role: 'system', content: 'Eres un evaluador de prompts educativos.' },
+        { role: 'user', content: evaluationPrompt }
+      ],
       temperature: 0.3,
-      max_tokens: 150
+      max_tokens: 200
     });
 
-    // Extraer JSON sin parsing estricto
-    const content = completion.data.choices[0].message.content;
-    // Suponiendo formato: "level: green\nfeedback: ..."
-    const levelMatch = content.match(/level:\s*(red|yellow|green)/i);
-    const feedbackMatch = content.match(/feedback:\s*([\s\S]*)/i);
+    const content = aiRes.data.choices[0].message.content;
+    // Extraer campos JSON del texto
+    const levelMatch = content.match(/"level"\s*[:=]\s*"?(red|yellow|green)"?/i);
+    const feedbackMatch = content.match(/"feedback"\s*[:=]\s*"([\s\S]*?)"/i);
     const level = levelMatch ? levelMatch[1].toLowerCase() : 'red';
-    const feedbackText = feedbackMatch ? feedbackMatch[1].trim() : content;
+    const feedbackText = feedbackMatch ? feedbackMatch[1] : content;
 
     res.json({ level, feedback: feedbackText });
   } catch (error) {
-    console.error('Error /api/evaluate:', error);
-    res.status(500).json({ error: 'Error en evaluación de prompt' });
+    console.error('Error en /api/evaluate:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Fallo en evaluación de prompt' });
   }
 });
 
