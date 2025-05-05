@@ -9,6 +9,17 @@
   line-height: 1.5;
 }
 
+/* **NUEVO:** Estilo para el título de bienvenida */
+.welcome-title {
+  font-size: 1.8rem;
+  color: #3730a3; /* Un tono ligeramente más oscuro */
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #c7d2fe;
+}
+
+
 /* Section titles */
 h2 {
   font-size: 1.5rem;
@@ -60,6 +71,24 @@ h2 {
   margin-bottom: 2rem;
 }
 
+/* **NUEVO:** Estilos para el contenido desplegable */
+.collapsible-content {
+  max-height: 0; /* Oculto por defecto */
+  overflow: hidden;
+  transition: max-height 0.5s ease-out; /* Animación suave */
+  margin-top: 1rem; /* Espacio respecto al botón */
+}
+.collapsible-content.visible {
+  max-height: 1500px; /* Altura máxima suficiente para el contenido */
+}
+
+/* **NUEVO:** Estilo específico para el botón desplegable */
+.btn-small {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+
 /* Unordered list for Paso 3 */
 #paso3 ul {
   list-style-type: disc;
@@ -77,7 +106,6 @@ form label {
   font-weight: 500;
 }
 
-/* **CORRECCIÓN:** Estilos base para inputs y textareas DENTRO de un form */
 form input[type="text"],
 form textarea {
   padding: 0.5rem;
@@ -86,20 +114,18 @@ form textarea {
   font-size: 1rem;
   width: 100%;
   box-sizing: border-box;
-  font-family: inherit; /* Asegura herencia de fuente */
-  margin-top: 0.25rem; /* Añadido margen superior por defecto */
+  font-family: inherit;
+  margin-top: 0.25rem;
 }
 
-/* **CORRECCIÓN:** Estilo específico para textarea DENTRO de un form */
 form textarea {
   min-height: 5rem;
 }
 
-/* Botones dentro de un FORM (si no tienen clase específica) */
 form button {
   margin-top: 1rem;
   padding: 0.75rem;
-  background-color: #4338ca; /* Color por defecto si no hay clase */
+  background-color: #4338ca;
   color: #ffffff;
   border: none;
   border-radius: 0.25rem;
@@ -108,19 +134,20 @@ form button {
   align-self: flex-start;
 }
 form button:hover {
-   /* Hover por defecto si no hay clase */
   background-color: #3730a3;
 }
 
 /* Feedback & progress */
-/* Se renombró #feedback a una clase para reutilizar */
 .feedback {
   margin-top: 1rem;
   padding: 0.75rem;
   border-radius: 0.25rem;
   font-size: 0.95rem;
+  border-left: 4px solid transparent; /* Borde base para estados */
+  min-height: 1.5em; /* Evita saltos de altura al añadir/quitar loader */
 }
-#challengeFeedback { /* Mantenemos ID si se usa en JS */
+
+#challengeFeedback {
    margin-top: 1rem;
 }
 
@@ -149,22 +176,25 @@ progress::-webkit-progress-value {
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
-  background-color: #e5e7eb; /* Default apagado */
-  opacity: 0.3; /* Atenuado por defecto */
-  transition: opacity 0.3s ease; /* Transición suave */
+  background-color: #e5e7eb;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
 }
-/* Encendido se controla con opacity=1 en JS */
+.light.active { /* Clase para encender la luz */
+    opacity: 1;
+}
 .light.red { background-color: #dc2626; }
 .light.yellow { background-color: #f59e0b; }
 .light.green { background-color: #16a34a; }
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
+  h1.welcome-title { font-size: 1.5rem; }
   h2 { font-size: 1.25rem; }
   .container { padding: 0.5rem; }
 }
 
-/* Estilos para el Paso 5 – Reto (cuestionario breve) */
+/* Estilos para el Paso 5 – Reto */
 #paso5 {
   background-color: #f0f4ff;
   border-left: 4px solid #667eea;
@@ -173,68 +203,71 @@ progress::-webkit-progress-value {
   margin-bottom: 2rem;
 }
 
-/* Ajustes internos */
 #paso5 h2 {
   margin-bottom: 0.75rem;
   color: #434190;
 }
 
-/* **CORRECCIÓN:** Estilos para el textarea del Paso 5 (fuera de form) */
 #paso5 .student-exercise textarea {
   width: 100%;
   min-height: 6rem;
   margin-top: 0.5rem;
-  padding: 0.5rem; /* Añadido */
-  border: 1px solid #cbd5e1; /* Añadido */
-  border-radius: 0.25rem; /* Añadido */
-  font-size: 1rem; /* Añadido */
-  box-sizing: border-box; /* Añadido */
-  font-family: inherit; /* Añadido */
+  padding: 0.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+  font-family: inherit;
 }
 
-/* **ELIMINADO:** Regla redundante/incorrecta */
-/*
-#paso5 .studentPrompt textarea {
-    width: 100%;
-    min-height: 6rem;
-    margin-top: 0.5rem;
-}
-*/
-
-/* **CORRECCIÓN:** El botón del Paso 5 ahora usa .btn-primary (definido más abajo) */
 #paso5 .student-exercise button {
-   margin-top: 0.75rem; /* Mantiene su margen específico si es necesario */
-   /* No necesita más estilos aquí si usa .btn-primary */
+   margin-top: 0.75rem;
 }
 
+/* **NUEVO:** Animación Loader CSS */
+.loader {
+  width: 1.2em; /* Tamaño relativo a la fuente */
+  height: 1.2em;
+  border: 0.2em solid #e0e7ff; /* Color base del círculo */
+  border-top-color: #4f46e5; /* Color de la parte que gira */
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem; /* Espacio entre spinner y texto */
+  vertical-align: middle; /* Alinear con el texto */
+}
 
-/* Mensajes de feedback (todos usan la clase .feedback) */
-/* Estado cargando */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Mensajes de feedback con estados y loader */
+/* **MODIFICADO:** Estado cargando con Flexbox */
 .feedback--loading {
   background-color: #f3f4f6;
   color: #4b5563;
-  border-left: 4px solid #9ca3af;
+  border-left-color: #9ca3af;
+  display: flex; /* Alinear spinner y texto */
+  align-items: center;
 }
 
-/* Prompt débil (rojo) */
 .feedback--bad {
   background-color: #fee2e2;
   color: #b91c1c;
-  border-left: 4px solid #f87171;
+  border-left-color: #f87171;
 }
 
-/* Prompt aceptable (amarillo) */
 .feedback--okay {
   background-color: #fef3c7;
   color: #92400e;
-  border-left: 4px solid #fcd34d;
+  border-left-color: #fcd34d;
 }
 
-/* Prompt bueno (verde) */
 .feedback--good {
   background-color: #d1fae5;
   color: #065f46;
-  border-left: 4px solid #6ee7b7;
+  border-left-color: #6ee7b7;
 }
 
 /* Botones primario / secundario */
@@ -244,7 +277,7 @@ progress::-webkit-progress-value {
   margin-top: 1rem;
 }
 
-/* Clase base para botones reutilizables */
+/* Clase base para botones */
 .btn {
   padding: 0.75rem 1.25rem;
   border: none;
@@ -253,7 +286,7 @@ progress::-webkit-progress-value {
   font-size: 1rem;
   color: #ffffff;
   text-align: center;
-  /* Podrías añadir transition aquí si quieres */
+  transition: background-color 0.2s ease; /* Transición suave */
 }
 
 .btn-primary {
@@ -272,18 +305,7 @@ progress::-webkit-progress-value {
   background-color: #d97706;
 }
 
-/* Aplicar clase base a los botones específicos si no la tienen */
-.btn-primary, .btn-secondary {
-  /* Heredan de .btn si se usara, si no, definimos aquí */
-  padding: 0.75rem 1.25rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-
-/* Scroll suave para recargas de sección */
+/* Scroll suave */
 html {
   scroll-behavior: smooth;
 }

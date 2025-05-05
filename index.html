@@ -10,6 +10,9 @@
 <body>
   <main class="container">
 
+    <!-- **NUEVO:** Título de Bienvenida Personalizado -->
+    <h1 id="welcomeMessage" class="welcome-title">Bienvenido/a al Sandbox Inteligente</h1>
+
     <!-- Paso 1: ¿Qué es un prompt? -->
     <section id="paso1" class="prompt-definition">
       <h2>Paso 1 – ¿Qué es un prompt?</h2>
@@ -30,9 +33,13 @@
           Eres un tutor de matemáticas paciente. Explica fracciones a un alumno de 12 años que confunde numerador y denominador. Usa ejemplos con pizza y termina con un ejercicio práctico.
         </div>
       </div>
+      <!-- **MODIFICADO:** Estructura para desplegable -->
       <div class="example-output">
         <h3>Salida de la IA (resultado completo):</h3>
-        <div class="output-content">
+        <!-- Botón para mostrar/ocultar -->
+        <button id="toggleOutputBtn" class="btn btn-secondary btn-small">Mira el resultado</button>
+        <!-- Contenido desplegable -->
+        <div id="iaOutputContent" class="output-content collapsible-content">
           <h4>¿Qué es una fracción?</h4>
           <p>Una <strong>fracción</strong> es una forma de representar partes de un todo. Siempre tiene dos números:</p>
           <ul>
@@ -90,12 +97,12 @@
         </label>
 
         <div class="button-group">
-          <button type="button" id="analyzeBtn" class="btn-primary">Analizar prompt</button>
-          <button type="button" id="retryBtn" class="btn-secondary" style="display:none;">Reintentar</button>
+          <button type="button" id="analyzeBtn" class="btn btn-primary">Analizar prompt</button>
+          <button type="button" id="retryBtn" class="btn btn-secondary" style="display:none;">Reintentar</button>
         </div>
       </form>
 
-      <div id="step4Feedback" class="feedback"></div>
+      <div id="step4Feedback" class="feedback"></div> <!-- Feedback con posible loader -->
     </section>
 
     <!-- Paso 5: Reto – Cuestionario Guerra del Pacífico -->
@@ -108,9 +115,8 @@
       <div class="student-exercise">
         <p>Redacta tu <strong>prompt</strong> para que la IA genere un cuestionario breve sobre la Guerra del Pacífico.</p>
         <textarea id="studentPrompt" placeholder="Ej.: 'Genera un cuestionario de 5 preguntas de opción múltiple sobre la Guerra del Pacífico para alumnos de secundaria'"></textarea>
-        <!-- **CORRECCIÓN:** Añadida clase 'btn-primary' para aplicar estilo -->
-        <button id="evaluatePrompt" class="btn-primary">Evaluar prompt</button>
-        <div id="challengeFeedback" class="feedback"></div>
+        <button id="evaluatePrompt" class="btn btn-primary">Evaluar prompt</button>
+        <div id="challengeFeedback" class="feedback"></div> <!-- Feedback con posible loader -->
         <div id="trafficLight">
           <span class="light red"></span>
           <span class="light yellow"></span>
