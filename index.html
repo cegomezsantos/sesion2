@@ -77,7 +77,7 @@
     <!-- Paso 4: Calentamiento de prompts -->
     <section id="paso4">
       <h2>Paso 4 – Calentamiento de prompts</h2>
-    
+
       <form id="warmupForm">
         <label>Rol
           <input type="text" name="rol" placeholder="E.g.: Eres un tutor de matemáticas">
@@ -88,13 +88,13 @@
         <label>Contexto
           <textarea name="contexto" placeholder="Describe la situación del alumno..."></textarea>
         </label>
-    
+
         <div class="button-group">
           <button type="button" id="analyzeBtn" class="btn-primary">Analizar prompt</button>
           <button type="button" id="retryBtn" class="btn-secondary" style="display:none;">Reintentar</button>
         </div>
       </form>
-    
+
       <div id="step4Feedback" class="feedback"></div>
     </section>
 
@@ -108,7 +108,8 @@
       <div class="student-exercise">
         <p>Redacta tu <strong>prompt</strong> para que la IA genere un cuestionario breve sobre la Guerra del Pacífico.</p>
         <textarea id="studentPrompt" placeholder="Ej.: 'Genera un cuestionario de 5 preguntas de opción múltiple sobre la Guerra del Pacífico para alumnos de secundaria'"></textarea>
-        <button id="evaluatePrompt">Evaluar prompt</button>
+        <!-- **CORRECCIÓN:** Añadida clase 'btn-primary' para aplicar estilo -->
+        <button id="evaluatePrompt" class="btn-primary">Evaluar prompt</button>
         <div id="challengeFeedback" class="feedback"></div>
         <div id="trafficLight">
           <span class="light red"></span>

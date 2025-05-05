@@ -1,147 +1,170 @@
 /* Global container */
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 1rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8fafc;
-    color: #1e293b;
-    line-height: 1.5;
-  }
-  
-  /* Section titles */
-  h2 {
-    font-size: 1.5rem;
-    color: #4338ca;
-    margin-bottom: 0.5rem;
-    border-bottom: 2px solid #e0e7ff;
-    padding-bottom: 0.25rem;
-  }
-  
-  /* Paso 1 specific styling */
-  .prompt-definition {
-    background-color: #eef2ff;
-    border-left: 4px solid #4338ca;
-    padding: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  /* Example parts in Paso 2 */
-  .example-parts {
-    background-color: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-radius: 0.25rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
-  }
-  .example-parts p {
-    margin: 0.5rem 0;
-  }
-  .example-parts span {
-    background-color: #e0e7ff;
-    padding: 0.15rem 0.3rem;
-    border-radius: 0.25rem;
-  }
-  
-  /* Full prompt example */
-  .example-full-prompt {
-    background-color: #f1f5f9;
-    padding: 1rem;
-    border-radius: 0.25rem;
-    margin-bottom: 1rem;
-  }
-  
-  /* Example output styling */
-  .example-output {
-    background-color: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-radius: 0.25rem;
-    padding: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  /* Unordered list for Paso 3 */
-  #paso3 ul {
-    list-style-type: disc;
-    margin-left: 1.5rem;
-  }
-  
-  /* Forms styling */
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  form label {
-    margin: 0.5rem 0;
-    font-weight: 500;
-  }
-  form input[type="text"],
-  form textarea {
-    padding: 0.5rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  form button {
-    margin-top: 1rem;
-    padding: 0.75rem;
-    background-color: #4338ca;
-    color: #ffffff;
-    border: none;
-    border-radius: 0.25rem;
-    font-size: 1rem;
-    cursor: pointer;
-    align-self: flex-start;
-  }
-  form button:hover {
-    background-color: #3730a3;
-  }
-  
-  /* Feedback & progress */
-  #feedback, #challengeFeedback {
-    margin-top: 1rem;
-  }
-  
-  progress {
-    width: 100%;
-    height: 1rem;
-    appearance: none;
-  }
-  progress::-webkit-progress-bar {
-    background-color: #e5e7eb;
-    border-radius: 0.25rem;
-  }
-  progress::-webkit-progress-value {
-    background-color: #4338ca;
-    border-radius: 0.25rem;
-  }
-  
-  /* Traffic light indicators */
-  #trafficLight {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
-  }
-  .light {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    background-color: #e5e7eb;
-  }
-  .light.red { background-color: #dc2626; }
-  .light.yellow { background-color: #f59e0b; }
-  .light.green { background-color: #16a34a; }
-  
-  /* Responsive adjustments */
-  @media (max-width: 600px) {
-    h2 { font-size: 1.25rem; }
-    .container { padding: 0.5rem; }
-  }
-  
-  /* Estilos para el Paso 5 – Reto (cuestionario breve) */
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+/* Section titles */
+h2 {
+  font-size: 1.5rem;
+  color: #4338ca;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e7ff;
+  padding-bottom: 0.25rem;
+}
+
+/* Paso 1 specific styling */
+.prompt-definition {
+  background-color: #eef2ff;
+  border-left: 4px solid #4338ca;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Example parts in Paso 2 */
+.example-parts {
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.example-parts p {
+  margin: 0.5rem 0;
+}
+.example-parts span {
+  background-color: #e0e7ff;
+  padding: 0.15rem 0.3rem;
+  border-radius: 0.25rem;
+}
+
+/* Full prompt example */
+.example-full-prompt {
+  background-color: #f1f5f9;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+/* Example output styling */
+.example-output {
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Unordered list for Paso 3 */
+#paso3 ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+}
+
+/* Forms styling */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin: 0.5rem 0;
+  font-weight: 500;
+}
+
+/* **CORRECCIÓN:** Estilos base para inputs y textareas DENTRO de un form */
+form input[type="text"],
+form textarea {
+  padding: 0.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit; /* Asegura herencia de fuente */
+  margin-top: 0.25rem; /* Añadido margen superior por defecto */
+}
+
+/* **CORRECCIÓN:** Estilo específico para textarea DENTRO de un form */
+form textarea {
+  min-height: 5rem;
+}
+
+/* Botones dentro de un FORM (si no tienen clase específica) */
+form button {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #4338ca; /* Color por defecto si no hay clase */
+  color: #ffffff;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: flex-start;
+}
+form button:hover {
+   /* Hover por defecto si no hay clase */
+  background-color: #3730a3;
+}
+
+/* Feedback & progress */
+/* Se renombró #feedback a una clase para reutilizar */
+.feedback {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.95rem;
+}
+#challengeFeedback { /* Mantenemos ID si se usa en JS */
+   margin-top: 1rem;
+}
+
+
+progress {
+  width: 100%;
+  height: 1rem;
+  appearance: none;
+}
+progress::-webkit-progress-bar {
+  background-color: #e5e7eb;
+  border-radius: 0.25rem;
+}
+progress::-webkit-progress-value {
+  background-color: #4338ca;
+  border-radius: 0.25rem;
+}
+
+/* Traffic light indicators */
+#trafficLight {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.light {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: #e5e7eb; /* Default apagado */
+  opacity: 0.3; /* Atenuado por defecto */
+  transition: opacity 0.3s ease; /* Transición suave */
+}
+/* Encendido se controla con opacity=1 en JS */
+.light.red { background-color: #dc2626; }
+.light.yellow { background-color: #f59e0b; }
+.light.green { background-color: #16a34a; }
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  h2 { font-size: 1.25rem; }
+  .container { padding: 0.5rem; }
+}
+
+/* Estilos para el Paso 5 – Reto (cuestionario breve) */
 #paso5 {
   background-color: #f0f4ff;
   border-left: 4px solid #667eea;
@@ -156,64 +179,62 @@
   color: #434190;
 }
 
+/* **CORRECCIÓN:** Estilos para el textarea del Paso 5 (fuera de form) */
 #paso5 .student-exercise textarea {
   width: 100%;
   min-height: 6rem;
   margin-top: 0.5rem;
+  padding: 0.5rem; /* Añadido */
+  border: 1px solid #cbd5e1; /* Añadido */
+  border-radius: 0.25rem; /* Añadido */
+  font-size: 1rem; /* Añadido */
+  box-sizing: border-box; /* Añadido */
+  font-family: inherit; /* Añadido */
 }
 
+/* **ELIMINADO:** Regla redundante/incorrecta */
+/*
 #paso5 .studentPrompt textarea {
-  width: 100%;
-  min-height: 6rem;
-  margin-top: 0.5rem;
+    width: 100%;
+    min-height: 6rem;
+    margin-top: 0.5rem;
 }
+*/
 
+/* **CORRECCIÓN:** El botón del Paso 5 ahora usa .btn-primary (definido más abajo) */
 #paso5 .student-exercise button {
-  margin-top: 0.75rem;
+   margin-top: 0.75rem; /* Mantiene su margen específico si es necesario */
+   /* No necesita más estilos aquí si usa .btn-primary */
 }
 
-/* Mensajes de feedback Paso 4 */
-.feedback {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  border-radius: 0.25rem;
-  font-size: 0.95rem;
-}
 
+/* Mensajes de feedback (todos usan la clase .feedback) */
 /* Estado cargando */
 .feedback--loading {
   background-color: #f3f4f6;
   color: #4b5563;
+  border-left: 4px solid #9ca3af;
 }
 
 /* Prompt débil (rojo) */
 .feedback--bad {
   background-color: #fee2e2;
   color: #b91c1c;
+  border-left: 4px solid #f87171;
 }
 
 /* Prompt aceptable (amarillo) */
 .feedback--okay {
   background-color: #fef3c7;
   color: #92400e;
+  border-left: 4px solid #fcd34d;
 }
 
 /* Prompt bueno (verde) */
 .feedback--good {
   background-color: #d1fae5;
   color: #065f46;
-}
-
-/*  Texarea y campos de form */
-form textarea {
-  width: 100%;
-  min-height: 5rem;
-  padding: 0.5rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 0.25rem;
-  font-size: 1rem;
-  box-sizing: border-box;
-  margin-top: 0.25rem;
+  border-left: 4px solid #6ee7b7;
 }
 
 /* Botones primario / secundario */
@@ -223,15 +244,22 @@ form textarea {
   margin-top: 1rem;
 }
 
-.btn-primary {
-  background-color: #4338ca;
-  color: #fff;
+/* Clase base para botones reutilizables */
+.btn {
   padding: 0.75rem 1.25rem;
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
+  font-size: 1rem;
+  color: #ffffff;
+  text-align: center;
+  /* Podrías añadir transition aquí si quieres */
 }
 
+.btn-primary {
+  background-color: #4338ca;
+  color: #fff;
+}
 .btn-primary:hover {
   background-color: #3730a3;
 }
@@ -239,17 +267,58 @@ form textarea {
 .btn-secondary {
   background-color: #f59e0b;
   color: #fff;
-  padding: 0.75rem 1.25rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
 }
-
 .btn-secondary:hover {
   background-color: #d97706;
 }
 
+/* Aplicar clase base a los botones específicos si no la tienen */
+.btn-primary, .btn-secondary {
+  /* Heredan de .btn si se usara, si no, definimos aquí */
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+
 /* Scroll suave para recargas de sección */
 html {
   scroll-behavior: smooth;
+}
+
+/* Estilos adicionales del ejemplo (fracciones, tabla, etc.) */
+.fraccion {
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  background-color: #f3f4f6;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+}
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+.summary-table th, .summary-table td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  text-align: left;
+}
+.summary-table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+.ejercicio {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 4px;
+}
+.ejercicio h4 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
 }
