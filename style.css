@@ -15,6 +15,7 @@
   --border-focus: var(--primary-color);
 
   --success-color: #10b981; /* Verde */
+  --success-dark: #047857; /* Verde oscuro */
   --success-bg: #ecfdf5;
   --warning-color: #f59e0b; /* Naranja */
   --warning-bg: #fffbeb;
@@ -63,6 +64,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 { font-size: 2.25rem; font-weight: 700; }
 h2 { font-size: 1.75rem; font-weight: 700; }
 h3 { font-size: 1.25rem; font-weight: 500; }
+h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; } /* Estilo para H4 */
 p { margin-bottom: 1rem; color: var(--text-light); }
 a { color: var(--primary-color); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -156,13 +158,11 @@ code, .fraccion {
   border-radius: var(--border-radius);
 }
 .step-image.small-image {
-    max-width: 200px; /* Default for small images */
+    max-width: 200px;
     margin-bottom: 1rem;
 }
-.output-visual .step-image {
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--border-color);
-}
+/* Eliminado .output-visual */
+
 
 /* Responsive adjustments for step content */
 @media (max-width: 768px) {
@@ -211,14 +211,13 @@ code, .fraccion {
     font-size: 0.95em;
     border: 1px solid #d1d5db;
 }
-/* **MODIFICADO:** Hacer imagen de partes más grande */
 .example-parts-container .step-visual {
     grid-column: 1 / -1;
     text-align: right;
     margin-top: 0.5rem;
 }
 .example-parts-container .step-visual .step-image {
-    max-width: 220px; /* Aumentado el tamaño */
+    max-width: 220px;
     margin-bottom: 0;
 }
 
@@ -248,7 +247,6 @@ code, .fraccion {
 .collapsible-content.visible {
   max-height: 1500px;
 }
-/* Estilos para la tabla resumen */
 .summary-table {
     width: 100%;
     border-collapse: collapse;
@@ -263,15 +261,13 @@ code, .fraccion {
     vertical-align: top;
 }
 .summary-table th {
-    background-color: #f3f4f6; /* Fondo ligero para cabecera */
+    background-color: #f3f4f6;
     font-weight: 500;
     color: var(--text-color);
 }
 .summary-table tbody tr:nth-child(even) {
-    background-color: var(--bg-color); /* Color alterno si se desea */
+    background-color: var(--bg-color);
 }
-
-/* Estilos para el bloque de ejercicio */
 .ejercicio {
     margin-top: 1rem;
     padding: 1rem;
@@ -294,13 +290,10 @@ code, .fraccion {
     padding-left: 0;
 }
 .key-points li {
-    /* display: flex; Ya no es necesario flex si no hay icono inline */
     margin-bottom: 1rem;
     font-size: 1rem;
-    padding-left: 0; /* Reset padding */
+    padding-left: 0;
 }
-/* Eliminado estilo .key-points .icon */
-
 
 /* Forms & Buttons */
 form {
@@ -330,8 +323,7 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
 }
 textarea {
-  /* **MODIFICADO:** Altura mínima aumentada */
-  min-height: 120px; /* Aprox 5-6 líneas + padding */
+  min-height: 120px;
   resize: vertical;
 }
 
@@ -352,9 +344,11 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-decoration: none; /* Para botones que son links */
 }
 .btn:hover {
   transform: translateY(-1px);
+  text-decoration: none; /* Para botones que son links */
 }
 .btn:active {
     transform: translateY(0px);
@@ -375,6 +369,15 @@ textarea {
 .btn-secondary:hover {
   background-color: var(--secondary-dark);
 }
+/* **NUEVO:** Estilo para botón de éxito */
+.btn-success {
+  background-color: var(--success-color);
+  color: #fff;
+}
+.btn-success:hover {
+  background-color: var(--success-dark);
+}
+
 
 .btn-small {
     padding: 0.5rem 1rem;
@@ -383,6 +386,17 @@ textarea {
 
 
 /* Feedback Styling & Animation */
+/* Clase común para feedback y mensaje de completado */
+.animate-feedback {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity var(--transition-speed) ease-out, transform var(--transition-speed) ease-out, background-color var(--transition-speed), border-color var(--transition-speed);
+}
+.animate-feedback.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .feedback {
   margin-top: 1.5rem;
   padding: 1rem 1.25rem;
@@ -393,13 +407,6 @@ textarea {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  opacity: 0;
-  transform: scale(0.95);
-  transition: opacity var(--transition-speed) ease-out, transform var(--transition-speed) ease-out, background-color var(--transition-speed), border-color var(--transition-speed);
-}
-.feedback.visible {
-    opacity: 1;
-    transform: scale(1);
 }
 .feedback::before { /* Icon placeholder */
     content: '';
@@ -417,41 +424,29 @@ textarea {
   background-color: var(--loading-bg);
   color: var(--loading-color);
 }
-.feedback--loading::before {
-   content: none;
-}
+.feedback--loading::before { content: none; }
 .feedback--loading .loader { margin-right: 0.75rem; }
-
 
 .feedback--good {
   border-color: var(--success-color);
   background-color: var(--success-bg);
   color: #059669;
 }
-.feedback--good::before {
-  /* Asegúrate que la ruta es correcta y la imagen existe */
-  background-image: url('images/feedback-good.png');
-}
+.feedback--good::before { background-image: url('images/feedback-good.png'); }
 
 .feedback--okay {
   border-color: var(--warning-color);
   background-color: var(--warning-bg);
   color: #b45309;
 }
-.feedback--okay::before {
-   /* Asegúrate que la ruta es correcta y la imagen existe */
-   background-image: url('images/feedback-okay.png');
-}
+.feedback--okay::before { background-image: url('images/feedback-okay.png'); }
 
 .feedback--bad {
   border-color: var(--error-color);
   background-color: var(--error-bg);
   color: #dc2626;
 }
-.feedback--bad::before {
-   /* Asegúrate que la ruta es correcta y la imagen existe */
-   background-image: url('images/feedback-bad.png');
-}
+.feedback--bad::before { background-image: url('images/feedback-bad.png'); }
 
 
 /* Loader Animation */
@@ -504,6 +499,35 @@ textarea {
     margin-top: 0;
 }
 
+/* **NUEVO:** Estilos para el mensaje de finalización */
+#completionMessage {
+    margin-top: 1.5rem;
+    padding: 1.5rem; /* Más padding */
+    border-radius: var(--border-radius);
+    border: 1px solid var(--success-color);
+    background-color: var(--success-bg);
+    display: none; /* Oculto por defecto */
+    text-align: center; /* Centrar contenido */
+}
+#completionMessage.visible {
+    display: block; /* Mostrar cuando tenga la clase */
+}
+#completionMessage h4 {
+    color: var(--success-dark);
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+}
+#completionMessage p {
+    color: var(--success-dark);
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+#completionMessage .btn-success {
+    /* Estilos adicionales si son necesarios */
+    font-size: 1.05rem;
+}
+
+
 /* Traffic Light */
 #trafficLight {
   display: flex;
@@ -520,15 +544,14 @@ textarea {
   border-radius: 50%;
   background-color: #9ca3af;
   opacity: 0.3;
-  transition: opacity 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+  transition: opacity 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 .light.active {
   opacity: 1;
-  /* Glow effect usando el color de fondo como color de sombra */
   box-shadow: 0 0 10px 3px currentColor;
 }
-.light.red { background-color: #ef4444; color: #f87171; } /* Usar color más claro para glow */
+.light.red { background-color: #ef4444; color: #f87171; }
 .light.yellow { background-color: #f59e0b; color: #fbbf24; }
 .light.green { background-color: #10b981; color: #34d399; }
 
