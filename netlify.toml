@@ -1,6 +1,23 @@
+# netlify.toml
+
 [build]
   functions = "netlify/functions"
-  publish   = "."  # o la carpeta donde publiques tu front-end
+  # Si tu index.html está en la raíz, "." está bien.
+  # Si tienes una carpeta como 'dist' o 'public', úsala aquí.
+  publish   = "."
 
-[dev]
-  functions = "netlify/functions"
+# Configuración para desarrollo local con Netlify Dev (opcional pero útil)
+# [dev]
+#   functions = "netlify/functions"
+#   publish   = "." # Directorio de publicación también para dev
+
+# --- INICIO SECCIÓN AÑADIDA ---
+# Regla para redirigir las llamadas /api/* a tu función 'consulta'
+[[redirects]]
+  from = "/api/*"
+  # Asegúrate que 'consulta' es el nombre exacto de tu archivo .js
+  # (sin la extensión) dentro de netlify/functions/
+  to = "/.netlify/functions/consulta/:splat"
+  status = 200 # Código 200 indica una reescritura (proxy)
+  force = true # Aplicar incluso si existe un archivo con ese nombre
+# --- FIN SECCIÓN AÑADIDA ---
