@@ -565,3 +565,108 @@ textarea {
   color: var(--text-light);
   font-size: 0.9rem;
 }
+
+/* ... (Todo el CSS anterior) ... */
+
+
+/* --- ESTILOS RESPONSIVE ADICIONALES --- */
+
+/* Punto de corte común para móviles (puedes ajustarlo) */
+@media (max-width: 600px) {
+
+  /* **Annotation 15: Ajuste Partes del Prompt en móvil** */
+  .example-parts-container {
+      grid-template-columns: 1fr; /* Cambiar a una sola columna */
+      gap: 0.5rem; /* Reducir espacio vertical */
+      padding: 0.8rem 1rem; /* Ajustar padding */
+  }
+
+  .example-part {
+      /* Ya no usamos display: contents aquí */
+      /* display: contents; */ /* Comentado o eliminado */
+      margin-bottom: 0.5rem; /* Espacio entre pares etiqueta-valor */
+  }
+
+  .part-label {
+      display: block; /* Hacer que la etiqueta ocupe toda la línea */
+      margin-bottom: 0.15rem; /* Pequeño espacio antes del valor */
+      font-size: 0.85rem; /* Etiqueta un poco más pequeña */
+      color: var(--text-light); /* Color más suave para la etiqueta */
+      padding-right: 0; /* Reset padding */
+  }
+
+  .part-value {
+      display: block; /* Asegurar que ocupe su línea */
+      width: 100%; /* Ocupar ancho completo */
+  }
+
+  /* Ocultar imagen en móvil si ocupa mucho espacio o no es esencial */
+  .example-parts-container .step-visual {
+      display: none; /* Ocultar el diagrama pequeño en móvil */
+  }
+
+
+  /* **Annotation 16: Ajuste Tabla Resumen en móvil** */
+  .summary-table {
+      border: none; /* Quitar borde general */
+      font-size: 0.9rem; /* Ajustar tamaño fuente si es necesario */
+  }
+
+  .summary-table thead {
+      /* Ocultar cabecera original en móvil */
+      display: none;
+  }
+
+  .summary-table tr {
+      display: block; /* Apilar filas */
+      margin-bottom: 1rem; /* Espacio entre "tarjetas" de fila */
+      border: 1px solid var(--border-color); /* Borde para cada "tarjeta" */
+      border-radius: var(--border-radius);
+      background-color: var(--bg-alt); /* Fondo blanco para cada tarjeta */
+      padding: 1rem; /* Padding interno */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  }
+   /* Reset background alterno si se usó */
+  .summary-table tbody tr:nth-child(even) {
+      background-color: var(--bg-alt);
+  }
+
+
+  .summary-table td {
+      display: block; /* Apilar celdas */
+      text-align: right; /* Alinear valor a la derecha */
+      padding-left: 50%; /* Espacio para la etiqueta simulada */
+      position: relative; /* Para posicionar el pseudo-elemento */
+      border: none; /* Quitar bordes internos de celda */
+      border-bottom: 1px dashed var(--border-color); /* Línea separadora */
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+  }
+
+  .summary-table td:last-child {
+      border-bottom: none; /* No poner línea en la última celda */
+  }
+
+  .summary-table td::before {
+      /* Crear la etiqueta usando el atributo data-label */
+      content: attr(data-label);
+      position: absolute;
+      left: 0.75rem; /* Padding izquierdo */
+      top: 0.5rem; /* Padding superior */
+      width: calc(50% - 1.5rem); /* Ancho de la etiqueta (50% menos paddings) */
+      padding-right: 10px;
+      white-space: nowrap;
+      text-align: left; /* Alinear etiqueta a la izquierda */
+      font-weight: 700; /* Hacerla bold como la cabecera original */
+      color: var(--text-color);
+  }
+
+  /* Ajustes generales para móvil ya existentes */
+  h1.welcome-title { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+  .container { padding: 0.5rem; }
+  .section-description { font-size: 0.9rem;}
+  .step-section { padding: 1rem; } /* Menos padding en móvil */
+}
+
+/* ... (Resto del CSS como el Footer, etc.) ... */

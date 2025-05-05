@@ -74,22 +74,37 @@
            <button id="toggleOutputBtn" class="btn btn-secondary btn-small">Mostrar Resultado Ejemplo</button>
            <div id="iaOutputContent" class="output-content collapsible-content">
              <!-- **MODIFICADO:** Eliminada imagen de salida -->
-             <h4>¿Qué es una fracción?</h4>
-             <p>Una <strong>fracción</strong> es una forma de representar partes de un todo. Siempre tiene dos números:</p>
-              <ul>
-                <li><strong>Numerador:</strong> número de arriba, indica las partes que tienes.</li>
-                <li><strong>Denominador:</strong> número de abajo, indica en cuántas partes se dividió el todo.</li>
-              </ul>
-             <p><em>(Este es un resumen del resultado completo. La IA usualmente proporciona más detalles y ejemplos.)</em></p>
+             <!-- Dentro de la sección id="paso2", dentro de #iaOutputContent -->
+
              <h4>Resumen de Ejemplos</h4>
              <table class="summary-table">
-               <thead><tr><th>Numerador</th><th>Denominador</th><th>Significado</th></tr></thead>
+               <thead>
+                 <tr>
+                   <th>Numerador</th>
+                   <th>Denominador</th>
+                   <th>Significado</th>
+                 </tr>
+               </thead>
                <tbody>
-                 <tr><td>2</td><td>5</td><td>2 pedazos de una pizza dividida en 5</td></tr>
-                 <tr><td>1</td><td>2</td><td>La mitad de una pizza</td></tr>
-                 <tr><td>4</td><td>6</td><td>4 pedazos de una pizza dividida en 6</td></tr>
+                 <tr>
+                   <!-- **NUEVO:** Añadido data-label -->
+                   <td data-label="Numerador">2</td>
+                   <td data-label="Denominador">5</td>
+                   <td data-label="Significado">2 pedazos de una pizza dividida en 5</td>
+                 </tr>
+                 <tr>
+                   <td data-label="Numerador">1</td>
+                   <td data-label="Denominador">2</td>
+                   <td data-label="Significado">La mitad de una pizza</td>
+                 </tr>
+                 <tr>
+                   <td data-label="Numerador">4</td>
+                   <td data-label="Denominador">6</td>
+                   <td data-label="Significado">4 pedazos de una pizza dividida en 6</td>
+                 </tr>
                </tbody>
              </table>
+            <!-- ... resto del contenido ... -->
              <div class="ejercicio"><h4>Ejercicio práctico</h4> <p>Una pizza está dividida en 10 pedazos iguales...</p><p>Respuesta: <span class="fraccion">4/10</span></p> </div>
            </div>
         </div>
