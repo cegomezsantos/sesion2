@@ -2,135 +2,190 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Sandbox Inteligente – Práctica de Prompts</title>
+  <title>Sandbox Inteligente – Guía Profesional de Prompts</title> <!-- Título actualizado -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Estilos externos -->
   <link rel="stylesheet" href="style.css">
+  <!-- Podrías añadir aquí un enlace a una fuente de Google Fonts si quieres -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <main class="container">
 
-    <!-- Título de Bienvenida Personalizado -->
-    <h1 id="welcomeMessage" class="welcome-title">Bienvenido/a al Sandbox Inteligente</h1>
+    <header class="main-header">
+      <h1 id="welcomeMessage">Sandbox de Prompts</h1>
+      <p class="subtitle">Aprende a interactuar con la IA paso a paso</p>
+    </header>
 
     <!-- Paso 1: ¿Qué es un prompt? -->
-    <section id="paso1" class="prompt-definition">
-      <h2>Paso 1 – ¿Qué es un prompt?</h2>
-      <p>Un <strong>prompt</strong> es la <em>instrucción o pregunta</em> que das a la IA para guiar su respuesta. Cuanto más claro seas en <u>quién habla</u>, <u>qué necesitas</u> y <u>en qué contexto</u>, mejores resultados obtendrás.</p>
+    <section id="paso1" class="step-section animate-on-scroll">
+      <div class="step-header">
+        <span class="step-number">1</span>
+        <h2>¿Qué es un prompt?</h2>
+      </div>
+      <div class="step-content">
+        <div class="step-text">
+          <p>Un <strong>prompt</strong> es la <em>instrucción o pregunta</em> que das a la IA para guiar su respuesta. Piensa en ello como dar direcciones claras.</p>
+          <p>Cuanto más específico seas sobre <u>quién habla</u> (Rol), <u>qué necesitas</u> (Objetivo) y <u>en qué situación</u> (Contexto), mejores y más útiles serán los resultados.</p>
+        </div>
+        <div class="step-visual">
+          <img src="images/step1-prompt-concept.svg" alt="Concepto de un Prompt: una idea o pregunta clara" class="step-image">
+        </div>
+      </div>
     </section>
 
     <!-- Paso 2: Partes de un buen prompt -->
-    <section id="paso2">
-      <h2>Paso 2 – Partes de un buen prompt</h2>
-      <div class="example-parts">
-        <p><strong>Rol:</strong> <span>Eres un tutor de matemáticas paciente</span></p>
-        <p><strong>Objetivo:</strong> <span>Explicar fracciones a un alumno de 12 años</span></p>
-        <p><strong>Contexto:</strong> <span>El alumno confunde numerador y denominador</span></p>
+    <section id="paso2" class="step-section animate-on-scroll">
+      <div class="step-header">
+        <span class="step-number">2</span>
+        <h2>Partes de un Buen Prompt</h2>
       </div>
-      <div class="example-full-prompt">
-        <p><strong>Prompt completo:</strong></p>
-        <div class="prompt-text">
-          Eres un tutor de matemáticas paciente. Explica fracciones a un alumno de 12 años que confunde numerador y denominador. Usa ejemplos con pizza y termina con un ejercicio práctico.
+      <div class="step-content-column"> <!-- Contenido en columna para este paso -->
+        <div class="step-text">
+           <p>Un prompt efectivo suele incluir estos componentes clave:</p>
         </div>
-      </div>
-      <!-- Estructura para desplegable -->
-      <div class="example-output">
-        <h3>Salida de la IA (resultado completo):</h3>
-        <button id="toggleOutputBtn" class="btn btn-secondary btn-small">Mira el resultado</button>
-        <div id="iaOutputContent" class="output-content collapsible-content">
-          <h4>¿Qué es una fracción?</h4>
-          <p>Una <strong>fracción</strong> es una forma de representar partes de un todo. Siempre tiene dos números:</p>
-          <ul>
-            <li><strong>Numerador:</strong> número de arriba, indica las partes que tienes.</li>
-            <li><strong>Denominador:</strong> número de abajo, indica en cuántas partes se dividió el todo.</li>
-          </ul>
-          <p>Ejemplos con pizza:</p>
-          <h5>Ejemplo 1</h5>
-          <p>Si una pizza se divide en <strong>8 partes iguales</strong> y comes <strong>3</strong>, la fracción es <span class="fraccion">3/8</span>.</p>
-          <h5>Ejemplo 2</h5>
-          <p>Si una pizza se divide en <strong>4 partes</strong> y comes <strong>1</strong>, la fracción es <span class="fraccion">1/4</span>.</p>
-          <h4>Resumen</h4>
-          <table class="summary-table">
-            <thead>
-              <tr><th>Numerador</th><th>Denominador</th><th>Significado</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>2</td><td>5</td><td>2 pedazos de una pizza dividida en 5</td></tr>
-              <tr><td>1</td><td>2</td><td>La mitad de una pizza</td></tr>
-              <tr><td>4</td><td>6</td><td>4 pedazos de una pizza dividida en 6</td></tr>
-            </tbody>
-          </table>
-          <div class="ejercicio">
-            <h4>Ejercicio práctico</h4>
-            <p>Una pizza está dividida en <strong>10 pedazos iguales</strong>. Comes <strong>4</strong>. ¿Qué fracción representa los pedazos que comiste?</p>
-            <p>Respuesta: <span class="fraccion">4/10</span></p>
+        <div class="example-parts-container">
+            <div class="example-part">
+                <span class="part-label">Rol:</span>
+                <span class="part-value">Eres un tutor de matemáticas paciente</span>
+            </div>
+            <div class="example-part">
+                <span class="part-label">Objetivo:</span>
+                <span class="part-value">Explicar fracciones a un alumno de 12 años</span>
+            </div>
+            <div class="example-part">
+                <span class="part-label">Contexto:</span>
+                <span class="part-value">El alumno confunde numerador y denominador</span>
+            </div>
+             <div class="step-visual">
+               <img src="images/step2-prompt-parts.svg" alt="Diagrama mostrando las partes de un prompt" class="step-image small-image">
+             </div>
+        </div>
+
+        <div class="example-full-prompt">
+          <p><strong>Prompt Completo (Ejemplo):</strong></p>
+          <div class="prompt-text-box">
+            Eres un tutor de matemáticas paciente. Explica fracciones a un alumno de 12 años que confunde numerador y denominador. Usa ejemplos con pizza y termina con un ejercicio práctico.
           </div>
+        </div>
+
+        <div class="example-output">
+          <h3>Resultado Ejemplo de la IA</h3>
+           <button id="toggleOutputBtn" class="btn btn-secondary btn-small">Mostrar Resultado Ejemplo</button>
+           <div id="iaOutputContent" class="output-content collapsible-content">
+             <!-- Contenido del resultado va aquí como antes -->
+             <div class="step-visual output-visual">
+                <img src="images/step2-output-example.png" alt="Ejemplo visual del resultado de la IA" class="step-image">
+             </div>
+             <h4>¿Qué es una fracción?</h4>
+             <p>Una <strong>fracción</strong> es una forma de representar partes de un todo...</p>
+             <!-- Resto del contenido del ejemplo de salida -->
+            <table class="summary-table">
+              <thead><tr><th>Numerador</th><th>Denominador</th><th>Significado</th></tr></thead>
+              <tbody>
+                <tr><td>2</td><td>5</td><td>2 pedazos de una pizza dividida en 5</td></tr>
+                <tr><td>1</td><td>2</td><td>La mitad de una pizza</td></tr>
+                <tr><td>4</td><td>6</td><td>4 pedazos de una pizza dividida en 6</td></tr>
+              </tbody>
+            </table>
+             <div class="ejercicio"><h4>Ejercicio práctico</h4> <p>Respuesta: <span class="fraccion">4/10</span></p> </div>
+           </div>
         </div>
       </div>
     </section>
 
     <!-- Paso 3: Recordemos lo esencial -->
-    <section id="paso3">
-      <h2>Paso 3 – Recordemos lo esencial</h2>
-      <ul>
-        <li>¿La IA viene a quitarnos el trabajo? ¡Para nada!</li>
-        <li>¿Basta con escribir cualquier cosa? No.</li>
-        <li>¿Necesito ser programador? En absoluto.</li>
-      </ul>
+    <section id="paso3" class="step-section animate-on-scroll">
+        <div class="step-header">
+            <span class="step-number">3</span>
+            <h2>Mitos y Realidades</h2>
+        </div>
+        <div class="step-content">
+            <div class="step-text">
+                <ul class="key-points">
+                    <li><span class="icon">🤖</span> ¿La IA viene a quitarnos el trabajo? <strong>¡Para nada!</strong> Es una herramienta para potenciarte.</li>
+                    <li><span class="icon">❓</span> ¿Basta con escribir cualquier cosa? <strong>No.</strong> La calidad del prompt define la calidad de la respuesta.</li>
+                    <li><span class="icon">💻</span> ¿Necesito ser programador? <strong>En absoluto.</strong> Solo necesitas pensar claramente tu instrucción.</li>
+                </ul>
+            </div>
+             <div class="step-visual">
+               <img src="images/step3-key-takeaways.svg" alt="Iconos representando mitos sobre la IA" class="step-image">
+             </div>
+        </div>
     </section>
 
+
     <!-- Paso 4: Calentamiento de prompts -->
-    <section id="paso4">
-      <h2>Paso 4 – Calentamiento de prompts</h2>
-      <!-- **NUEVO:** Texto explicativo -->
-      <p class="section-description">
-        Aquí puedes probar cómo estructurar tu prompt. Define el rol, el objetivo y el contexto que le darías a la IA. Analizaremos tu prompt y te daremos sugerencias. Si el resultado no es óptimo, ¡puedes reintentar!
-      </p>
-
-      <form id="warmupForm">
-        <label>Rol
-          <input type="text" name="rol" placeholder="E.g.: Eres un tutor de matemáticas">
-        </label>
-        <label>Objetivo
-          <input type="text" name="objetivo" placeholder="E.g.: Explicar fracciones sencillas">
-        </label>
-        <label>Contexto
-          <textarea name="contexto" placeholder="Describe la situación del alumno..."></textarea>
-        </label>
-
-        <div class="button-group">
-          <button type="button" id="analyzeBtn" class="btn btn-primary">Analizar prompt</button>
-          <button type="button" id="retryBtn" class="btn btn-secondary" style="display:none;">Reintentar</button>
+    <section id="paso4" class="step-section animate-on-scroll interactive-step">
+        <div class="step-header">
+            <span class="step-number">4</span>
+            <h2>¡A Practicar! Define tu Prompt</h2>
         </div>
-      </form>
+        <div class="step-content-column">
+             <div class="step-visual">
+               <img src="images/step4-prompt-practice.svg" alt="Persona practicando la escritura de prompts" class="step-image small-image">
+             </div>
+            <p class="section-description">
+              Define el Rol, Objetivo y Contexto. Haz clic en "Analizar" para recibir feedback sobre tu estructura.
+            </p>
+            <form id="warmupForm">
+                <label for="rolInput">Rol</label>
+                <input id="rolInput" type="text" name="rol" placeholder="Ej: Eres un chef experto en cocina italiana">
 
-      <div id="step4Feedback" class="feedback"></div> <!-- Feedback con posible loader -->
+                <label for="objetivoInput">Objetivo</label>
+                <input id="objetivoInput" type="text" name="objetivo" placeholder="Ej: Crear una receta de lasaña simple">
+
+                <label for="contextoInput">Contexto</label>
+                <textarea id="contextoInput" name="contexto" placeholder="Ej: Para principiantes, con ingredientes comunes"></textarea>
+
+                <div class="button-group">
+                <button type="button" id="analyzeBtn" class="btn btn-primary">Analizar Prompt</button>
+                <button type="button" id="retryBtn" class="btn btn-secondary" style="display:none;">Intentar de Nuevo</button>
+                </div>
+            </form>
+            <!-- Feedback animado -->
+            <div id="step4Feedback" class="feedback animate-feedback" aria-live="polite"></div>
+        </div>
     </section>
 
     <!-- Paso 5: Reto – Cuestionario Guerra del Pacífico -->
-    <section id="paso5">
-      <h2>Paso 5 – Reto: genera un cuestionario breve</h2>
-      <div class="example-case">
-        <h3>Ejemplo resuelto</h3>
-        <p><strong>Caso:</strong> Un cuestionario de 5 preguntas de opción múltiple sobre la <em>Guerra del Pacífico</em> para alumnos de secundaria.</p>
+    <section id="paso5" class="step-section animate-on-scroll interactive-step">
+      <div class="step-header">
+        <span class="step-number">5</span>
+        <h2>Reto Final: Genera Contenido</h2>
       </div>
-      <div class="student-exercise">
-        <p>Redacta tu <strong>prompt</strong> para que la IA genere un cuestionario breve sobre la Guerra del Pacífico.</p>
-        <textarea id="studentPrompt" placeholder="Ej.: 'Genera un cuestionario de 5 preguntas de opción múltiple sobre la Guerra del Pacífico para alumnos de secundaria'"></textarea>
-        <button id="evaluatePrompt" class="btn btn-primary">Evaluar prompt</button>
-        <!-- **MODIFICADO:** El feedback ahora usará borde completo -->
-        <div id="challengeFeedback" class="feedback"></div>
-        <div id="trafficLight">
-          <span class="light red"></span>
-          <span class="light yellow"></span>
-          <span class="light green"></span>
+      <div class="step-content-column">
+          <div class="step-visual">
+            <img src="images/step5-challenge.svg" alt="Icono de reto o desafío" class="step-image small-image">
+          </div>
+        <div class="example-case">
+          <p><strong>Objetivo del Reto:</strong> Generar un cuestionario breve (5 preguntas de opción múltiple) sobre la <em>Guerra del Pacífico</em> para alumnos de secundaria.</p>
+        </div>
+        <div class="student-exercise">
+          <label for="studentPrompt">Escribe tu Prompt Completo Aquí:</label>
+          <textarea id="studentPrompt" placeholder="Ej: 'Crea un cuestionario de 5 preguntas con 3 opciones cada una sobre las causas principales de la Guerra del Pacífico, nivel secundaria...'"></textarea>
+          <button id="evaluatePrompt" class="btn btn-primary">Evaluar Mi Prompt</button>
+
+          <!-- Feedback animado y Semáforo -->
+           <div class="feedback-area">
+                <div id="challengeFeedback" class="feedback animate-feedback" aria-live="polite"></div>
+                <div id="trafficLight">
+                    <span class="light red" title="Prompt necesita mejora"></span>
+                    <span class="light yellow" title="Prompt aceptable"></span>
+                    <span class="light green" title="¡Excelente Prompt!"></span>
+                </div>
+           </div>
         </div>
       </div>
     </section>
 
+    <footer class="main-footer">
+        <p>Sandbox Inteligente - ¡Sigue practicando!</p>
+    </footer>
+
   </main>
 
-  <!-- Cargar script al final para asegurar que los elementos existan -->
   <script src="script.js"></script>
 </body>
 </html>
