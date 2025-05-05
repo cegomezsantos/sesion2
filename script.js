@@ -1,19 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // --- **NUEVO:** Saludo Personalizado ---
+  // --- Saludo Personalizado ---
   const welcomeMessage = document.getElementById('welcomeMessage');
   try {
     const params = new URLSearchParams(window.location.search);
-    const userName = params.get('naus'); // Obtener nombre del parámetro 'naus'
+    const userName = params.get('naus');
 
     if (userName && userName.trim() !== '') {
-      // Capitalizar la primera letra del nombre
       const capitalizedUserName = userName.charAt(0).toUpperCase() + userName.slice(1).toLowerCase();
       welcomeMessage.textContent = `¡Hola, ${capitalizedUserName}! Bienvenido/a al Sandbox Inteligente`;
     }
-    // Si no hay 'naus' o está vacío, se queda el mensaje por defecto del HTML
   } catch (e) {
     console.error("Error al procesar parámetros de URL:", e);
-    // Mantener mensaje por defecto en caso de error
   }
   // --- Fin Saludo Personalizado ---
 
@@ -41,99 +38,85 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------
   const analyzeBtn = document.getElementById('analyzeBtn');
   const retryBtn   = document.getElementById('retryBtn');
-  const feedback4   = document.getElementById('step4Feedback'); // Renombrado para claridad
-  //const progress   = document.getElementById('progress'); // No veo elemento progress en el HTML, comentado
+  const feedback4   = document.getElementById('step4Feedback');
   const paso4      = document.getElementById('paso4');
+  const warmupForm = document.getElementById('warmupForm'); // Referencia al formulario
 
-  if (analyzeBtn && feedback4 && paso4) {
+  if (analyzeBtn && feedback4 && paso4 && warmupForm) { // Añadido warmupForm
       analyzeBtn.addEventListener('click', async () => {
-        // **MODIFICADO:** Mostrar estado de carga con loader
+        // Limpiar feedback anterior y mostrar carga
+        feedback4.textContent = '';
+        feedback4.className = 'feedback'; // Reset class
         feedback4.innerHTML = '<span class="loader"></span> Evaluando el prompt...';
-        feedback4.className   = 'feedback feedback--loading';
+        feedback4.className = 'feedback feedback--loading';
         if(retryBtn) retryBtn.style.display = 'none';
 
         // Leer y validar campos
-        const rolInput = document.querySelector('#warmupForm [name="rol"]');
-        const objetivoInput = document.querySelector('#warmupForm [name="objetivo"]');
-        const contextoInput = document.querySelector('#warmupForm [name="contexto"]');
+        const rolInput = warmupForm.querySelector('[name="rol"]');
+        const objetivoInput = warmupForm.querySelector('[name="objetivo"]');
+        const contextoInput = warmupForm.querySelector('[name="contexto"]');
 
-        // Asegurarse que los inputs existen antes de leer .value
         const rol = rolInput ? rolInput.value.trim() : '';
         const objetivo = objetivoInput ? objetivoInput.value.trim() : '';
         const contexto = contextoInput ? contextoInput.value.trim() : '';
 
         if (!rol || !objetivo || !contexto) {
           feedback4.textContent = 'Por favor, completa todos los campos (Rol, Objetivo y Contexto).';
-          feedback4.className   = 'feedback feedback--bad';
+          feedback4.className = 'feedback feedback--bad'; // Usar nuevo estilo de borde
           paso4.scrollIntoView({ behavior: 'smooth' });
           return;
         }
 
         try {
-          const res  = await fetch('/api/analyze', { // Asegúrate que esta ruta '/api/analyze' existe en tu backend
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ rol, objetivo, contexto })
-          });
+          // --- Simulación de llamada a API (reemplazar con tu fetch real) ---
+          // const res = await fetch('/api/analyze', { /* ... */ });
+          // const data = await res.json();
+          // --- Fin Simulación ---
 
-          if (!res.ok) {
-              // Intentar leer el cuerpo del error si es posible
-              let errorMsg = `Error HTTP ${res.status}: ${res.statusText}`;
-              try {
-                  const errorData = await res.json();
-                  errorMsg = errorData.message || errorMsg; // Usa mensaje del backend si existe
-              } catch (jsonError) {
-                  // Si el cuerpo del error no es JSON, usar el mensaje HTTP
-              }
-              throw new Error(errorMsg);
-          }
+          // --- Inicio Simulación de Respuesta ---
+          await new Promise(resolve => setTimeout(resolve, 1500)); // Simular delay
+          const mockScore = Math.random() * 100;
+          const mockData = {
+              suggestions: `Análisis simulado: Tu prompt tiene ${rol ? 'un rol claro' : 'falta rol'}, ${objetivo ? 'un objetivo definido' : 'falta objetivo'} y ${contexto ? 'contexto adecuado' : 'falta contexto'}. Puntuación: ${mockScore.toFixed(0)}`,
+              score: mockScore,
+              ok: mockScore > 75
+          };
+          const data = mockData; // Usar datos simulados
+          // --- Fin Simulación de Respuesta ---
 
-          const data = await res.json();
 
-          // Mostrar sugerencias HTML
-          feedback4.innerHTML = data.suggestions || 'Análisis completado.'; // Mensaje por defecto si no hay sugerencias
-          // Determinar clase de estado
-          let cls = 'feedback--bad'; // Por defecto es malo si no hay 'ok' o 'score'
-          if (data.ok === true) { // Chequeo explícito de booleano
+          feedback4.innerHTML = data.suggestions || 'Análisis completado.';
+
+          let cls = 'feedback--bad';
+          if (data.ok === true) {
               cls = 'feedback--good';
           } else if (typeof data.score === 'number' && data.score >= 50) {
               cls = 'feedback--okay';
           }
-          // Si no es ni bueno ni okay, se queda como malo
-          feedback4.className = `feedback ${cls}`;
+          feedback4.className = `feedback ${cls}`; // Aplicar clase para borde y fondo
 
-
-          // Actualizar barra de progreso (si existiera)
-          /*
-          if (progress && typeof data.score === 'number') {
-            progress.value = data.score;
-          }
-          */
-          // Mostrar botón de reintento si falla o no es 'good'
           if (cls !== 'feedback--good' && retryBtn) {
                retryBtn.style.display = 'inline-block';
           }
 
         } catch (err) {
           console.error("Error en Paso 4:", err);
-          feedback4.textContent   = `Error al analizar: ${err.message}. Intenta de nuevo.`; // Mostrar mensaje de error
-          feedback4.className     = 'feedback feedback--bad';
+          feedback4.textContent   = `Error al analizar: ${err.message}. Intenta de nuevo.`;
+          feedback4.className     = 'feedback feedback--bad'; // Borde rojo en error
           if(retryBtn) retryBtn.style.display = 'inline-block';
         }
 
-        // Desplazar suavemente al inicio del feedback del paso 4
         feedback4.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
   }
 
-  // Reintentar: limpia el feedback y oculta el botón
-  if (retryBtn && feedback4 && paso4) {
+  // **MODIFICADO:** Reintentar limpia feedback Y formulario
+  if (retryBtn && feedback4 && paso4 && warmupForm) {
       retryBtn.addEventListener('click', () => {
         feedback4.textContent   = '';
-        feedback4.className     = 'feedback';
+        feedback4.className     = 'feedback'; // Resetear clase
         retryBtn.style.display = 'none';
-        // Limpiar campos del formulario también? Podría ser útil
-        // document.getElementById('warmupForm').reset();
+        warmupForm.reset(); // Limpiar los campos del formulario
         paso4.scrollIntoView({ behavior: 'smooth' });
       });
   }
@@ -144,80 +127,79 @@ document.addEventListener('DOMContentLoaded', () => {
   const evaluateBtn      = document.getElementById('evaluatePrompt');
   const challengeFeedback = document.getElementById('challengeFeedback');
   const trafficLights     = document.querySelectorAll('#trafficLight .light');
-  const studentPromptText = document.getElementById('studentPrompt'); // Textarea
+  const studentPromptText = document.getElementById('studentPrompt');
   const paso5             = document.getElementById('paso5');
 
   if (evaluateBtn && challengeFeedback && trafficLights.length > 0 && studentPromptText && paso5) {
     evaluateBtn.addEventListener('click', async () => {
-      // Leer y validar prompt del estudiante
       const studentPrompt = studentPromptText.value.trim();
+
+      // **MODIFICADO:** Limpiar feedback ANTES de mostrar carga
+      challengeFeedback.textContent = ''; // Limpiar texto
+      challengeFeedback.className = 'feedback'; // Resetear clase base
+
+      // Reset semáforo inicial
+      trafficLights.forEach(light => light.classList.remove('active'));
+
+
       if (!studentPrompt) {
         challengeFeedback.textContent = 'Escribe tu prompt antes de evaluar.';
-        challengeFeedback.className   = 'feedback feedback--bad';
-        // Reset semáforo
-        trafficLights.forEach(light => light.classList.remove('active'));
+        challengeFeedback.className   = 'feedback feedback--bad'; // Borde rojo
         paso5.scrollIntoView({ behavior: 'smooth' });
         return;
       }
 
-      // **MODIFICADO:** Mostrar estado de carga con loader
+      // Mostrar estado de carga con loader
       challengeFeedback.innerHTML = '<span class="loader"></span> Evaluando prompt...';
-      challengeFeedback.className   = 'feedback feedback--loading';
-      // Reset semáforo mientras carga
-      trafficLights.forEach(light => light.classList.remove('active'));
-
+      challengeFeedback.className   = 'feedback feedback--loading'; // Borde gris
 
       try {
-        const res2 = await fetch('/api/evaluate', { // Asegúrate que esta ruta '/api/evaluate' existe en tu backend
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt: studentPrompt })
-        });
+        // --- Simulación de llamada a API (reemplazar con tu fetch real) ---
+        // const res2 = await fetch('/api/evaluate', { /* ... */ });
+        // const info = await res2.json();
+        // --- Fin Simulación ---
 
-        if (!res2.ok) {
-           let errorMsg = `Error HTTP ${res2.status}: ${res2.statusText}`;
-            try {
-                const errorData = await res2.json();
-                errorMsg = errorData.message || errorMsg;
-            } catch (jsonError) {
-                // Sin cuerpo JSON
-            }
-           throw new Error(errorMsg);
-        }
+         // --- Inicio Simulación de Respuesta ---
+        await new Promise(resolve => setTimeout(resolve, 1500)); // Simular delay
+        const randomLevel = ['bad', 'okay', 'good'][Math.floor(Math.random() * 3)];
+        const mockInfo = {
+            level: randomLevel === 'bad' ? 'red' : (randomLevel === 'okay' ? 'yellow' : 'green'), // Convertir a color de luz
+            feedback: `Evaluación simulada: El prompt parece ${randomLevel === 'bad' ? 'débil' : (randomLevel === 'okay' ? 'aceptable' : 'bueno')}. ${randomLevel === 'good' ? '¡Buen trabajo!' : 'Intenta añadir más detalle o contexto.'}`
+        };
+         const info = mockInfo; // Usar datos simulados
+        // --- Fin Simulación de Respuesta ---
 
-        const info = await res2.json();
 
         // Reset semáforo antes de activar el correcto
         trafficLights.forEach(light => light.classList.remove('active'));
 
-        // Validar nivel recibido
         const validLevels = ['red', 'yellow', 'green'];
-        const level = info.level && validLevels.includes(info.level) ? info.level : 'bad'; // 'bad' como fallback
+        // Usar 'red' como fallback si info.level no es válido
+        const level = info.level && validLevels.includes(info.level) ? info.level : 'red';
 
-        // Iluminar nivel correspondiente (red/yellow/green)
+        // Iluminar nivel correspondiente
         const activeLight = Array.from(trafficLights)
-          .find(light => light.classList.contains(level === 'bad' ? 'red' : level)); // Si level es 'bad', usa 'red'
-        if (activeLight) activeLight.classList.add('active'); // Añadir clase 'active'
+          .find(light => light.classList.contains(level));
+        if (activeLight) activeLight.classList.add('active');
 
-        // Mostrar feedback con color según nivel
+        // Mostrar feedback con borde y fondo según nivel
         challengeFeedback.textContent = info.feedback || 'Evaluación completada.';
-        // Usar 'bad' para el color si el nivel no es válido o no se recibe
-        challengeFeedback.className   = `feedback feedback--${level === 'bad' ? 'bad' : level}`;
+        // Convertir 'red' a 'bad', 'yellow' a 'okay', 'green' a 'good' para la clase CSS
+        const feedbackClassLevel = level === 'red' ? 'bad' : (level === 'yellow' ? 'okay' : 'good');
+        challengeFeedback.className   = `feedback feedback--${feedbackClassLevel}`;
 
 
       } catch (e) {
         console.error("Error en Paso 5:", e);
         challengeFeedback.textContent = `Error al evaluar: ${e.message}. Intenta más tarde.`;
-        challengeFeedback.className   = 'feedback feedback--bad';
-        // Asegurar que el semáforo esté apagado en error
+        challengeFeedback.className   = 'feedback feedback--bad'; // Borde rojo en error
+        // Asegurar que el semáforo esté apagado en error y encender rojo
         trafficLights.forEach(light => light.classList.remove('active'));
-        // Encender luz roja en error
         const redLight = document.querySelector('#trafficLight .light.red');
         if(redLight) redLight.classList.add('active');
 
       }
 
-      // Desplazar al feedback del paso 5
       challengeFeedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   }

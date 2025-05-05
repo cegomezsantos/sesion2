@@ -10,7 +10,7 @@
 <body>
   <main class="container">
 
-    <!-- **NUEVO:** Título de Bienvenida Personalizado -->
+    <!-- Título de Bienvenida Personalizado -->
     <h1 id="welcomeMessage" class="welcome-title">Bienvenido/a al Sandbox Inteligente</h1>
 
     <!-- Paso 1: ¿Qué es un prompt? -->
@@ -33,12 +33,10 @@
           Eres un tutor de matemáticas paciente. Explica fracciones a un alumno de 12 años que confunde numerador y denominador. Usa ejemplos con pizza y termina con un ejercicio práctico.
         </div>
       </div>
-      <!-- **MODIFICADO:** Estructura para desplegable -->
+      <!-- Estructura para desplegable -->
       <div class="example-output">
         <h3>Salida de la IA (resultado completo):</h3>
-        <!-- Botón para mostrar/ocultar -->
         <button id="toggleOutputBtn" class="btn btn-secondary btn-small">Mira el resultado</button>
-        <!-- Contenido desplegable -->
         <div id="iaOutputContent" class="output-content collapsible-content">
           <h4>¿Qué es una fracción?</h4>
           <p>Una <strong>fracción</strong> es una forma de representar partes de un todo. Siempre tiene dos números:</p>
@@ -84,6 +82,10 @@
     <!-- Paso 4: Calentamiento de prompts -->
     <section id="paso4">
       <h2>Paso 4 – Calentamiento de prompts</h2>
+      <!-- **NUEVO:** Texto explicativo -->
+      <p class="section-description">
+        Aquí puedes probar cómo estructurar tu prompt. Define el rol, el objetivo y el contexto que le darías a la IA. Analizaremos tu prompt y te daremos sugerencias. Si el resultado no es óptimo, ¡puedes reintentar!
+      </p>
 
       <form id="warmupForm">
         <label>Rol
@@ -116,7 +118,8 @@
         <p>Redacta tu <strong>prompt</strong> para que la IA genere un cuestionario breve sobre la Guerra del Pacífico.</p>
         <textarea id="studentPrompt" placeholder="Ej.: 'Genera un cuestionario de 5 preguntas de opción múltiple sobre la Guerra del Pacífico para alumnos de secundaria'"></textarea>
         <button id="evaluatePrompt" class="btn btn-primary">Evaluar prompt</button>
-        <div id="challengeFeedback" class="feedback"></div> <!-- Feedback con posible loader -->
+        <!-- **MODIFICADO:** El feedback ahora usará borde completo -->
+        <div id="challengeFeedback" class="feedback"></div>
         <div id="trafficLight">
           <span class="light red"></span>
           <span class="light yellow"></span>
