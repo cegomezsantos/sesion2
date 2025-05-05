@@ -38,7 +38,7 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 16px; /* Base font size */
+  font-size: 16px;
 }
 
 body {
@@ -49,7 +49,7 @@ body {
 }
 
 .container {
-  max-width: 900px; /* Slightly wider */
+  max-width: 900px;
   margin: 2rem auto;
   padding: 1rem;
 }
@@ -98,12 +98,10 @@ code, .fraccion {
   margin-bottom: 2.5rem;
   padding: 2rem;
   border: 1px solid var(--border-color);
-  /* Animation preparation */
   opacity: 0;
   transform: translateY(20px);
   transition: opacity var(--transition-speed) ease-out, transform var(--transition-speed) ease-out;
 }
-/* Animation trigger class (added by JS) */
 .step-section.is-visible {
   opacity: 1;
   transform: translateY(0);
@@ -130,54 +128,50 @@ code, .fraccion {
   font-size: 1.1rem;
 }
 .step-header h2 {
-  margin-bottom: 0; /* Reset margin as it's in flex */
+  margin-bottom: 0;
   color: var(--primary-dark);
 }
 
 .step-content {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* Text takes more space */
+  grid-template-columns: 2fr 1fr;
   gap: 2rem;
   align-items: center;
 }
-.step-content-column { /* For steps where content flows vertically */
+.step-content-column {
     display: flex;
     flex-direction: column;
 }
-
 
 .step-text p:last-child {
   margin-bottom: 0;
 }
 
 .step-visual {
-  text-align: center; /* Center image */
+  text-align: center;
 }
 .step-image {
   max-width: 100%;
   height: auto;
   border-radius: var(--border-radius);
-  /* Subtle effect */
-  /* filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1)); */
 }
 .step-image.small-image {
-    max-width: 200px; /* Smaller images for diagrams/icons */
-    margin-bottom: 1rem; /* Space below if content flows vertically */
+    max-width: 200px; /* Default for small images */
+    margin-bottom: 1rem;
 }
 .output-visual .step-image {
     margin-bottom: 1.5rem;
     border: 1px solid var(--border-color);
 }
 
-
 /* Responsive adjustments for step content */
 @media (max-width: 768px) {
   .step-content {
-    grid-template-columns: 1fr; /* Stack columns */
+    grid-template-columns: 1fr;
     gap: 1.5rem;
   }
   .step-visual {
-    order: -1; /* Move image to top */
+    order: -1;
     margin-bottom: 1rem;
   }
   .step-image.small-image {
@@ -198,12 +192,12 @@ code, .fraccion {
     margin-bottom: 1.5rem;
     border: 1px solid #e5e7eb;
     display: grid;
-    gap: 0.8rem; /* Space between items */
-    grid-template-columns: auto 1fr; /* Label and value */
+    gap: 0.8rem;
+    grid-template-columns: auto 1fr;
     align-items: center;
 }
 .example-part {
-    display: contents; /* Allow direct grid placement */
+    display: contents;
 }
 .part-label {
     font-weight: 700;
@@ -217,30 +211,29 @@ code, .fraccion {
     font-size: 0.95em;
     border: 1px solid #d1d5db;
 }
-/* Span visual across columns if needed */
+/* **MODIFICADO:** Hacer imagen de partes más grande */
 .example-parts-container .step-visual {
-    grid-column: 1 / -1; /* Span full width */
+    grid-column: 1 / -1;
     text-align: right;
     margin-top: 0.5rem;
 }
-.example-parts-container .small-image {
-    max-width: 100px; /* Even smaller here */
+.example-parts-container .step-visual .step-image {
+    max-width: 220px; /* Aumentado el tamaño */
     margin-bottom: 0;
 }
-
 
 .example-full-prompt {
     margin-bottom: 1.5rem;
 }
 .prompt-text-box {
-  background-color: #eef2ff; /* Light indigo background */
+  background-color: #eef2ff;
   border: 1px solid #c7d2fe;
   padding: 1rem;
   border-radius: var(--border-radius);
   font-family: monospace;
   font-size: 0.95em;
   line-height: 1.5;
-  color: #4338ca; /* Indigo text */
+  color: #4338ca;
 }
 
 .example-output { margin-top: 1rem; }
@@ -253,8 +246,46 @@ code, .fraccion {
   border-top: 1px solid var(--border-color);
 }
 .collapsible-content.visible {
-  max-height: 1500px; /* Adjust as needed */
+  max-height: 1500px;
 }
+/* Estilos para la tabla resumen */
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+.summary-table th, .summary-table td {
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    vertical-align: top;
+}
+.summary-table th {
+    background-color: #f3f4f6; /* Fondo ligero para cabecera */
+    font-weight: 500;
+    color: var(--text-color);
+}
+.summary-table tbody tr:nth-child(even) {
+    background-color: var(--bg-color); /* Color alterno si se desea */
+}
+
+/* Estilos para el bloque de ejercicio */
+.ejercicio {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f8fafc;
+    border: 1px dashed #d1d5db;
+    border-radius: var(--border-radius);
+}
+.ejercicio h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
 
 /* Paso 3 - Key Points */
 .key-points {
@@ -263,32 +294,24 @@ code, .fraccion {
     padding-left: 0;
 }
 .key-points li {
-    display: flex;
-    align-items: start; /* Align icon with first line of text */
+    /* display: flex; Ya no es necesario flex si no hay icono inline */
     margin-bottom: 1rem;
     font-size: 1rem;
+    padding-left: 0; /* Reset padding */
 }
-.key-points .icon {
-    margin-right: 0.75rem;
-    font-size: 1.2rem;
-    /* background-color: #e0e7ff;
-    border-radius: 50%;
-    padding: 0.3rem; */
-    min-width: 24px; /* Ensure space */
-    text-align: center;
-    margin-top: 0.1em; /* Adjust vertical alignment */
-}
+/* Eliminado estilo .key-points .icon */
+
 
 /* Forms & Buttons */
 form {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Space between form elements */
+  gap: 1rem;
 }
 label {
   font-weight: 500;
   margin-bottom: 0.25rem;
-  display: block; /* Ensure label is above input */
+  display: block;
 }
 input[type="text"],
 textarea {
@@ -304,10 +327,11 @@ input[type="text"]:focus,
 textarea:focus {
   outline: none;
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); /* Focus ring */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
 }
 textarea {
-  min-height: 100px;
+  /* **MODIFICADO:** Altura mínima aumentada */
+  min-height: 120px; /* Aprox 5-6 líneas + padding */
   resize: vertical;
 }
 
@@ -325,7 +349,7 @@ textarea {
   cursor: pointer;
   text-align: center;
   transition: background-color var(--transition-speed) ease, transform 0.1s ease;
-  display: inline-flex; /* Align icons if added */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
@@ -365,22 +389,19 @@ textarea {
   border-radius: var(--border-radius);
   font-size: 0.95rem;
   border: 1px solid transparent;
-  min-height: 48px; /* Ensure consistent height */
+  min-height: 48px;
   display: flex;
   align-items: center;
-  gap: 0.75rem; /* Space between icon and text */
-  /* Animation preparation */
+  gap: 0.75rem;
   opacity: 0;
   transform: scale(0.95);
   transition: opacity var(--transition-speed) ease-out, transform var(--transition-speed) ease-out, background-color var(--transition-speed), border-color var(--transition-speed);
 }
-/* Trigger animation */
 .feedback.visible {
     opacity: 1;
     transform: scale(1);
 }
-/* Add aria-live feedback too if possible */
-.feedback::before { /* Placeholder for icon */
+.feedback::before { /* Icon placeholder */
     content: '';
     display: inline-block;
     width: 20px;
@@ -397,37 +418,39 @@ textarea {
   color: var(--loading-color);
 }
 .feedback--loading::before {
-  /* Use the CSS loader instead of an image for loading */
-   content: none; /* Hide icon placeholder */
+   content: none;
 }
-.feedback--loading .loader { margin-right: 0.75rem; } /* Add loader */
+.feedback--loading .loader { margin-right: 0.75rem; }
 
 
 .feedback--good {
   border-color: var(--success-color);
   background-color: var(--success-bg);
-  color: #059669; /* Darker green */
+  color: #059669;
 }
 .feedback--good::before {
-  background-image: url('images/feedback-good.png'); /* Add your icon */
+  /* Asegúrate que la ruta es correcta y la imagen existe */
+  background-image: url('images/feedback-good.png');
 }
 
 .feedback--okay {
   border-color: var(--warning-color);
   background-color: var(--warning-bg);
-  color: #b45309; /* Darker orange */
+  color: #b45309;
 }
 .feedback--okay::before {
-   background-image: url('images/feedback-okay.png'); /* Add your icon */
+   /* Asegúrate que la ruta es correcta y la imagen existe */
+   background-image: url('images/feedback-okay.png');
 }
 
 .feedback--bad {
   border-color: var(--error-color);
   background-color: var(--error-bg);
-  color: #dc2626; /* Darker red */
+  color: #dc2626;
 }
 .feedback--bad::before {
-   background-image: url('images/feedback-bad.png'); /* Add your icon */
+   /* Asegúrate que la ruta es correcta y la imagen existe */
+   background-image: url('images/feedback-bad.png');
 }
 
 
@@ -435,7 +458,7 @@ textarea {
 .loader {
     width: 1.2em;
     height: 1.2em;
-    border: 0.2em solid rgba(107, 114, 128, 0.3); /* Lighter border */
+    border: 0.2em solid rgba(107, 114, 128, 0.3);
     border-top-color: var(--loading-color);
     border-radius: 50%;
     display: inline-block;
@@ -450,7 +473,7 @@ textarea {
 
 /* Paso 5 Specifics */
 .interactive-step {
-    background-color: #eff6ff; /* Light blue background */
+    background-color: #eff6ff;
     border-color: #bfdbfe;
 }
 .example-case {
@@ -472,41 +495,42 @@ textarea {
 
 .feedback-area {
     display: flex;
-    align-items: start; /* Align feedback top with lights */
+    align-items: start;
     gap: 1rem;
     margin-top: 1.5rem;
 }
 #challengeFeedback {
-    flex-grow: 1; /* Feedback takes available space */
-    margin-top: 0; /* Reset margin as it's in flex */
+    flex-grow: 1;
+    margin-top: 0;
 }
 
 /* Traffic Light */
 #trafficLight {
   display: flex;
-  flex-direction: column; /* Stack lights vertically */
+  flex-direction: column;
   gap: 0.5rem;
-  background-color: #4b5563; /* Dark background */
+  background-color: #4b5563;
   padding: 0.6rem;
-  border-radius: 20px; /* Pill shape */
-  align-self: center; /* Center vertically in the feedback area */
+  border-radius: 20px;
+  align-self: center;
 }
 .light {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: #9ca3af; /* Default off color */
+  background-color: #9ca3af;
   opacity: 0.3;
-  transition: opacity 0.3s ease;
-  cursor: pointer; /* Indicate interactivity */
+  transition: opacity 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+  cursor: pointer;
 }
 .light.active {
   opacity: 1;
-  box-shadow: 0 0 8px 2px currentColor; /* Glow effect */
+  /* Glow effect usando el color de fondo como color de sombra */
+  box-shadow: 0 0 10px 3px currentColor;
 }
-.light.red { background-color: #ef4444; color: #ef4444; }
-.light.yellow { background-color: #f59e0b; color: #f59e0b; }
-.light.green { background-color: #10b981; color: #10b981; }
+.light.red { background-color: #ef4444; color: #f87171; } /* Usar color más claro para glow */
+.light.yellow { background-color: #f59e0b; color: #fbbf24; }
+.light.green { background-color: #10b981; color: #34d399; }
 
 
 /* Footer */
