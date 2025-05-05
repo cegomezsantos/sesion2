@@ -57,17 +57,17 @@ document.addEventListener('DOMContentLoaded', () => {
   function showFeedback(element, message, type = 'bad', isLoading = false) {
       if (!element) return;
       element.textContent = '';
-      // Asegurar que siempre tenga la clase base para animación
       element.className = 'feedback animate-feedback';
       setTimeout(() => {
           if (isLoading) {
               element.innerHTML = `<span class="loader"></span> ${message}`;
               element.classList.add('feedback--loading');
           } else {
+              // Asegúrate que el mensaje sea tratado como texto plano
               element.textContent = message;
               element.classList.add(`feedback--${type}`);
           }
-          element.classList.add('visible'); // Trigger animation
+          element.classList.add('visible');
       }, 10);
   }
 
@@ -75,18 +75,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function showCompletionMessage(show = true) {
         const completionDiv = document.getElementById('completionMessage');
         if (!completionDiv) return;
-
         if (show) {
-            // Ensure it's visible and triggers animation
-            completionDiv.style.display = 'block'; // Or use flex/grid if needed
-            setTimeout(() => {
-                 completionDiv.classList.add('visible');
-            }, 10); // Small delay to allow display change before animation class
+            completionDiv.style.display = 'block';
+            setTimeout(() => { completionDiv.classList.add('visible'); }, 10);
         } else {
             completionDiv.classList.remove('visible');
-             // Optional: Hide completely after animation
-             // setTimeout(() => { completionDiv.style.display = 'none'; }, 300); // Match CSS transition duration
-              completionDiv.style.display = 'none'; // Hide immediately for now
+            completionDiv.style.display = 'none';
         }
     }
 
@@ -111,17 +105,42 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulación
-            const mockScore = Math.random() * 100;
-            const mockOk = mockScore > 75;
-            const mockSuggestions = `Análisis: ${mockOk ? '¡Buen trabajo!' : 'Podrías mejorar.'} Rol ${rol ? 'detectado' : 'ausente'}, Objetivo ${objetivo ? 'claro' : 'difuso'}, Contexto ${contexto ? 'presente' : 'falta'}.`;
-            const data = { suggestions: mockSuggestions, score: mockScore, ok: mockOk };
+            // **REAL API CALL (Step 4)**
+            const res = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ rol, objetivo, contexto })
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({ error: `Error HTTP ${res.status}` }));
+                throw new Error(errorData.error || `Error HTTP ${res.status}`);
+            }
+
+            const data = await res.json(); // Expected: { suggestions, score, ok }
 
             let feedbackType = 'bad';
-            if (data.ok) feedbackType = 'good';
-            else if (data.score >= 50) feedbackType = 'okay';
-            showFeedback(feedback4, data.suggestions || 'Análisis completado.', feedbackType);
-            if (feedbackType !== 'good' && retryBtn) retryBtn.style.display = 'inline-block';
+            // Usamos 'ok' como principal indicador, luego 'score'
+            if (data.ok === true) {
+                feedbackType = 'good';
+            } else if (data.score !== undefined && data.score >= 50) {
+                 feedbackType = 'okay';
+            }
+
+            // Mostrar sugerencias (puede ser HTML o texto plano)
+            // Si viene como HTML, innerHTML es correcto. Si es texto plano, textContent.
+            // Por seguridad, si no estamos seguros, usamos textContent.
+             if (feedback4) {
+                 feedback4.textContent = ''; // Clear previous content/loader
+                 feedback4.className = 'feedback animate-feedback'; // Reset classes
+             }
+             showFeedback(feedback4, data.suggestions || 'Análisis completado.', feedbackType);
+
+
+            if (feedbackType !== 'good' && retryBtn) {
+                retryBtn.style.display = 'inline-block';
+            }
+
         } catch (err) {
             console.error("Error en Paso 4:", err);
             showFeedback(feedback4, `Error al analizar: ${err.message}. Intenta de nuevo.`, 'bad');
@@ -146,9 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const trafficLights = document.querySelectorAll('#trafficLight .light');
   const studentPromptText = document.getElementById('studentPrompt');
   const paso5 = document.getElementById('paso5');
-  const completionMessageDiv = document.getElementById('completionMessage'); // Get reference
+  const completionMessageDiv = document.getElementById('completionMessage');
 
-  function setTrafficLight(level) {
+  function setTrafficLight(level) { // level: 'red', 'yellow', 'green'
       trafficLights.forEach(light => {
           light.classList.remove('active');
           if (level && light.classList.contains(level)) {
@@ -157,12 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  if (evaluateBtn && challengeFeedback && trafficLights.length > 0 && studentPromptText && paso5 && completionMessageDiv) { // Check completionMessageDiv
+  if (evaluateBtn && challengeFeedback && trafficLights.length > 0 && studentPromptText && paso5 && completionMessageDiv) {
     evaluateBtn.addEventListener('click', async () => {
         const studentPrompt = studentPromptText.value.trim();
 
         setTrafficLight(null);
-        showCompletionMessage(false); // **NUEVO:** Ocultar mensaje de completado al evaluar
+        showCompletionMessage(false);
         showFeedback(challengeFeedback, 'Evaluando tu prompt...', '', true);
 
         if (!studentPrompt) {
@@ -173,27 +192,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulación
-            const randomNum = Math.random();
-            let level, feedbackMsg, feedbackType;
-            if (randomNum < 0.33) {
-                level = 'red'; feedbackType = 'bad'; feedbackMsg = 'Este prompt necesita más detalles. ¿Podrías especificar el formato o la audiencia?';
-            } else if (randomNum < 0.66) {
-                level = 'yellow'; feedbackType = 'okay'; feedbackMsg = '¡Casi! El prompt es bueno, pero considera añadir un ejemplo o un tono específico.';
-            } else {
-                level = 'green'; feedbackType = 'good'; feedbackMsg = '¡Excelente prompt! Claro, conciso y con toda la información necesaria.';
-            }
-            const info = { level: level, feedback: feedbackMsg };
+            // **REAL API CALL (Step 5)**
+            const res = await fetch('/api/evaluate', {
+                 method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify({ prompt: studentPrompt })
+             });
 
-            setTrafficLight(info.level);
+             if (!res.ok) {
+                const errorData = await res.json().catch(() => ({ error: `Error HTTP ${res.status}` }));
+                throw new Error(errorData.error || `Error HTTP ${res.status}`);
+            }
+
+            const info = await res.json(); // Expected: { level, feedback }
+
+            // Validar el nivel recibido del backend
+            const validLevels = ['red', 'yellow', 'green'];
+            const level = validLevels.includes(info.level) ? info.level : 'red'; // Default a 'red' si no es válido
+
+             // Mapear nivel ('red', 'yellow', 'green') a tipo de feedback para CSS ('bad', 'okay', 'good')
+            let feedbackType = 'bad';
+            if (level === 'green') feedbackType = 'good';
+            else if (level === 'yellow') feedbackType = 'okay';
+
+            setTrafficLight(level);
             showFeedback(challengeFeedback, info.feedback || 'Evaluación completada.', feedbackType);
 
-            // **NUEVO:** Mostrar mensaje de completado si es 'okay' o 'good'
             if (feedbackType === 'okay' || feedbackType === 'good') {
                  showCompletionMessage(true);
-                 completionMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Scroll to completion message
+                 completionMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
-                 showCompletionMessage(false); // Asegurarse que está oculto si es 'bad'
+                 showCompletionMessage(false);
             }
 
 
@@ -201,12 +230,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Error en Paso 5:", e);
             showFeedback(challengeFeedback, `Error al evaluar: ${e.message}. Intenta más tarde.`, 'bad');
             setTrafficLight('red');
-            showCompletionMessage(false); // Asegurarse que está oculto en error
+            showCompletionMessage(false);
         }
 
-        // No hacer scroll automático al feedback si se muestra el mensaje de completado
-        if (!(feedbackType === 'okay' || feedbackType === 'good')) {
-            challengeFeedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Scroll al feedback solo si el mensaje de completado NO se muestra
+        if (!completionMessageDiv.classList.contains('visible')) {
+             challengeFeedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     });
   }
