@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Backend para el Sandbox de Prompts usando Deepseek y Netlify Functions",
   "main": "netlify/functions/consulta.js",
-  "type": "module",
+  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
