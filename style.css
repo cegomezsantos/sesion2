@@ -409,7 +409,7 @@ textarea {
   color: #059669; /* Darker green */
 }
 .feedback--good::before {
-  background-image: url('images/feedback-good.svg'); /* Add your icon */
+  background-image: url('images/feedback-good.png'); /* Add your icon */
 }
 
 .feedback--okay {
@@ -418,7 +418,7 @@ textarea {
   color: #b45309; /* Darker orange */
 }
 .feedback--okay::before {
-   background-image: url('images/feedback-okay.svg'); /* Add your icon */
+   background-image: url('images/feedback-okay.png'); /* Add your icon */
 }
 
 .feedback--bad {
@@ -427,7 +427,7 @@ textarea {
   color: #dc2626; /* Darker red */
 }
 .feedback--bad::before {
-   background-image: url('images/feedback-bad.svg'); /* Add your icon */
+   background-image: url('images/feedback-bad.png'); /* Add your icon */
 }
 
 
