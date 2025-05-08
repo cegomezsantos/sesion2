@@ -3,26 +3,37 @@
 
 /* CSS Variables */
 :root {
-  --primary-color: #3b82f6; /* Azul vibrante */
-  --primary-dark: #2563eb;
-  --secondary-color: #f59e0b; /* Naranja para acentos/secundario */
-  --secondary-dark: #d97706;
-  --text-color: #374151; /* Gris oscuro */
-  --text-light: #6b7280; /* Gris medio */
-  --bg-color: #f9fafb; /* Fondo muy claro */
-  --bg-alt: #ffffff; /* Blanco para cards */
-  --border-color: #e5e7eb; /* Gris claro */
-  --border-focus: var(--primary-color);
+  --primary-color: #f54526; /* Rojo/Naranja principal de los mockups */
+  --primary-dark: #e03e20; /* Un tono más oscuro de --primary-color para hover */
+  --secondary-color: #ffc72c; /* Amarillo de los mockups */
+  --secondary-dark: #f0b300; /* Un tono más oscuro de --secondary-color para hover */
+  
+  --action-blue: #00AEF0; /* Azul para botones específicos como "Evaluar Mi Prompt" */
+  --action-blue-dark: #0095D0;
 
-  --success-color: #10b981; /* Verde */
-  --success-dark: #047857; /* Verde oscuro */
+  --text-color: #374151; /* Gris oscuro para texto general */
+  --text-light: #6b7280; /* Gris medio para subtítulos, etc. */
+  
+  --bg-color: #00AEF0; /* Azul claro para el fondo principal de la página */
+  --bg-alt: #ffffff; /* Blanco para cards/secciones */
+  
+  --border-color: #e5e7eb; /* Gris claro para bordes generales */
+  --border-focus: var(--primary-color); /* Borde en focus usará el color primario */
+
+  --success-color: #10b981;
+  --success-dark: #047857;
   --success-bg: #ecfdf5;
-  --warning-color: #f59e0b; /* Naranja */
+  --warning-color: #f59e0b; /* Naranja (puede coincidir con secundario o ser distinto) */
   --warning-bg: #fffbeb;
-  --error-color: #ef4444; /* Rojo */
+  --error-color: #ef4444;
   --error-bg: #fef2f2;
-  --loading-color: #6b7280; /* Gris */
+  --loading-color: #6b7280;
   --loading-bg: #f3f4f6;
+
+  /* Colores específicos para el prompt text box */
+  --prompt-box-bg: #fff9e6; /* Amarillo muy pálido, similar a #ffc62c con alpha bajo */
+  --prompt-box-border: #ffeccf; /* Borde amarillo un poco más oscuro */
+  --prompt-box-text: #b45309; /* Texto oscuro para contraste en fondo amarillo */
 
   --font-family: 'Inter', sans-serif;
   --border-radius: 8px;
@@ -44,7 +55,7 @@ html {
 
 body {
   font-family: var(--font-family);
-  background-color: var(--bg-color);
+  background-color: var(--bg-color); /* MODIFICADO: Fondo principal azul */
   color: var(--text-color);
   line-height: 1.6;
 }
@@ -56,7 +67,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--text-color);
+  color: var(--text-color); /* Color por defecto para encabezados */
   margin-bottom: 0.75rem;
   line-height: 1.3;
 }
@@ -64,7 +75,19 @@ h1, h2, h3, h4, h5, h6 {
 h1 { font-size: 2.25rem; font-weight: 700; }
 h2 { font-size: 1.75rem; font-weight: 700; }
 h3 { font-size: 1.25rem; font-weight: 500; }
-h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; } /* Estilo para H4 */
+h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; }
+
+/* Encabezados específicos según mockup */
+.step-header h2 {
+  color: var(--primary-color); /* MODIFICADO: Rojo/Naranja */
+  margin-bottom: 0;
+}
+#paso2 .example-output h3,
+#paso2 .ejercicio h4 {
+    color: var(--primary-color); /* MODIFICADO: Rojo/Naranja */
+}
+
+
 p { margin-bottom: 1rem; color: var(--text-light); }
 a { color: var(--primary-color); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -86,7 +109,7 @@ code, .fraccion {
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
 }
-.main-header h1 { color: var(--primary-dark); }
+.main-header h1 { color: var(--text-color); } /* MODIFICADO: Texto oscuro, no rojo */
 .subtitle {
   font-size: 1.1rem;
   color: var(--text-light);
@@ -94,7 +117,7 @@ code, .fraccion {
 
 /* Step Section Layout */
 .step-section {
-  background-color: var(--bg-alt);
+  background-color: var(--bg-alt); /* Fondo blanco para las "tarjetas" */
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   margin-bottom: 2.5rem;
@@ -122,16 +145,12 @@ code, .fraccion {
   justify-content: center;
   width: 36px;
   height: 36px;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* MODIFICADO: Rojo/Naranja */
   color: white;
   font-weight: 700;
   border-radius: 50%;
   margin-right: 1rem;
   font-size: 1.1rem;
-}
-.step-header h2 {
-  margin-bottom: 0;
-  color: var(--primary-dark);
 }
 
 .step-content {
@@ -148,6 +167,11 @@ code, .fraccion {
 .step-text p:last-child {
   margin-bottom: 0;
 }
+/* El parrafo debajo del H2 en "Partes de un buen prompt" es más oscuro que text-light */
+#paso2 > .step-content-column > .step-text p {
+    color: #525252; /* Un gris un poco más oscuro */
+}
+
 
 .step-visual {
   text-align: center;
@@ -161,8 +185,6 @@ code, .fraccion {
     max-width: 200px;
     margin-bottom: 1rem;
 }
-/* Eliminado .output-visual */
-
 
 /* Responsive adjustments for step content */
 @media (max-width: 768px) {
@@ -186,11 +208,11 @@ code, .fraccion {
 
 /* Paso 2 - Parts */
 .example-parts-container {
-    background-color: #f3f4f6;
+    background-color: var(--secondary-color); /* MODIFICADO: Amarillo */
     border-radius: var(--border-radius);
     padding: 1rem 1.5rem;
     margin-bottom: 1.5rem;
-    border: 1px solid #e5e7eb;
+    /* border: 1px solid var(--secondary-dark);  Opcional, si se quiere un borde más marcado */
     display: grid;
     gap: 0.8rem;
     grid-template-columns: auto 1fr;
@@ -201,7 +223,7 @@ code, .fraccion {
 }
 .part-label {
     font-weight: 700;
-    color: var(--text-color);
+    color: var(--text-color); /* Texto oscuro para contraste con fondo amarillo */
     padding-right: 0.5em;
 }
 .part-value {
@@ -225,14 +247,14 @@ code, .fraccion {
     margin-bottom: 1.5rem;
 }
 .prompt-text-box {
-  background-color: #eef2ff;
-  border: 1px solid #c7d2fe;
+  background-color: var(--prompt-box-bg); /* MODIFICADO: Amarillo muy pálido */
+  border: 1px solid var(--prompt-box-border); /* MODIFICADO: Borde amarillo sutil */
   padding: 1rem;
   border-radius: var(--border-radius);
   font-family: monospace;
   font-size: 0.95em;
   line-height: 1.5;
-  color: #4338ca;
+  color: var(--prompt-box-text); /* MODIFICADO: Texto oscuro para contraste */
 }
 
 .example-output { margin-top: 1rem; }
@@ -275,10 +297,9 @@ code, .fraccion {
     border: 1px dashed #d1d5db;
     border-radius: var(--border-radius);
 }
-.ejercicio h4 {
+.ejercicio h4 { /* Ya cubierto por la regla general para h4 en esta sección */
     margin-top: 0;
     margin-bottom: 0.5rem;
-    color: var(--text-color);
     font-weight: 500;
 }
 
@@ -309,7 +330,7 @@ label {
 input[type="text"],
 textarea {
   padding: 0.75rem 1rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--primary-color); /* MODIFICADO: Borde rojo/naranja */
   border-radius: var(--border-radius);
   font-size: 1rem;
   font-family: var(--font-family);
@@ -319,8 +340,8 @@ textarea {
 input[type="text"]:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  border-color: var(--border-focus); /* MODIFICADO: Usa --primary-color */
+  box-shadow: 0 0 0 3px rgba(245, 69, 38, 0.3); /* MODIFICADO: Sombra roja/naranja */
 }
 textarea {
   min-height: 120px;
@@ -344,38 +365,56 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none; /* Para botones que son links */
+  text-decoration: none;
 }
 .btn:hover {
   transform: translateY(-1px);
-  text-decoration: none; /* Para botones que son links */
+  text-decoration: none;
 }
 .btn:active {
     transform: translateY(0px);
 }
 
 .btn-primary {
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* MODIFICADO: Rojo/Naranja */
   color: #fff;
 }
 .btn-primary:hover {
-  background-color: var(--primary-dark);
+  background-color: var(--primary-dark); /* MODIFICADO */
 }
 
 .btn-secondary {
-  background-color: var(--secondary-color);
-  color: #fff;
+  background-color: var(--secondary-color); /* MODIFICADO: Amarillo */
+  color: var(--text-color); /* MODIFICADO: Texto oscuro para contraste en amarillo */
 }
 .btn-secondary:hover {
-  background-color: var(--secondary-dark);
+  background-color: var(--secondary-dark); /* MODIFICADO */
+  color: var(--text-color);
 }
-/* **NUEVO:** Estilo para botón de éxito */
 .btn-success {
   background-color: var(--success-color);
   color: #fff;
 }
 .btn-success:hover {
   background-color: var(--success-dark);
+}
+
+/* Botón específico "Mostrar Resultado Ejemplo" debe ser rojo */
+#toggleOutputBtn {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+#toggleOutputBtn:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Botón específico "Evaluar Mi Prompt" debe ser azul */
+#evaluatePrompt {
+    background-color: var(--action-blue);
+    color: #fff;
+}
+#evaluatePrompt:hover {
+    background-color: var(--action-blue-dark);
 }
 
 
@@ -386,7 +425,6 @@ textarea {
 
 
 /* Feedback Styling & Animation */
-/* Clase común para feedback y mensaje de completado */
 .animate-feedback {
   opacity: 0;
   transform: scale(0.95);
@@ -408,7 +446,7 @@ textarea {
   align-items: center;
   gap: 0.75rem;
 }
-.feedback::before { /* Icon placeholder */
+.feedback::before {
     content: '';
     display: inline-block;
     width: 20px;
@@ -468,7 +506,7 @@ textarea {
 
 /* Paso 5 Specifics */
 .interactive-step {
-    background-color: #eff6ff;
+    background-color: #eff6ff; /* Un azul muy claro, se puede ajustar si es necesario */
     border-color: #bfdbfe;
 }
 .example-case {
@@ -499,18 +537,17 @@ textarea {
     margin-top: 0;
 }
 
-/* **NUEVO:** Estilos para el mensaje de finalización */
 #completionMessage {
     margin-top: 1.5rem;
-    padding: 1.5rem; /* Más padding */
+    padding: 1.5rem;
     border-radius: var(--border-radius);
     border: 1px solid var(--success-color);
     background-color: var(--success-bg);
-    display: none; /* Oculto por defecto */
-    text-align: center; /* Centrar contenido */
+    display: none;
+    text-align: center;
 }
 #completionMessage.visible {
-    display: block; /* Mostrar cuando tenga la clase */
+    display: block;
 }
 #completionMessage h4 {
     color: var(--success-dark);
@@ -523,7 +560,6 @@ textarea {
     font-size: 1rem;
 }
 #completionMessage .btn-success {
-    /* Estilos adicionales si son necesarios */
     font-size: 1.05rem;
 }
 
@@ -533,7 +569,7 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background-color: #4b5563;
+  background-color: #4b5563; /* Fondo gris oscuro para el semáforo */
   padding: 0.6rem;
   border-radius: 20px;
   align-self: center;
@@ -542,18 +578,18 @@ textarea {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: #9ca3af;
+  background-color: #9ca3af; /* Color base para luz apagada */
   opacity: 0.3;
   transition: opacity 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 .light.active {
   opacity: 1;
-  box-shadow: 0 0 10px 3px currentColor;
+  box-shadow: 0 0 10px 3px currentColor; /* Sombra del color de la luz */
 }
-.light.red { background-color: #ef4444; color: #f87171; }
-.light.yellow { background-color: #f59e0b; color: #fbbf24; }
-.light.green { background-color: #10b981; color: #34d399; }
+.light.red { background-color: var(--error-color); color: #f87171; }
+.light.yellow { background-color: var(--warning-color); color: #fbbf24; }
+.light.green { background-color: var(--success-color); color: #34d399; }
 
 
 /* Footer */
@@ -566,107 +602,92 @@ textarea {
   font-size: 0.9rem;
 }
 
-/* ... (Todo el CSS anterior) ... */
-
 
 /* --- ESTILOS RESPONSIVE ADICIONALES --- */
-
-/* Punto de corte común para móviles (puedes ajustarlo) */
 @media (max-width: 600px) {
 
-  /* **Annotation 15: Ajuste Partes del Prompt en móvil** */
   .example-parts-container {
-      grid-template-columns: 1fr; /* Cambiar a una sola columna */
-      gap: 0.5rem; /* Reducir espacio vertical */
-      padding: 0.8rem 1rem; /* Ajustar padding */
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding: 0.8rem 1rem;
   }
 
   .example-part {
-      /* Ya no usamos display: contents aquí */
-      /* display: contents; */ /* Comentado o eliminado */
-      margin-bottom: 0.5rem; /* Espacio entre pares etiqueta-valor */
+      margin-bottom: 0.5rem;
   }
 
   .part-label {
-      display: block; /* Hacer que la etiqueta ocupe toda la línea */
-      margin-bottom: 0.15rem; /* Pequeño espacio antes del valor */
-      font-size: 0.85rem; /* Etiqueta un poco más pequeña */
-      color: var(--text-light); /* Color más suave para la etiqueta */
-      padding-right: 0; /* Reset padding */
+      display: block;
+      margin-bottom: 0.15rem;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      padding-right: 0;
   }
 
   .part-value {
-      display: block; /* Asegurar que ocupe su línea */
-      width: 100%; /* Ocupar ancho completo */
+      display: block;
+      width: 100%;
   }
 
-  /* Ocultar imagen en móvil si ocupa mucho espacio o no es esencial */
   .example-parts-container .step-visual {
-      display: none; /* Ocultar el diagrama pequeño en móvil */
+      display: none;
   }
 
-
-  /* **Annotation 16: Ajuste Tabla Resumen en móvil** */
   .summary-table {
-      border: none; /* Quitar borde general */
-      font-size: 0.9rem; /* Ajustar tamaño fuente si es necesario */
+      border: none;
+      font-size: 0.9rem;
   }
 
   .summary-table thead {
-      /* Ocultar cabecera original en móvil */
       display: none;
   }
 
   .summary-table tr {
-      display: block; /* Apilar filas */
-      margin-bottom: 1rem; /* Espacio entre "tarjetas" de fila */
-      border: 1px solid var(--border-color); /* Borde para cada "tarjeta" */
+      display: block;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border-color);
       border-radius: var(--border-radius);
-      background-color: var(--bg-alt); /* Fondo blanco para cada tarjeta */
-      padding: 1rem; /* Padding interno */
+      background-color: var(--bg-alt);
+      padding: 1rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.04);
   }
-   /* Reset background alterno si se usó */
   .summary-table tbody tr:nth-child(even) {
       background-color: var(--bg-alt);
   }
 
-
   .summary-table td {
-      display: block; /* Apilar celdas */
-      text-align: right; /* Alinear valor a la derecha */
-      padding-left: 50%; /* Espacio para la etiqueta simulada */
-      position: relative; /* Para posicionar el pseudo-elemento */
-      border: none; /* Quitar bordes internos de celda */
-      border-bottom: 1px dashed var(--border-color); /* Línea separadora */
+      display: block;
+      text-align: right;
+      padding-left: 50%;
+      position: relative;
+      border: none;
+      border-bottom: 1px dashed var(--border-color);
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
   }
 
   .summary-table td:last-child {
-      border-bottom: none; /* No poner línea en la última celda */
+      border-bottom: none;
   }
 
   .summary-table td::before {
-      /* Crear la etiqueta usando el atributo data-label */
       content: attr(data-label);
       position: absolute;
-      left: 0.75rem; /* Padding izquierdo */
-      top: 0.5rem; /* Padding superior */
-      width: calc(50% - 1.5rem); /* Ancho de la etiqueta (50% menos paddings) */
+      left: 0.75rem;
+      top: 0.5rem;
+      width: calc(50% - 1.5rem);
       padding-right: 10px;
       white-space: nowrap;
-      text-align: left; /* Alinear etiqueta a la izquierda */
-      font-weight: 700; /* Hacerla bold como la cabecera original */
+      text-align: left;
+      font-weight: 700;
       color: var(--text-color);
   }
 
-  /* Ajustes generales para móvil ya existentes */
-  h1.welcome-title { font-size: 1.5rem; }
+  h1.welcome-title { font-size: 1.5rem; } /* Asegúrate de tener esta clase en tu H1 si es necesario */
+  h1#welcomeMessage { font-size: 1.6rem; } /* O aplica al ID directamente */
   h2 { font-size: 1.25rem; }
   .container { padding: 0.5rem; }
-  .section-description { font-size: 0.9rem;}
-  .step-section { padding: 1rem; } /* Menos padding en móvil */
+  .section-description { font-size: 0.9rem;} /* Ajusta el selector si es necesario */
+  #paso4 .section-description { font-size: 0.9rem; } /* Ejemplo de selector más específico */
+  .step-section { padding: 1rem; }
 }
-
-/* ... (Resto del CSS como el Footer, etc.) ... */
