@@ -1,213 +1,268 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Sandbox Inteligente – Guía Profesional de Prompts</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandbox Inteligente – SESIÓN 2</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="container">
-
-    <header class="main-header">
-      <h1 id="welcomeMessage">Sandbox de Prompts</h1>
-      <p class="subtitle">SESION 2 - Aprende a interactuar con la IA paso a paso</p>
+    <header>
+        <h1>Bienvenido al Sandbox Inteligente – SESIÓN 2</h1>
+        <p>En esta práctica realizaremos 4 actividades pensadas para docentes de educación secundaria. Cada una combina una breve explicación y un ejercicio directo en el entorno de IA.</p>
     </header>
 
-    <!-- Paso 1: ¿Qué es un prompt? -->
-    <section id="paso1" class="step-section animate-on-scroll">
-      <div class="step-header">
-        <span class="step-number">1</span>
-        <h2>¿Qué es un prompt?</h2>
-      </div>
-      <div class="step-content">
-        <div class="step-text">
-          <p>Un <strong>prompt</strong> es la <em>instrucción o pregunta</em> que das a la IA para guiar su respuesta. Piensa en ello como dar direcciones claras.</p>
-          <p>Cuanto más específico seas sobre <u>quién habla</u> (Rol), <u>qué necesitas</u> (Objetivo) y <u>en qué situación</u> (Contexto), mejores y más útiles serán los resultados.</p>
-        </div>
-        <div class="step-visual">
-          <img src="images/step1-prompt-concept.png" alt="Concepto de un Prompt: una idea o pregunta clara" class="step-image">
-        </div>
-      </div>
-    </section>
+    <main>
+        <section id="ejercicio1">
+            <h2>Ejercicio 1 – Lectura rápida de “Tickets de salida” con IA</h2>
 
-    <!-- Paso 2: Partes de un buen prompt -->
-    <section id="paso2" class="step-section animate-on-scroll">
-      <div class="step-header">
-        <span class="step-number">2</span>
-        <h2>Partes de un Buen Prompt</h2>
-      </div>
-      <div class="step-content-column">
-        <div class="step-text">
-           <p>Un prompt efectivo suele incluir estos componentes clave:</p>
-        </div>
-        <div class="example-parts-container">
-            <div class="example-part">
-                <span class="part-label">Rol:</span>
-                <span class="part-value">Eres un tutor de matemáticas paciente</span>
-            </div>
-            <div class="example-part">
-                <span class="part-label">Objetivo:</span>
-                <span class="part-value">Explicar fracciones a un alumno de 12 años</span>
-            </div>
-            <div class="example-part">
-                <span class="part-label">Contexto:</span>
-                <span class="part-value">El alumno confunde numerador y denominador</span>
-            </div>
-             <div class="step-visual">
-               <img src="images/step2-prompt-parts.png" alt="Diagrama mostrando las partes de un prompt" class="step-image">
-             </div>
-        </div>
-
-        <div class="example-full-prompt">
-          <p><strong>Prompt Completo (Ejemplo):</strong></p>
-          <div class="prompt-text-box">
-            Eres un tutor de matemáticas paciente. Explica fracciones a un alumno de 12 años que confunde numerador y denominador. Usa ejemplos con pizza y termina con un ejercicio práctico.
-          </div>
-        </div>
-
-        <div class="example-output">
-          <h3>Resultado Ejemplo de la IA</h3>
-           <button id="toggleOutputBtn" class="btn btn-secondary btn-small">Mostrar Resultado Ejemplo</button>
-           <div id="iaOutputContent" class="output-content collapsible-content">
-             <!-- **MODIFICADO:** Eliminada imagen de salida -->
-             <!-- Dentro de la sección id="paso2", dentro de #iaOutputContent -->
-
-             <h4>Resumen de Ejemplos</h4>
-             <table class="summary-table">
-               <thead>
-                 <tr>
-                   <th>Numerador</th>
-                   <th>Denominador</th>
-                   <th>Significado</th>
-                 </tr>
-               </thead>
-               <tbody>
-                 <tr>
-                   <!-- **NUEVO:** Añadido data-label -->
-                   <td data-label="Numerador">2</td>
-                   <td data-label="Denominador">5</td>
-                   <td data-label="Significado">2 pedazos de una pizza dividida en 5</td>
-                 </tr>
-                 <tr>
-                   <td data-label="Numerador">1</td>
-                   <td data-label="Denominador">2</td>
-                   <td data-label="Significado">La mitad de una pizza</td>
-                 </tr>
-                 <tr>
-                   <td data-label="Numerador">4</td>
-                   <td data-label="Denominador">6</td>
-                   <td data-label="Significado">4 pedazos de una pizza dividida en 6</td>
-                 </tr>
-               </tbody>
-             </table>
-            <!-- ... resto del contenido ... -->
-             <div class="ejercicio"><h4>Ejercicio práctico</h4> <p>Una pizza está dividida en 10 pedazos iguales...</p><p>Respuesta: <span class="fraccion">4/10</span></p> </div>
-           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Paso 3: Mitos y Realidades -->
-    <section id="paso3" class="step-section animate-on-scroll">
-        <div class="step-header">
-            <span class="step-number">3</span>
-            <h2>Mitos y Realidades</h2>
-        </div>
-        <div class="step-content">
-            <div class="step-text">
-                <ul class="key-points">
-                    <li>¿La IA viene a quitarnos el trabajo? <strong>¡Para nada!</strong> Es una herramienta para potenciarte.</li>
-                    <li>¿Basta con escribir cualquier cosa? <strong>No.</strong> La calidad del prompt define la calidad de la respuesta.</li>
-                    <li>¿Necesito ser programador? <strong>En absoluto.</strong> Solo necesitas pensar claramente tu instrucción.</li>
-                </ul>
-            </div>
-             <div class="step-visual">
-               <img src="images/step3-key-takeaways.png" alt="Iconos representando mitos sobre la IA" class="step-image">
-             </div>
-        </div>
-    </section>
-
-
-    <!-- Paso 4: ¡A Practicar! Define tu Prompt -->
-    <section id="paso4" class="step-section animate-on-scroll interactive-step">
-        <div class="step-header">
-            <span class="step-number">4</span>
-            <h2>¡A Practicar! Define tu Prompt</h2>
-        </div>
-        <div class="step-content-column">
-             <div class="step-visual">
-               <img src="images/step4-prompt-practice.png" alt="Persona practicando la escritura de prompts" class="step-image small-image">
-             </div>
-            <p class="section-description">
-              Define el Rol, Objetivo y Contexto. Haz clic en "Analizar" para recibir feedback sobre tu estructura. Crea un prompt para producir una actividad en clase sobre "las redes sociales y los estudiantes"
-            </p>
-            <form id="warmupForm">
-                <label for="rolInput">Rol</label>
-                <input id="rolInput" type="text" name="rol" placeholder="Ej: Eres un chef experto en cocina italiana">
-
-                <label for="objetivoInput">Objetivo</label>
-                <input id="objetivoInput" type="text" name="objetivo" placeholder="Ej: Crear una receta de lasaña simple">
-
-                <label for="contextoInput">Contexto</label>
-                <textarea id="contextoInput" name="contexto" placeholder="Ej: Para principiantes, con ingredientes comunes"></textarea>
-
-                <div class="button-group">
-                <button type="button" id="analyzeBtn" class="btn btn-primary">Analizar Prompt</button>
-                <button type="button" id="retryBtn" class="btn btn-secondary" style="display:none;">Intentar de Nuevo</button>
+            <div class="exercise-info">
+                <div class="info-block">
+                    <h3>Objetivo didáctico</h3>
+                    <p>Detectar, al terminar la clase, si los alumnos se van satisfechos, confusos o desanimados.</p>
                 </div>
-            </form>
-            <div id="step4Feedback" class="feedback animate-feedback" aria-live="polite"></div>
-        </div>
-    </section>
-
-    <!-- Paso 5: Reto Final: Genera Contenido -->
-    <section id="paso5" class="step-section animate-on-scroll interactive-step">
-      <div class="step-header">
-        <span class="step-number">5</span>
-        <h2>Reto Final: Genera Contenido</h2>
-      </div>
-      <div class="step-content-column">
-          <div class="step-visual">
-            <img src="images/step5-challenge.png" alt="Icono de reto o desafío" class="step-image small-image">
-          </div>
-        <div class="example-case">
-          <p><strong>Objetivo del Reto:</strong> Generar un cuestionario breve (5 preguntas de opción múltiple) sobre la <em>Guerra del Pacífico</em> para alumnos de secundaria.</p>
-        </div>
-        <div class="student-exercise">
-          <label for="studentPrompt">Escribe tu Prompt Completo Aquí:</label>
-          <textarea id="studentPrompt" name="studentPrompt" placeholder="Ej: 'Crea un cuestionario de 5 preguntas con 3 opciones cada una sobre las causas principales de la Guerra del Pacífico, nivel secundaria...'"></textarea>
-          <button id="evaluatePrompt" class="btn btn-primary">Evaluar Mi Prompt</button>
-
-           <div class="feedback-area">
-                <div id="challengeFeedback" class="feedback animate-feedback" aria-live="polite"></div>
-                <div id="trafficLight">
-                    <span class="light red" title="Prompt necesita mejora"></span>
-                    <span class="light yellow" title="Prompt aceptable"></span>
-                    <span class="light green" title="¡Excelente Prompt!"></span>
+                <div class="info-block">
+                    <h3>Herramienta</h3>
+                    <p>Chat del sandbox (modelo tipo ChatGPT).</p>
                 </div>
-           </div>
-           <!-- **NUEVO:** Mensaje de finalización (oculto por defecto) -->
-           <div id="completionMessage" class="completion-message animate-feedback">
-                <h4>¡Felicitaciones!</h4>
-                <p>Has completado con éxito la práctica de prompts (Sesión 1). ¡Ya puedes aplicar lo aprendido!</p>
-                <a href="https://platform.ecala.net/course/view.php?id=24558" target="_blank" rel="noopener noreferrer" class="btn btn-success">
-                    Volver al Aula Virtual
-                </a>
-           </div>
-        </div>
-      </div>
-    </section>
+                <div class="info-block">
+                    <h3>Producto que entregarás</h3>
+                    <p>Captura o copia que muestre la etiqueta ("Positivo”, “Neutral” o "Necesita apoyo") + justificación breve (1 frase).</p>
+                </div>
+            </div>
 
-    <footer class="main-footer">
-        <p>Sandbox Inteligente - ¡Sigue practicando!</p>
-    </footer>
+            <h3>Escenario educativo (presencial)</h3>
+            <p>Al despedirse, cada estudiante escribe en un pequeño papel (“ticket de salida”) una frase sobre cómo se sintió con la lección de hoy. Tú tomas algunos de esos comentarios, los transcribes en tu computadora y pides a la IA que los clasifique para decidir a quién dar refuerzo extra mañana.</p>
 
-  </main>
+            <h3>Pasos que realizarás</h3>
+            <ol>
+                <li>Recopila un ticket real
+                    <ul>
+                        <li>Ejemplo realista:
+                            <pre>"La actividad fue interesante, pero todavía no entiendo bien cómo funciona la fotosíntesis."</pre>
+                        </li>
+                    </ul>
+                </li>
+                <li>Redacta el prompt siguiendo la estructura:</li>
+                <li>Eres un tutor empático. Clasifica este ticket de salida como<br>'Positivo', 'Neutral' o 'Necesita apoyo' y explica en una frase por qué:</li>
+                <li>“<escribe aquí el comentario del alumno>”</li>
+                <li><span class="highlight">Pega el prompt en el chat del sandbox y pulsa Evaluar Prompt.</span></li>
+                <li>Observa la respuesta de la IA (etiqueta + explicación).</li>
+                <li>Guarda esa respuesta (copia o captura) y súbela al campo “Ejercicio 1” del sandbox.</li>
+            </ol>
 
-  <script src="script.js"></script>
+            <h3>Prompt de ejemplo listo para copiar</h3>
+            <pre id="ejemploPrompt1">Eres un tutor empático. Clasifica este ticket de salida como
+'Positivo', 'Neutral' o 'Necesita apoyo' y explica en una frase por
+qué:
+“La actividad fue interesante, pero todavía no entiendo bien cómo
+funciona la fotosíntesis."</pre>
+            <button class="copy-btn" data-target="ejemploPrompt1">Copiar ejemplo</button>
+
+            <div class="sandbox">
+                <h3>Tu Prompt Aquí:</h3>
+                <textarea id="promptInput1" placeholder="Escribe tu prompt o pega el ejemplo aquí..."></textarea>
+                <button class="evaluate-btn" data-exercise="1">Evaluar Prompt</button>
+                <div class="ai-response" id="aiResponse1"></div>
+            </div>
+
+            <h3>Feedback automático que recibirás</h3>
+            <div class="exercise-info">
+                <div class="info-block">
+                    <h4>Criterio verificado por la IA del sandbox</h4>
+                    <ul>
+                        <li>Etiqueta válida (solo 3 opciones)</li>
+                        <li>Explicación = 1 frase</li>
+                        <li>Coherencia entre etiqueta y justificación</li>
+                    </ul>
+                </div>
+                <div class="info-block">
+                    <h4>Ejemplo de retroalimentación</h4>
+                    <ul>
+                        <li>"La etiqueta 'Confuso' no existe; usa Positivo / Neutral / Necesita apoyo."</li>
+                        <li>"Tu explicación tiene 2 frases. Reduce a una sola.”</li>
+                        <li>“Dices 'Positivo', pero explicas que el alumno no entendió; revisa."</li>
+                    </ul>
+                </div>
+            </div>
+            <p>Cuando los tres criterios se cumplen, verás <span class="check-icon">✅</span> Ticket clasificado correctamente.</p>
+
+            <h3>¿Qué harás con el resultado?</h3>
+            <ul>
+                <li>Positivo → Felicitación breve al inicio de la próxima clase.</li>
+                <li>Neutral → Preguntar si necesitan un ejemplo adicional.</li>
+                <li>Necesita apoyo → Preparar material de repaso o tutoría rápida.</li>
+            </ul>
+            <p><strong>Beneficio inmediato:</strong> Con 1-2 minutos de transcripción y el apoyo de la IA, obtienes un mapa claro de cómo salieron tus alumnos de la sesión presencial y puedes ajustar tu enseñanza al día siguiente. ¡Pruébalo ahora y verás la diferencia!</p>
+        </section>
+
+        <hr>
+
+        <section id="ejercicio2">
+            <h2>2. Resume una explicación para padres</h2>
+
+            <h3>¿Para qué sirve?</h3>
+            <p>Convertir textos largos en mensajes claros y breves que los padres puedan leer rápidamente.</p>
+
+            <h3>Ejercicio</h3>
+            <ul>
+                <li><strong>Texto a resumir (cópialo en el sandbox):</strong>
+                    <pre id="textoResumir2">“Hoy investigamos los ciclos del agua: hicimos un diorama, observamos
+evaporación, condensación y lluvia, y registramos todo en nuestro
+cuaderno de campo."</pre>
+                    <button class="copy-btn" data-target="textoResumir2">Copiar texto</button>
+                </li>
+                <li><strong>Prompt Completo (Ejemplo):</strong>
+                    <pre id="ejemploPrompt2">“Actúa como comunicador escolar. Resume este texto en 40 palabras
+para que los padres entiendan la actividad de sus hijos.”</pre>
+                     <button class="copy-btn" data-target="ejemploPrompt2">Copiar ejemplo</button>
+                </li>
+            </ul>
+
+            <div class="sandbox">
+                <h3>Tu Prompt Aquí:</h3>
+                <textarea id="promptInput2" placeholder="Escribe tu prompt o pega el ejemplo aquí..."></textarea>
+                <button class="evaluate-btn" data-exercise="2">Evaluar Prompt</button>
+                <div class="ai-response" id="aiResponse2"></div>
+            </div>
+             <p>[ Evaluar Prompt ] → Ajusta hasta lograr un mensaje claro y breve.</p>
+        </section>
+
+        <hr>
+
+        <section id="ejercicio3">
+            <h2>3. Adapta un fragmento al nivel de secundaria</h2>
+
+            <h3>¿Para qué sirve?</h3>
+            <p>Hacer accesible cualquier contenido usando palabras sencillas y ejemplos familiares.</p>
+
+            <h3>Ejercicio</h3>
+            <ul>
+                <li><strong>Texto original (cópialo):</strong>
+                    <pre id="textoOriginal3">"El proceso de oxidación implica la pérdida de electrones por parte de
+una sustancia."</pre>
+                     <button class="copy-btn" data-target="textoOriginal3">Copiar texto</button>
+                </li>
+                <li><strong>Prompt Completo (Ejemplo):</strong>
+                    <pre id="ejemploPrompt3">"Eres un profesor de secundaria. Reescribe este texto con palabras
+sencillas y un ejemplo práctico cotidiano sobre oxidación.”</pre>
+                     <button class="copy-btn" data-target="ejemploPrompt3">Copiar ejemplo</button>
+                </li>
+            </ul>
+
+            <div class="sandbox">
+                 <h3>Tu Prompt Aquí:</h3>
+                <textarea id="promptInput3" placeholder="Escribe tu prompt o pega el ejemplo aquí..."></textarea>
+                <button class="evaluate-btn" data-exercise="3">Evaluar Prompt</button>
+                <div class="ai-response" id="aiResponse3"></div>
+            </div>
+            <p>[ Evaluar Prompt ] → Verifica que el resultado sea comprensible y didáctico.</p>
+        </section>
+
+        <hr>
+
+        <section id="ejercicio4">
+            <h2>4. Itera y mejora tu prompt: reflexiona sobre las interacciones</h2>
+
+            <h3>¿Qué es “iterar” con IA generativa?</h3>
+            <p>Piensa en la iteración como pulir una joya:</p>
+            <ol>
+                <li>Esbozas la forma (tu primer prompt).</li>
+                <li>Observas el brillo (la respuesta de la IA).</li>
+                <li>Limas otra arista (ajustas tono, añades contexto, cambias formato).</li>
+                <li>Repites hasta que la gema refleja exactamente lo que imaginaste.</li>
+            </ol>
+
+            <h3>Por qué es tan poderosa</h3>
+            <ul>
+                <li><strong>Aprendizaje instantáneo:</strong> cada ajuste enseña a la IA qué prefieres y te enseña a ti cómo pedirlo mejor.</li>
+                <li><strong>Creatividad sin miedo:</strong> ninguno de los intentos se “pierde”; cada versión abre una idea nueva.</li>
+                <li><strong>Resultados de nivel pro:</strong> con 3-4 vueltas consigues textos, guiones o imágenes que antes requerían horas.</li>
+            </ul>
+
+            <h3>3 claves para iterar con entusiasmo</h3>
+            <div class="exercise-info">
+                <div class="info-block">
+                    <h4>Clave</h4>
+                    <ul>
+                        <li>Claridad</li>
+                        <li>Exploración</li>
+                        <li>Refinamiento</li>
+                    </ul>
+                </div>
+                <div class="info-block">
+                    <h4>Pregunta mágica</h4>
+                    <ul>
+                        <li>"¿Cómo puedo hacerlo más específico?"</li>
+                        <li>"Muéstrame una versión alternativa"</li>
+                        <li>“Acorta / amplía / resume"</li>
+                    </ul>
+                </div>
+                 <div class="info-block">
+                    <h4>Ejemplo rápido</h4>
+                    <ul>
+                        <li>Añade público y formato: “para alumnos de 14 años, en 3 viñetas"</li>
+                        <li>Pide la misma idea en tono humorístico o formal</li>
+                        <li>Reducir un párrafo a 50 palabras o expandirlo con ejemplos</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="motivational">Motívate: ¡Cada iteración es un paso visible de progreso! En minutos verás cómo una idea borrosa se convierte en un recurso brillante y listo para tu clase. ¡Empieza a iterar hoy y deja que la IA sea tu taller creativo portátil!</p>
+
+            <h3>¿Para qué sirve?</h3>
+            <p>Aprenderás a refinar un prompt paso a paso, aplicando los criterios de un buen prompt vistos en la Sesión 2:</p>
+            <ul>
+                <li><strong>Rol:</strong> quién habla (por ejemplo, “Eres un profesor...").</li>
+                <li><strong>Objetivo:</strong> qué quieres lograr (resumir, clasificar, adaptar...).</li>
+                <li><strong>Contexto:</strong> situación o audiencia (alumnos de secundaria, padres...).</li>
+                <li><strong>Claridad y especificidad:</strong> instrucciones detalladas, pasos concretos.</li>
+                <li><strong>Formato deseado:</strong> si pides tabla, lista, ejemplo, analogía...</li>
+                <li><strong>Refinamiento:</strong> solicita ajustar tono, extensión o complejidad.</li>
+            </ul>
+
+            <h3>Ejercicio</h3>
+            <ol>
+                <li>Version 1: Escribe un prompt genérico para “explicar el ciclo del agua".</li>
+                <li>Evaluación: Ejecuta en el sandbox y observa la respuesta.</li>
+                <li>Refinamiento: Aplica cada criterio de un buen prompt:
+                    <ul>
+                        <li>Añade Rol (“Eres un profesor de ciencias...").</li>
+                        <li>Define Objetivo (“Explica el ciclo del agua en 5 pasos”).</li>
+                        <li>Agrega Contexto (“para alumnos de secundaria").</li>
+                        <li>Especifica Formato (“usa una lista numerada").</li>
+                    </ul>
+                </li>
+                <li>Version 2: Ejecuta el prompt refinado.</li>
+                <li>Comparación: Anota en qué mejoró la respuesta (más clara, más breve, mejor estructura).</li>
+            </ol>
+
+            <div class="sandbox exercise4-sandbox">
+                <div class="version-section">
+                    <h4>Tu Prompt Inicial (V1):</h4>
+                    <textarea id="promptInput4_v1" placeholder="Escribe tu prompt inicial aquí..."></textarea>
+                    <button class="evaluate-btn" data-exercise="4" data-version="v1">Evaluar V1</button>
+                    <div class="ai-response" id="aiResponse4_v1"></div>
+                    <p>[ Evaluar V1 ] → Observa respuesta.</p>
+                </div>
+                <div class="version-section">
+                    <h4>Tu Prompt Refinado (V2):</h4>
+                    <textarea id="promptInput4_v2" placeholder="Escribe tu prompt refinado aquí..."></textarea>
+                    <button class="evaluate-btn" data-exercise="4" data-version="v2">Evaluar V2</button>
+                    <div class="ai-response" id="aiResponse4_v2"></div>
+                    <p>[ Evaluar V2 ] → Observa respuesta mejorada.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="cierre">
+            <h2>Cierre:</h2>
+            <p>En este último ejercicio verás cómo las iteraciones aplicando los criterios de la Sesión 2 convierten un prompt vago en uno preciso y eficaz. ¡Comparte tus dos versiones y tus conclusiones en el foro de la sesión!</p>
+        </section>
+
+    </main>
+
+    <script src="script.js" defer></script>
 </body>
 </html>

@@ -1,243 +1,140 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // --- Intersection Observer for Animations ---
-  const sectionsToAnimate = document.querySelectorAll('.animate-on-scroll');
-  const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-  const observerCallback = (entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-      }
+    // Add functionality to "Copy Example" buttons
+    document.querySelectorAll('.copy-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const targetId = button.dataset.target;
+            const textToCopy = document.getElementById(targetId).textContent;
+
+            // Use Clipboard API for modern browsers
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    console.log('Text copied to clipboard');
+                    // Optional: Provide user feedback (e.g., change button text temporarily)
+                    const originalText = button.textContent;
+                    button.textContent = '¡Copiado!';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Could not copy text: ', err);
+                    // Fallback if Clipboard API fails or is not available
+                    fallbackCopyTextToClipboard(textToCopy);
+                });
+            } else {
+                 // Fallback for older browsers
+                 fallbackCopyTextToClipboard(textToCopy);
+            }
+        });
     });
-  };
-  const observer = new IntersectionObserver(observerCallback, observerOptions);
-  sectionsToAnimate.forEach(section => { observer.observe(section); });
-  // --- End Intersection Observer ---
 
-
-  // --- Saludo Personalizado ---
-  const welcomeMessage = document.getElementById('welcomeMessage');
-  const defaultWelcomeText = welcomeMessage ? welcomeMessage.textContent : "Sandbox de Prompts";
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const userName = params.get('naus');
-    if (welcomeMessage && userName && userName.trim() !== '') {
-      const capitalizedUserName = userName.charAt(0).toUpperCase() + userName.slice(1).toLowerCase();
-      welcomeMessage.textContent = `¡Hola, ${capitalizedUserName}!`;
-      const subtitle = document.querySelector('.main-header .subtitle');
-      if (subtitle) {
-          subtitle.textContent = `Bienvenido/a al Sandbox Inteligente. ${subtitle.textContent}`;
-      }
-    } else if (welcomeMessage) {
-        welcomeMessage.textContent = defaultWelcomeText;
-    }
-  } catch (e) {
-    console.error("Error al procesar parámetros de URL:", e);
-     if (welcomeMessage) welcomeMessage.textContent = defaultWelcomeText;
-  }
-  // --- Fin Saludo Personalizado ---
-
-  // --- Paso 2: Resultado Desplegable ---
-  const toggleOutputBtn = document.getElementById('toggleOutputBtn');
-  const iaOutputContent = document.getElementById('iaOutputContent');
-  if (toggleOutputBtn && iaOutputContent) {
-    toggleOutputBtn.addEventListener('click', () => {
-      const isVisible = iaOutputContent.classList.contains('visible');
-      if (isVisible) {
-        iaOutputContent.classList.remove('visible');
-        toggleOutputBtn.textContent = 'Mostrar Resultado Ejemplo';
-      } else {
-        iaOutputContent.classList.add('visible');
-        toggleOutputBtn.textContent = 'Ocultar Resultado Ejemplo';
-      }
-    });
-  }
-
-  // --- Helper: Show Feedback with Animation ---
-  function showFeedback(element, message, type = 'bad', isLoading = false) {
-      if (!element) return;
-      element.textContent = '';
-      element.className = 'feedback animate-feedback';
-      setTimeout(() => {
-          if (isLoading) {
-              element.innerHTML = `<span class="loader"></span> ${message}`;
-              element.classList.add('feedback--loading');
-          } else {
-              // Asegúrate que el mensaje sea tratado como texto plano
-              element.textContent = message;
-              element.classList.add(`feedback--${type}`);
-          }
-          element.classList.add('visible');
-      }, 10);
-  }
-
-   // --- Helper: Show/Hide Completion Message ---
-    function showCompletionMessage(show = true) {
-        const completionDiv = document.getElementById('completionMessage');
-        if (!completionDiv) return;
-        if (show) {
-            completionDiv.style.display = 'block';
-            setTimeout(() => { completionDiv.classList.add('visible'); }, 10);
-        } else {
-            completionDiv.classList.remove('visible');
-            completionDiv.style.display = 'none';
+     function fallbackCopyTextToClipboard(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        // Avoid scrolling to bottom
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            const successful = document.execCommand('copy');
+            const msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Fallback: Copying text command was ' + msg);
+             // Optional: Provide user feedback (e.g., change button text temporarily)
+             const originalText = button.textContent; // Need to capture button context if using this fallback directly in event listener
+             // For now, just log success
+             console.log('¡Copiado!');
+        } catch (err) {
+            console.error('Fallback: Oops, unable to copy', err);
+             alert('Error al copiar. Por favor, selecciona el texto manualmente y cópialo.');
         }
+        document.body.removeChild(textArea);
     }
 
 
-  // --- Paso 4: Calentamiento de prompts ---
-  const analyzeBtn = document.getElementById('analyzeBtn');
-  const retryBtn = document.getElementById('retryBtn');
-  const feedback4 = document.getElementById('step4Feedback');
-  const paso4 = document.getElementById('paso4');
-  const warmupForm = document.getElementById('warmupForm');
-  if (analyzeBtn && feedback4 && paso4 && warmupForm) {
-    analyzeBtn.addEventListener('click', async () => {
-        showFeedback(feedback4, 'Analizando tu prompt...', '', true);
-        if (retryBtn) retryBtn.style.display = 'none';
-        const rol = warmupForm.querySelector('[name="rol"]')?.value.trim() || '';
-        const objetivo = warmupForm.querySelector('[name="objetivo"]')?.value.trim() || '';
-        const contexto = warmupForm.querySelector('[name="contexto"]')?.value.trim() || '';
+    // Function to handle prompt evaluation
+    async function evaluatePrompt(promptText, responseElementId, buttonElement) {
+        const responseElement = document.getElementById(responseElementId);
 
-        if (!rol || !objetivo || !contexto) {
-            showFeedback(feedback4, 'Por favor, completa Rol, Objetivo y Contexto.', 'bad');
-            paso4.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (!promptText.trim()) {
+            responseElement.textContent = 'Por favor, introduce un prompt.';
+            responseElement.classList.add('error');
+            responseElement.classList.remove('loading');
             return;
         }
+
+        // Clear previous response and show loading state
+        responseElement.textContent = 'Cargando respuesta de la IA...';
+        responseElement.className = 'ai-response loading'; // Reset classes, add loading
+        if (buttonElement) buttonElement.disabled = true; // Disable button while loading
+
         try {
-            // **REAL API CALL (Step 4)**
-            const res = await fetch('/api/analyze', {
+            // --- IMPORTANT ---
+            // This is where you would send the prompt to your Node.js backend.
+            // The URL '/api/consulta' is a placeholder.
+            // Your backend (consulta.js) needs to:
+            // 1. Listen for POST requests at this URL.
+            // 2. Read the JSON body to get the prompt text.
+            // 3. Send the prompt to your AI model (e.g., OpenAI API, a local model, etc.).
+            // 4. Get the AI response.
+            // 5. Send the AI response back to the frontend, preferably as JSON: { text: "AI response here" }.
+            // --- -------------
+            const response = await fetch('/api/consulta', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ rol, objetivo, contexto })
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: promptText }),
             });
 
-            if (!res.ok) {
-                const errorData = await res.json().catch(() => ({ error: `Error HTTP ${res.status}` }));
-                throw new Error(errorData.error || `Error HTTP ${res.status}`);
+            if (!response.ok) {
+                // Handle HTTP errors
+                const errorText = await response.text(); // Or response.json() if your backend sends JSON errors
+                throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
             }
 
-            const data = await res.json(); // Expected: { suggestions, score, ok }
+            const data = await response.json(); // Assuming your backend sends back JSON like { text: "..." }
 
-            let feedbackType = 'bad';
-            // Usamos 'ok' como principal indicador, luego 'score'
-            if (data.ok === true) {
-                feedbackType = 'good';
-            } else if (data.score !== undefined && data.score >= 50) {
-                 feedbackType = 'okay';
-            }
-
-            // Mostrar sugerencias (puede ser HTML o texto plano)
-            // Si viene como HTML, innerHTML es correcto. Si es texto plano, textContent.
-            // Por seguridad, si no estamos seguros, usamos textContent.
-             if (feedback4) {
-                 feedback4.textContent = ''; // Clear previous content/loader
-                 feedback4.className = 'feedback animate-feedback'; // Reset classes
-             }
-             showFeedback(feedback4, data.suggestions || 'Análisis completado.', feedbackType);
-
-
-            if (feedbackType !== 'good' && retryBtn) {
-                retryBtn.style.display = 'inline-block';
-            }
-
-        } catch (err) {
-            console.error("Error en Paso 4:", err);
-            showFeedback(feedback4, `Error al analizar: ${err.message}. Intenta de nuevo.`, 'bad');
-            if (retryBtn) retryBtn.style.display = 'inline-block';
-        }
-        feedback4.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-  }
-  if (retryBtn && feedback4 && paso4 && warmupForm) {
-    retryBtn.addEventListener('click', () => {
-      feedback4.textContent = '';
-      feedback4.className = 'feedback animate-feedback';
-      retryBtn.style.display = 'none';
-      warmupForm.reset();
-      paso4.querySelector('input[name="rol"]')?.focus();
-    });
-  }
-
-  // --- Paso 5: Evaluación semáforo y Finalización ---
-  const evaluateBtn = document.getElementById('evaluatePrompt');
-  const challengeFeedback = document.getElementById('challengeFeedback');
-  const trafficLights = document.querySelectorAll('#trafficLight .light');
-  const studentPromptText = document.getElementById('studentPrompt');
-  const paso5 = document.getElementById('paso5');
-  const completionMessageDiv = document.getElementById('completionMessage');
-
-  function setTrafficLight(level) { // level: 'red', 'yellow', 'green'
-      trafficLights.forEach(light => {
-          light.classList.remove('active');
-          if (level && light.classList.contains(level)) {
-              light.classList.add('active');
-          }
-      });
-  }
-
-  if (evaluateBtn && challengeFeedback && trafficLights.length > 0 && studentPromptText && paso5 && completionMessageDiv) {
-    evaluateBtn.addEventListener('click', async () => {
-        const studentPrompt = studentPromptText.value.trim();
-
-        setTrafficLight(null);
-        showCompletionMessage(false);
-        showFeedback(challengeFeedback, 'Evaluando tu prompt...', '', true);
-
-        if (!studentPrompt) {
-            showFeedback(challengeFeedback, 'Escribe tu prompt antes de evaluar.', 'bad');
-            setTrafficLight('red');
-            paso5.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            return;
-        }
-
-        try {
-            // **REAL API CALL (Step 5)**
-            const res = await fetch('/api/evaluate', {
-                 method: 'POST',
-                 headers: { 'Content-Type': 'application/json' },
-                 body: JSON.stringify({ prompt: studentPrompt })
-             });
-
-             if (!res.ok) {
-                const errorData = await res.json().catch(() => ({ error: `Error HTTP ${res.status}` }));
-                throw new Error(errorData.error || `Error HTTP ${res.status}`);
-            }
-
-            const info = await res.json(); // Expected: { level, feedback }
-
-            // Validar el nivel recibido del backend
-            const validLevels = ['red', 'yellow', 'green'];
-            const level = validLevels.includes(info.level) ? info.level : 'red'; // Default a 'red' si no es válido
-
-             // Mapear nivel ('red', 'yellow', 'green') a tipo de feedback para CSS ('bad', 'okay', 'good')
-            let feedbackType = 'bad';
-            if (level === 'green') feedbackType = 'good';
-            else if (level === 'yellow') feedbackType = 'okay';
-
-            setTrafficLight(level);
-            showFeedback(challengeFeedback, info.feedback || 'Evaluación completada.', feedbackType);
-
-            if (feedbackType === 'okay' || feedbackType === 'good') {
-                 showCompletionMessage(true);
-                 completionMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Display the AI response
+            if (data && data.text) {
+                responseElement.textContent = data.text;
+                responseElement.className = 'ai-response'; // Remove loading/error classes
             } else {
-                 showCompletionMessage(false);
+                throw new Error('Invalid response format from backend');
             }
 
-
-        } catch (e) {
-            console.error("Error en Paso 5:", e);
-            showFeedback(challengeFeedback, `Error al evaluar: ${e.message}. Intenta más tarde.`, 'bad');
-            setTrafficLight('red');
-            showCompletionMessage(false);
+        } catch (error) {
+            console.error('Error fetching AI response:', error);
+            responseElement.textContent = `Error: No se pudo obtener respuesta de la IA. (${error.message || 'Error desconocido'})`;
+            responseElement.className = 'ai-response error'; // Set error class
+        } finally {
+            if (buttonElement) buttonElement.disabled = false; // Re-enable button
         }
+    }
 
-        // Scroll al feedback solo si el mensaje de completado NO se muestra
-        if (!completionMessageDiv.classList.contains('visible')) {
-             challengeFeedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+    // Add event listeners to evaluation buttons
+    document.querySelectorAll('.evaluate-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const exerciseNum = button.dataset.exercise;
+            let promptInputId, responseElementId;
+
+            if (exerciseNum === '4') {
+                // Handle Exercise 4 versions V1 and V2
+                const version = button.dataset.version;
+                promptInputId = `promptInput${exerciseNum}_${version}`;
+                responseElementId = `aiResponse${exerciseNum}_${version}`;
+            } else {
+                 // Handle Exercises 1, 2, 3
+                promptInputId = `promptInput${exerciseNum}`;
+                responseElementId = `aiResponse${exerciseNum}`;
+            }
+
+            const promptText = document.getElementById(promptInputId).value;
+
+            evaluatePrompt(promptText, responseElementId, button);
+        });
     });
-  }
 
 });

@@ -1,693 +1,193 @@
-/* Import Font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-
-/* CSS Variables */
-:root {
-  --primary-color: #f54526; /* Rojo/Naranja principal de los mockups */
-  --primary-dark: #e03e20; /* Un tono más oscuro de --primary-color para hover */
-  --secondary-color: #ffc72c; /* Amarillo de los mockups */
-  --secondary-dark: #f0b300; /* Un tono más oscuro de --secondary-color para hover */
-  
-  --action-blue: #00AEF0; /* Azul para botones específicos como "Evaluar Mi Prompt" */
-  --action-blue-dark: #0095D0;
-
-  --text-color: #374151; /* Gris oscuro para texto general */
-  --text-light: #6b7280; /* Gris medio para subtítulos, etc. */
-  
-  --bg-color: #00AEF0; /* Azul claro para el fondo principal de la página */
-  --bg-alt: #ffffff; /* Blanco para cards/secciones */
-  
-  --border-color: #e5e7eb; /* Gris claro para bordes generales */
-  --border-focus: var(--primary-color); /* Borde en focus usará el color primario */
-
-  --success-color: #10b981;
-  --success-dark: #047857;
-  --success-bg: #ecfdf5;
-  --warning-color: #f59e0b; /* Naranja (puede coincidir con secundario o ser distinto) */
-  --warning-bg: #fffbeb;
-  --error-color: #ef4444;
-  --error-bg: #fef2f2;
-  --loading-color: #6b7280;
-  --loading-bg: #f3f4f6;
-
-  /* Colores específicos para el prompt text box */
-  --prompt-box-bg: #fff9e6; /* Amarillo muy pálido, similar a #ffc62c con alpha bajo */
-  --prompt-box-border: #ffeccf; /* Borde amarillo un poco más oscuro */
-  --prompt-box-text: #b45309; /* Texto oscuro para contraste en fondo amarillo */
-
-  --font-family: 'Inter', sans-serif;
-  --border-radius: 8px;
-  --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --transition-speed: 0.3s;
-}
-
-/* Reset & Base Styles */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  font-size: 16px;
-}
-
 body {
-  font-family: var(--font-family);
-  background-color: var(--bg-color); /* MODIFICADO: Fondo principal azul */
-  color: var(--text-color);
-  line-height: 1.6;
+    font-family: sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
 }
 
-.container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1rem;
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ccc;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--text-color); /* Color por defecto para encabezados */
-  margin-bottom: 0.75rem;
-  line-height: 1.3;
+main {
+    max-width: 900px;
+    margin: 0 auto;
 }
 
-h1 { font-size: 2.25rem; font-weight: 700; }
-h2 { font-size: 1.75rem; font-weight: 700; }
-h3 { font-size: 1.25rem; font-weight: 500; }
-h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; }
-
-/* Encabezados específicos según mockup */
-.step-header h2 {
-  color: var(--primary-color); /* MODIFICADO: Rojo/Naranja */
-  margin-bottom: 0;
-}
-#paso2 .example-output h3,
-#paso2 .ejercicio h4 {
-    color: var(--primary-color); /* MODIFICADO: Rojo/Naranja */
+section {
+    background-color: #fff;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+h1, h2, h3, h4 {
+    color: #0056b3; /* A shade of blue */
+    margin-top: 0;
+}
 
-p { margin-bottom: 1rem; color: var(--text-light); }
-a { color: var(--primary-color); text-decoration: none; }
-a:hover { text-decoration: underline; }
-strong { font-weight: 700; color: var(--text-color); }
-em { font-style: italic; }
-ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
-code, .fraccion {
-    font-family: monospace;
-    background-color: #f3f4f6;
-    padding: 0.15em 0.4em;
-    border-radius: 4px;
+h2 {
+    border-bottom: 2px solid #007bff; /* A brighter blue line */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.exercise-info {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    gap: 20px; /* Space between info blocks */
+    margin-bottom: 20px;
+}
+
+.info-block {
+    flex: 1; /* Allows blocks to grow and shrink */
+    min-width: 250px; /* Minimum width before wrapping */
+    padding: 15px;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.info-block h4 {
+    margin-top: 0;
+    color: #003366; /* Darker blue for subheadings */
+}
+
+
+ul, ol {
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+pre {
+    background-color: #eee;
+    padding: 15px;
+    border-left: 4px solid #007bff;
+    overflow-x: auto; /* Add scroll for long lines */
+    white-space: pre-wrap; /* Wrap long lines */
+    word-wrap: break-word; /* Break words if necessary */
+    margin-bottom: 10px;
     font-size: 0.9em;
 }
 
-/* Header */
-.main-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border-color);
-}
-.main-header h1 { color: var(--text-color); } /* MODIFICADO: Texto oscuro, no rojo */
-.subtitle {
-  font-size: 1.1rem;
-  color: var(--text-light);
+.sandbox {
+    border: 2px dashed #007bff;
+    padding: 20px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: #e9f7ff; /* Light blue background */
+    border-radius: 8px;
 }
 
-/* Step Section Layout */
-.step-section {
-  background-color: var(--bg-alt); /* Fondo blanco para las "tarjetas" */
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
-  margin-bottom: 2.5rem;
-  padding: 2rem;
-  border: 1px solid var(--border-color);
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity var(--transition-speed) ease-out, transform var(--transition-speed) ease-out;
-}
-.step-section.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.step-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
-}
-.step-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background-color: var(--primary-color); /* MODIFICADO: Rojo/Naranja */
-  color: white;
-  font-weight: 700;
-  border-radius: 50%;
-  margin-right: 1rem;
-  font-size: 1.1rem;
-}
-
-.step-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  align-items: center;
-}
-.step-content-column {
-    display: flex;
-    flex-direction: column;
-}
-
-.step-text p:last-child {
-  margin-bottom: 0;
-}
-/* El parrafo debajo del H2 en "Partes de un buen prompt" es más oscuro que text-light */
-#paso2 > .step-content-column > .step-text p {
-    color: #525252; /* Un gris un poco más oscuro */
-}
-
-
-.step-visual {
-  text-align: center;
-}
-.step-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: var(--border-radius);
-}
-.step-image.small-image {
-    max-width: 200px;
-    margin-bottom: 1rem;
-}
-
-/* Responsive adjustments for step content */
-@media (max-width: 768px) {
-  .step-content {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  .step-visual {
-    order: -1;
-    margin-bottom: 1rem;
-  }
-  .step-image.small-image {
-      max-width: 150px;
-  }
-  .step-section { padding: 1.5rem; }
-  h1 { font-size: 1.8rem; }
-  h2 { font-size: 1.4rem; }
-}
-
-/* Specific Step Styles */
-
-/* Paso 2 - Parts */
-.example-parts-container {
-    background-color: var(--secondary-color); /* MODIFICADO: Amarillo */
-    border-radius: var(--border-radius);
-    padding: 1rem 1.5rem;
-    margin-bottom: 1.5rem;
-    /* border: 1px solid var(--secondary-dark);  Opcional, si se quiere un borde más marcado */
-    display: grid;
-    gap: 0.8rem;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-}
-.example-part {
-    display: contents;
-}
-.part-label {
-    font-weight: 700;
-    color: var(--text-color); /* Texto oscuro para contraste con fondo amarillo */
-    padding-right: 0.5em;
-}
-.part-value {
-    background-color: white;
-    padding: 0.3rem 0.6rem;
+textarea {
+    width: calc(100% - 24px); /* Adjust for padding */
+    min-height: 100px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 0.95em;
-    border: 1px solid #d1d5db;
-}
-.example-parts-container .step-visual {
-    grid-column: 1 / -1;
-    text-align: right;
-    margin-top: 0.5rem;
-}
-.example-parts-container .step-visual .step-image {
-    max-width: 220px;
-    margin-bottom: 0;
+    font-family: inherit;
+    font-size: 1em;
+    resize: vertical; /* Allow only vertical resizing */
 }
 
-.example-full-prompt {
-    margin-bottom: 1.5rem;
-}
-.prompt-text-box {
-  background-color: var(--prompt-box-bg); /* MODIFICADO: Amarillo muy pálido */
-  border: 1px solid var(--prompt-box-border); /* MODIFICADO: Borde amarillo sutil */
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  font-family: monospace;
-  font-size: 0.95em;
-  line-height: 1.5;
-  color: var(--prompt-box-text); /* MODIFICADO: Texto oscuro para contraste */
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin-right: 10px; /* Space between buttons */
 }
 
-.example-output { margin-top: 1rem; }
-.collapsible-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease-out;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
-}
-.collapsible-content.visible {
-  max-height: 1500px;
-}
-.summary-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-}
-.summary-table th, .summary-table td {
-    border: 1px solid var(--border-color);
-    padding: 0.6rem 0.8rem;
-    text-align: left;
-    vertical-align: top;
-}
-.summary-table th {
-    background-color: #f3f4f6;
-    font-weight: 500;
-    color: var(--text-color);
-}
-.summary-table tbody tr:nth-child(even) {
-    background-color: var(--bg-color);
-}
-.ejercicio {
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: #f8fafc;
-    border: 1px dashed #d1d5db;
-    border-radius: var(--border-radius);
-}
-.ejercicio h4 { /* Ya cubierto por la regla general para h4 en esta sección */
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
+button:hover {
+    background-color: #0056b3;
 }
 
-
-/* Paso 3 - Key Points */
-.key-points {
-    list-style: none;
-    margin-left: 0;
-    padding-left: 0;
-}
-.key-points li {
-    margin-bottom: 1rem;
-    font-size: 1rem;
-    padding-left: 0;
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
-/* Forms & Buttons */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-label {
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-  display: block;
-}
-input[type="text"],
-textarea {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--primary-color); /* MODIFICADO: Borde rojo/naranja */
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-  font-family: var(--font-family);
-  width: 100%;
-  transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-}
-input[type="text"]:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--border-focus); /* MODIFICADO: Usa --primary-color */
-  box-shadow: 0 0 0 3px rgba(245, 69, 38, 0.3); /* MODIFICADO: Sombra roja/naranja */
-}
-textarea {
-  min-height: 120px;
-  resize: vertical;
+.ai-response {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #007bff;
+    background-color: #fff;
+    border-radius: 4px;
+    min-height: 30px; /* Give it some minimum height */
+    white-space: pre-wrap; /* Preserve formatting and wrap lines */
+    word-wrap: break-word;
 }
 
-.button-group {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-.btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color var(--transition-speed) ease, transform 0.1s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-}
-.btn:hover {
-  transform: translateY(-1px);
-  text-decoration: none;
-}
-.btn:active {
-    transform: translateY(0px);
+.ai-response.loading {
+    color: #555;
+    font-style: italic;
 }
 
-.btn-primary {
-  background-color: var(--primary-color); /* MODIFICADO: Rojo/Naranja */
-  color: #fff;
-}
-.btn-primary:hover {
-  background-color: var(--primary-dark); /* MODIFICADO */
+.ai-response.error {
+    color: #d9534f; /* Red for errors */
+    border-color: #d9534f;
 }
 
-.btn-secondary {
-  background-color: var(--secondary-color); /* MODIFICADO: Amarillo */
-  color: var(--text-color); /* MODIFICADO: Texto oscuro para contraste en amarillo */
-}
-.btn-secondary:hover {
-  background-color: var(--secondary-dark); /* MODIFICADO */
-  color: var(--text-color);
-}
-.btn-success {
-  background-color: var(--success-color);
-  color: #fff;
-}
-.btn-success:hover {
-  background-color: var(--success-dark);
+.check-icon {
+    color: green;
+    font-weight: bold;
 }
 
-/* Botón específico "Mostrar Resultado Ejemplo" debe ser rojo */
-#toggleOutputBtn {
-    background-color: var(--primary-color);
-    color: #fff;
-}
-#toggleOutputBtn:hover {
-    background-color: var(--primary-dark);
+.highlight {
+    font-weight: bold;
+    color: #007bff;
 }
 
-/* Botón específico "Evaluar Mi Prompt" debe ser azul */
-#evaluatePrompt {
-    background-color: var(--action-blue);
-    color: #fff;
-}
-#evaluatePrompt:hover {
-    background-color: var(--action-blue-dark);
+hr {
+    border: none;
+    height: 1px;
+    background-color: #ccc;
+    margin: 40px 0;
 }
 
-
-.btn-small {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-}
-
-
-/* Feedback Styling & Animation */
-.animate-feedback {
-  opacity: 0;
-  transform: scale(0.95);
-  transition: opacity var(--transition-speed) ease-out, transform var(--transition-speed) ease-out, background-color var(--transition-speed), border-color var(--transition-speed);
-}
-.animate-feedback.visible {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.feedback {
-  margin-top: 1.5rem;
-  padding: 1rem 1.25rem;
-  border-radius: var(--border-radius);
-  font-size: 0.95rem;
-  border: 1px solid transparent;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.feedback::before {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    flex-shrink: 0;
-}
-
-.feedback--loading {
-  border-color: var(--loading-color);
-  background-color: var(--loading-bg);
-  color: var(--loading-color);
-}
-.feedback--loading::before { content: none; }
-.feedback--loading .loader { margin-right: 0.75rem; }
-
-.feedback--good {
-  border-color: var(--success-color);
-  background-color: var(--success-bg);
-  color: #059669;
-}
-.feedback--good::before { background-image: url('images/feedback-good.png'); }
-
-.feedback--okay {
-  border-color: var(--warning-color);
-  background-color: var(--warning-bg);
-  color: #b45309;
-}
-.feedback--okay::before { background-image: url('images/feedback-okay.png'); }
-
-.feedback--bad {
-  border-color: var(--error-color);
-  background-color: var(--error-bg);
-  color: #dc2626;
-}
-.feedback--bad::before { background-image: url('images/feedback-bad.png'); }
-
-
-/* Loader Animation */
-.loader {
-    width: 1.2em;
-    height: 1.2em;
-    border: 0.2em solid rgba(107, 114, 128, 0.3);
-    border-top-color: var(--loading-color);
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: spin 1s linear infinite;
-    flex-shrink: 0;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-/* Paso 5 Specifics */
-.interactive-step {
-    background-color: #eff6ff; /* Un azul muy claro, se puede ajustar si es necesario */
-    border-color: #bfdbfe;
-}
-.example-case {
-    background-color: var(--bg-alt);
-    padding: 0.8rem 1.2rem;
-    border-radius: var(--border-radius);
-    margin-bottom: 1.5rem;
-    border: 1px dashed var(--border-color);
-    font-size: 0.95rem;
-}
-.example-case p { margin-bottom: 0; }
-
-.student-exercise label {
-    font-size: 1.1rem;
-    color: var(--text-color);
-    margin-bottom: 0.5rem;
-}
-.student-exercise button { margin-top: 1rem; }
-
-.feedback-area {
-    display: flex;
-    align-items: start;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-#challengeFeedback {
-    flex-grow: 1;
-    margin-top: 0;
-}
-
-#completionMessage {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--success-color);
-    background-color: var(--success-bg);
-    display: none;
+.motivational {
+    font-style: italic;
+    color: #555;
     text-align: center;
-}
-#completionMessage.visible {
-    display: block;
-}
-#completionMessage h4 {
-    color: var(--success-dark);
-    font-size: 1.3rem;
-    margin-bottom: 0.75rem;
-}
-#completionMessage p {
-    color: var(--success-dark);
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
-}
-#completionMessage .btn-success {
-    font-size: 1.05rem;
+    margin-top: 20px;
 }
 
-
-/* Traffic Light */
-#trafficLight {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  background-color: #4b5563; /* Fondo gris oscuro para el semáforo */
-  padding: 0.6rem;
-  border-radius: 20px;
-  align-self: center;
-}
-.light {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background-color: #9ca3af; /* Color base para luz apagada */
-  opacity: 0.3;
-  transition: opacity 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-}
-.light.active {
-  opacity: 1;
-  box-shadow: 0 0 10px 3px currentColor; /* Sombra del color de la luz */
-}
-.light.red { background-color: var(--error-color); color: #f87171; }
-.light.yellow { background-color: var(--warning-color); color: #fbbf24; }
-.light.green { background-color: var(--success-color); color: #34d399; }
-
-
-/* Footer */
-.main-footer {
-  text-align: center;
-  margin-top: 4rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
-  color: var(--text-light);
-  font-size: 0.9rem;
+.exercise4-sandbox {
+    display: flex;
+    gap: 20px; /* Space between V1 and V2 sections */
+    flex-wrap: wrap;
 }
 
+.version-section {
+    flex: 1; /* Make sections take equal space */
+    min-width: 300px; /* Minimum width before wrapping */
+    padding: 15px;
+    border: 1px dashed #003366;
+    border-radius: 5px;
+    background-color: #e0f7fa; /* Lighter blue */
+}
 
-/* --- ESTILOS RESPONSIVE ADICIONALES --- */
-@media (max-width: 600px) {
-
-  .example-parts-container {
-      grid-template-columns: 1fr;
-      gap: 0.5rem;
-      padding: 0.8rem 1rem;
-  }
-
-  .example-part {
-      margin-bottom: 0.5rem;
-  }
-
-  .part-label {
-      display: block;
-      margin-bottom: 0.15rem;
-      font-size: 0.85rem;
-      color: var(--text-light);
-      padding-right: 0;
-  }
-
-  .part-value {
-      display: block;
-      width: 100%;
-  }
-
-  .example-parts-container .step-visual {
-      display: none;
-  }
-
-  .summary-table {
-      border: none;
-      font-size: 0.9rem;
-  }
-
-  .summary-table thead {
-      display: none;
-  }
-
-  .summary-table tr {
-      display: block;
-      margin-bottom: 1rem;
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius);
-      background-color: var(--bg-alt);
-      padding: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-  }
-  .summary-table tbody tr:nth-child(even) {
-      background-color: var(--bg-alt);
-  }
-
-  .summary-table td {
-      display: block;
-      text-align: right;
-      padding-left: 50%;
-      position: relative;
-      border: none;
-      border-bottom: 1px dashed var(--border-color);
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-  }
-
-  .summary-table td:last-child {
-      border-bottom: none;
-  }
-
-  .summary-table td::before {
-      content: attr(data-label);
-      position: absolute;
-      left: 0.75rem;
-      top: 0.5rem;
-      width: calc(50% - 1.5rem);
-      padding-right: 10px;
-      white-space: nowrap;
-      text-align: left;
-      font-weight: 700;
-      color: var(--text-color);
-  }
-
-  h1.welcome-title { font-size: 1.5rem; } /* Asegúrate de tener esta clase en tu H1 si es necesario */
-  h1#welcomeMessage { font-size: 1.6rem; } /* O aplica al ID directamente */
-  h2 { font-size: 1.25rem; }
-  .container { padding: 0.5rem; }
-  .section-description { font-size: 0.9rem;} /* Ajusta el selector si es necesario */
-  #paso4 .section-description { font-size: 0.9rem; } /* Ejemplo de selector más específico */
-  .step-section { padding: 1rem; }
+.version-section h4 {
+    margin-top: 0;
+    color: #003366;
 }
