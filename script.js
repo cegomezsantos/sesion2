@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).catch(err => {
                     console.error('Could not copy text: ', err);
                     // Fallback if Clipboard API fails or is not available
-                    fallbackCopyTextToClipboard(textToCopy);
+                    fallbackCopyTextToClipboard(textToCopy); // Pass text to fallback
                 });
             } else {
                  // Fallback for older browsers
-                 fallbackCopyTextToClipboard(textToCopy);
+                 fallbackCopyTextToClipboard(textToCopy); // Pass text to fallback
             }
         });
     });
@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         textArea.style.top = "0";
         textArea.style.left = "0";
         textArea.style.position = "fixed";
+        textArea.style.opacity = "0"; // Make it invisible
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
@@ -42,9 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const successful = document.execCommand('copy');
             const msg = successful ? 'successful' : 'unsuccessful';
             console.log('Fallback: Copying text command was ' + msg);
-             // Optional: Provide user feedback (e.g., change button text temporarily)
-             const originalText = button.textContent; // Need to capture button context if using this fallback directly in event listener
-             // For now, just log success
+             // Since this is a fallback, we might not have direct access to the original button
+             // Could add a simple alert or log for feedback if needed.
              console.log('¡Copiado!');
         } catch (err) {
             console.error('Fallback: Oops, unable to copy', err);
@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const responseElement = document.getElementById(responseElementId);
 
         if (!promptText.trim()) {
-            responseElement.textContent = 'Por favor, introduce un prompt.';
-            responseElement.classList.add('error');
+            responseElement.textContent = 'Por favor, introduce un prompt y el texto a procesar.';
+            responseElement.className = 'ai-response error'; // Set error class
             responseElement.classList.remove('loading');
             return;
         }
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ prompt: promptText }),
+                body: JSON.stringify({ prompt: promptText }), // Send the full text area content as the prompt
             });
 
             if (!response.ok) {
@@ -102,7 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 responseElement.textContent = data.text;
                 responseElement.className = 'ai-response'; // Remove loading/error classes
             } else {
-                throw new Error('Invalid response format from backend');
+                 // If response is OK but doesn't have the expected format
+                 responseElement.textContent = 'Error: Formato de respuesta inválido del servidor.';
+                 responseElement.className = 'ai-response error';
+                 console.error('Invalid JSON response from backend:', data);
             }
 
         } catch (error) {
@@ -117,19 +120,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add event listeners to evaluation buttons
     document.querySelectorAll('.evaluate-btn').forEach(button => {
         button.addEventListener('click', () => {
-            const exerciseNum = button.dataset.exercise;
+            const exerciseNum = button.dataset.exercise; // Gets 1, 2, or 3 from the new numbering
+            const version = button.dataset.version; // Only exists for exercise 3 (formerly 4)
+
             let promptInputId, responseElementId;
 
-            if (exerciseNum === '4') {
-                // Handle Exercise 4 versions V1 and V2
-                const version = button.dataset.version;
-                promptInputId = `promptInput${exerciseNum}_${version}`;
-                responseElementId = `aiResponse${exerciseNum}_${version}`;
-            } else {
-                 // Handle Exercises 1, 2, 3
-                promptInputId = `promptInput${exerciseNum}`;
-                responseElementId = `aiResponse${exerciseNum}`;
+            // Construct IDs based on new exercise numbers and potentially version
+            if (exerciseNum === '3' && version) { // Exercise 3 (formerly 4) has versions
+                promptInputId = `promptInput${exerciseNum}_v2_${version}`;
+                responseElementId = `aiResponse${exerciseNum}_v2_${version}`;
+            } else { // Exercises 1 and 2 (formerly 2 and 3)
+                promptInputId = `promptInput${exerciseNum}_v2`;
+                responseElementId = `aiResponse${exerciseNum}_v2`;
             }
+
 
             const promptText = document.getElementById(promptInputId).value;
 

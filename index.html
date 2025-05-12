@@ -9,160 +9,84 @@
 <body>
     <header>
         <h1>Bienvenido al Sandbox Inteligente – SESIÓN 2</h1>
-        <p>En esta práctica realizaremos 4 actividades pensadas para docentes de educación secundaria. Cada una combina una breve explicación y un ejercicio directo en el entorno de IA.</p>
+        <p>En esta práctica realizaremos 3 actividades pensadas para docentes de educación secundaria. Cada una combina una breve explicación y un ejercicio directo en el entorno de IA.</p>
+        <hr>
     </header>
 
     <main>
-        <section id="ejercicio1">
-            <h2>Ejercicio 1 – Lectura rápida de “Tickets de salida” con IA</h2>
 
-            <div class="exercise-info">
-                <div class="info-block">
-                    <h3>Objetivo didáctico</h3>
-                    <p>Detectar, al terminar la clase, si los alumnos se van satisfechos, confusos o desanimados.</p>
-                </div>
-                <div class="info-block">
-                    <h3>Herramienta</h3>
-                    <p>Chat del sandbox (modelo tipo ChatGPT).</p>
-                </div>
-                <div class="info-block">
-                    <h3>Producto que entregarás</h3>
-                    <p>Captura o copia que muestre la etiqueta ("Positivo”, “Neutral” o "Necesita apoyo") + justificación breve (1 frase).</p>
-                </div>
-            </div>
-
-            <h3>Escenario educativo (presencial)</h3>
-            <p>Al despedirse, cada estudiante escribe en un pequeño papel (“ticket de salida”) una frase sobre cómo se sintió con la lección de hoy. Tú tomas algunos de esos comentarios, los transcribes en tu computadora y pides a la IA que los clasifique para decidir a quién dar refuerzo extra mañana.</p>
-
-            <h3>Pasos que realizarás</h3>
-            <ol>
-                <li>Recopila un ticket real
-                    <ul>
-                        <li>Ejemplo realista:
-                            <pre>"La actividad fue interesante, pero todavía no entiendo bien cómo funciona la fotosíntesis."</pre>
-                        </li>
-                    </ul>
-                </li>
-                <li>Redacta el prompt siguiendo la estructura:</li>
-                <li>Eres un tutor empático. Clasifica este ticket de salida como<br>'Positivo', 'Neutral' o 'Necesita apoyo' y explica en una frase por qué:</li>
-                <li>“<escribe aquí el comentario del alumno>”</li>
-                <li><span class="highlight">Pega el prompt en el chat del sandbox y pulsa Evaluar Prompt.</span></li>
-                <li>Observa la respuesta de la IA (etiqueta + explicación).</li>
-                <li>Guarda esa respuesta (copia o captura) y súbela al campo “Ejercicio 1” del sandbox.</li>
-            </ol>
-
-            <h3>Prompt de ejemplo listo para copiar</h3>
-            <pre id="ejemploPrompt1">Eres un tutor empático. Clasifica este ticket de salida como
-'Positivo', 'Neutral' o 'Necesita apoyo' y explica en una frase por
-qué:
-“La actividad fue interesante, pero todavía no entiendo bien cómo
-funciona la fotosíntesis."</pre>
-            <button class="copy-btn" data-target="ejemploPrompt1">Copiar ejemplo</button>
-
-            <div class="sandbox">
-                <h3>Tu Prompt Aquí:</h3>
-                <textarea id="promptInput1" placeholder="Escribe tu prompt o pega el ejemplo aquí..."></textarea>
-                <button class="evaluate-btn" data-exercise="1">Evaluar Prompt</button>
-                <div class="ai-response" id="aiResponse1"></div>
-            </div>
-
-            <h3>Feedback automático que recibirás</h3>
-            <div class="exercise-info">
-                <div class="info-block">
-                    <h4>Criterio verificado por la IA del sandbox</h4>
-                    <ul>
-                        <li>Etiqueta válida (solo 3 opciones)</li>
-                        <li>Explicación = 1 frase</li>
-                        <li>Coherencia entre etiqueta y justificación</li>
-                    </ul>
-                </div>
-                <div class="info-block">
-                    <h4>Ejemplo de retroalimentación</h4>
-                    <ul>
-                        <li>"La etiqueta 'Confuso' no existe; usa Positivo / Neutral / Necesita apoyo."</li>
-                        <li>"Tu explicación tiene 2 frases. Reduce a una sola.”</li>
-                        <li>“Dices 'Positivo', pero explicas que el alumno no entendió; revisa."</li>
-                    </ul>
-                </div>
-            </div>
-            <p>Cuando los tres criterios se cumplen, verás <span class="check-icon">✅</span> Ticket clasificado correctamente.</p>
-
-            <h3>¿Qué harás con el resultado?</h3>
-            <ul>
-                <li>Positivo → Felicitación breve al inicio de la próxima clase.</li>
-                <li>Neutral → Preguntar si necesitan un ejemplo adicional.</li>
-                <li>Necesita apoyo → Preparar material de repaso o tutoría rápida.</li>
-            </ul>
-            <p><strong>Beneficio inmediato:</strong> Con 1-2 minutos de transcripción y el apoyo de la IA, obtienes un mapa claro de cómo salieron tus alumnos de la sesión presencial y puedes ajustar tu enseñanza al día siguiente. ¡Pruébalo ahora y verás la diferencia!</p>
-        </section>
-
-        <hr>
-
-        <section id="ejercicio2">
-            <h2>2. Resume una explicación para padres</h2>
+        <section id="ejercicio1_v2">
+            <div class="section-number">1</div>
+            <h2>1. Resume una explicación para padres</h2>
 
             <h3>¿Para qué sirve?</h3>
-            <p>Convertir textos largos en mensajes claros y breves que los padres puedan leer rápidamente.</p>
+            <p>Para comunicar de forma clara y concisa a los padres el progreso y las actividades de sus hijos en clase, facilitando su involucración y comprensión.</p>
 
             <h3>Ejercicio</h3>
             <ul>
-                <li><strong>Texto a resumir (cópialo en el sandbox):</strong>
-                    <pre id="textoResumir2">“Hoy investigamos los ciclos del agua: hicimos un diorama, observamos
-evaporación, condensación y lluvia, y registramos todo en nuestro
-cuaderno de campo."</pre>
-                    <button class="copy-btn" data-target="textoResumir2">Copiar texto</button>
+                <li><strong>Texto a resumir (el apunte del profesor):</strong>
+                    <pre id="textoResumir1_v2">Estimados padres,
+
+Quería compartir con ustedes una breve actualización sobre la clase de hoy de Historia, donde iniciamos el fascinante tema de las civilizaciones antiguas, centrándonos específicamente en Mesopotamia. Cubrimos aspectos clave como su ubicación geográfica entre los ríos Tigris y Éufrates, la invención de la escritura (cuneiforme) y la importancia de la agricultura de regadío para su desarrollo.
+
+Durante la clase, noté que algunos estudiantes tuvieron dificultades para diferenciar entre los distintos imperios que surgieron en la región (Sumerios, Acadios, Babilonios). La línea de tiempo parece ser un punto confuso.
+
+Para ayudarles a consolidar este conocimiento fundamental, he asignado como tarea leer las páginas 35-40 del libro de texto y completar el mapa conceptual del capítulo 3 en sus cuadernos para la próxima sesión. Es vital que repasen estos conceptos, ya que son la base para entender las civilizaciones posteriores que estudiaremos.
+
+Les agradecería mucho si pudieran animar a sus hijos a dedicar tiempo a esta tarea y ofrecerles apoyo si surgen dudas. Una comprensión sólida ahora facilitará enormemente el aprendizaje futuro.
+
+Gracias por su colaboración.</pre>
+                    <button class="copy-btn" data-target="textoResumir1_v2">Copiar texto</button>
                 </li>
                 <li><strong>Prompt Completo (Ejemplo):</strong>
-                    <pre id="ejemploPrompt2">“Actúa como comunicador escolar. Resume este texto en 40 palabras
-para que los padres entiendan la actividad de sus hijos.”</pre>
-                     <button class="copy-btn" data-target="ejemploPrompt2">Copiar ejemplo</button>
+                    <pre>Actúa como comunicador escolar. Resume este texto en 60 palabras
+para que los padres entiendan la actividad de sus hijos y la tarea asignada:</pre>
                 </li>
             </ul>
 
             <div class="sandbox">
-                <h3>Tu Prompt Aquí:</h3>
-                <textarea id="promptInput2" placeholder="Escribe tu prompt o pega el ejemplo aquí..."></textarea>
-                <button class="evaluate-btn" data-exercise="2">Evaluar Prompt</button>
-                <div class="ai-response" id="aiResponse2"></div>
+                <h3>Escribe tu instrucción (Prompt) y luego pega el texto a procesar a continuación:</h3>
+                 <p>Ejemplo de estructura: [Tu instrucción aquí]\n[El texto completo que quieres que la IA procese]</p>
+                <textarea id="promptInput1_v2" placeholder="Escribe tu prompt y pega el texto aquí..."></textarea>
+                <button class="evaluate-btn orange-button" data-exercise="1">Evaluar Prompt</button>
+                <div class="ai-response" id="aiResponse1_v2"></div>
             </div>
-             <p>[ Evaluar Prompt ] → Ajusta hasta lograr un mensaje claro y breve.</p>
+             <!-- <p>[ Evaluar Prompt ] → Ajusta hasta lograr un mensaje claro y breve.</p> -->
         </section>
 
-        <hr>
-
-        <section id="ejercicio3">
-            <h2>3. Adapta un fragmento al nivel de secundaria</h2>
+        <section id="ejercicio2_v2">
+             <div class="section-number">2</div>
+            <h2>2. Adapta un fragmento al nivel de secundaria</h2>
 
             <h3>¿Para qué sirve?</h3>
             <p>Hacer accesible cualquier contenido usando palabras sencillas y ejemplos familiares.</p>
 
             <h3>Ejercicio</h3>
             <ul>
-                <li><strong>Texto original (cópialo):</strong>
-                    <pre id="textoOriginal3">"El proceso de oxidación implica la pérdida de electrones por parte de
+                <li><strong>Texto original (el que la IA adaptará):</strong>
+                    <pre id="textoOriginal2_v2">"El proceso de oxidación implica la pérdida de electrones por parte de
 una sustancia."</pre>
-                     <button class="copy-btn" data-target="textoOriginal3">Copiar texto</button>
+                     <button class="copy-btn" data-target="textoOriginal2_v2">Copiar texto</button>
                 </li>
                 <li><strong>Prompt Completo (Ejemplo):</strong>
-                    <pre id="ejemploPrompt3">"Eres un profesor de secundaria. Reescribe este texto con palabras
-sencillas y un ejemplo práctico cotidiano sobre oxidación.”</pre>
-                     <button class="copy-btn" data-target="ejemploPrompt3">Copiar ejemplo</button>
+                    <pre>Eres un profesor de secundaria. Reescribe este texto con palabras
+sencillas y un ejemplo práctico cotidiano sobre oxidación:</pre>
                 </li>
             </ul>
 
             <div class="sandbox">
-                 <h3>Tu Prompt Aquí:</h3>
-                <textarea id="promptInput3" placeholder="Escribe tu prompt o pega el ejemplo aquí..."></textarea>
-                <button class="evaluate-btn" data-exercise="3">Evaluar Prompt</button>
-                <div class="ai-response" id="aiResponse3"></div>
+                 <h3>Escribe tu instrucción (Prompt) y luego pega el texto original a continuación:</h3>
+                 <p>Ejemplo de estructura: [Tu instrucción aquí]\n[El texto original]</p>
+                <textarea id="promptInput2_v2" placeholder="Escribe tu prompt y pega el texto original aquí..."></textarea>
+                <button class="evaluate-btn orange-button" data-exercise="2">Evaluar Prompt</button>
+                <div class="ai-response" id="aiResponse2_v2"></div>
             </div>
             <p>[ Evaluar Prompt ] → Verifica que el resultado sea comprensible y didáctico.</p>
         </section>
 
-        <hr>
-
-        <section id="ejercicio4">
-            <h2>4. Itera y mejora tu prompt: reflexiona sobre las interacciones</h2>
+        <section id="ejercicio3_v2">
+             <div class="section-number">3</div>
+            <h2>3. Itera y mejora tu prompt: reflexiona sobre las interacciones</h2>
 
             <h3>¿Qué es “iterar” con IA generativa?</h3>
             <p>Piensa en la iteración como pulir una joya:</p>
@@ -177,7 +101,7 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación.”</pre>
             <ul>
                 <li><strong>Aprendizaje instantáneo:</strong> cada ajuste enseña a la IA qué prefieres y te enseña a ti cómo pedirlo mejor.</li>
                 <li><strong>Creatividad sin miedo:</strong> ninguno de los intentos se “pierde”; cada versión abre una idea nueva.</li>
-                <li><strong>Resultados de nivel pro:</strong> con 3-4 vueltas consigues textos, guiones o imágenes que antes requerían horas.</li>
+                <li><strong>Resultado óptimos:</strong> con 3-4 vueltas consigues textos, guiones o imágenes de gran calidad.</li>
             </ul>
 
             <h3>3 claves para iterar con entusiasmo</h3>
@@ -239,29 +163,38 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación.”</pre>
             <div class="sandbox exercise4-sandbox">
                 <div class="version-section">
                     <h4>Tu Prompt Inicial (V1):</h4>
-                    <textarea id="promptInput4_v1" placeholder="Escribe tu prompt inicial aquí..."></textarea>
-                    <button class="evaluate-btn" data-exercise="4" data-version="v1">Evaluar V1</button>
-                    <div class="ai-response" id="aiResponse4_v1"></div>
+                     <p>Escribe tu instrucción (Prompt) y luego pega el texto si es necesario a continuación:</p>
+                    <textarea id="promptInput3_v2_v1" placeholder="Escribe tu prompt inicial y pega el texto aquí..."></textarea>
+                    <button class="evaluate-btn orange-button" data-exercise="3" data-version="v1">Evaluar V1</button>
+                    <div class="ai-response" id="aiResponse3_v2_v1"></div>
                     <p>[ Evaluar V1 ] → Observa respuesta.</p>
                 </div>
                 <div class="version-section">
                     <h4>Tu Prompt Refinado (V2):</h4>
-                    <textarea id="promptInput4_v2" placeholder="Escribe tu prompt refinado aquí..."></textarea>
-                    <button class="evaluate-btn" data-exercise="4" data-version="v2">Evaluar V2</button>
-                    <div class="ai-response" id="aiResponse4_v2"></div>
+                     <p>Escribe tu instrucción refinada (Prompt) y luego pega el texto si es necesario a continuación:</p>
+                    <textarea id="promptInput3_v2_v2" placeholder="Escribe tu prompt refinado y pega el texto aquí..."></textarea>
+                    <button class="evaluate-btn orange-button" data-exercise="3" data-version="v2">Evaluar V2</button>
+                    <div class="ai-response" id="aiResponse3_v2_v2"></div>
                     <p>[ Evaluar V2 ] → Observa respuesta mejorada.</p>
                 </div>
             </div>
         </section>
 
-        <hr>
+        <!-- Assuming there isn't a 4th or 5th distinct exercise required from the first document's text content -->
+        <!-- If Reto Final was needed, it would be here as Section 4 -->
+        <!-- <section id="ejercicio4_v2"> ... </section> -->
 
-        <section id="cierre">
+        <section id="cierre_v2">
             <h2>Cierre:</h2>
             <p>En este último ejercicio verás cómo las iteraciones aplicando los criterios de la Sesión 2 convierten un prompt vago en uno preciso y eficaz. ¡Comparte tus dos versiones y tus conclusiones en el foro de la sesión!</p>
         </section>
 
     </main>
+
+    <footer>
+        <hr> <!-- Add horizontal rule above footer -->
+        <p>Sandbox Inteligente - ¡Sigue practicando!</p>
+    </footer>
 
     <script src="script.js" defer></script>
 </body>
