@@ -48,7 +48,7 @@ async function callDeepseekChat(systemMessage, userMessage, temperature = 0.2, m
                     Authorization: `Bearer ${DEEPSEEK_KEY}`,
                     'Content-Type': 'application/json'
                 },
-                timeout: 25000 // Increased timeout for potentially longer generations/evaluations
+                timeout: 20000 // Increased timeout for potentially longer generations/evaluations
             }
         );
 
