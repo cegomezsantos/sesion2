@@ -190,7 +190,8 @@ button:disabled {
     min-height: 150px;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid var(--primary-color); /* Orange border */
+    /* Corrected border color based on annotation */
+    border: 1px solid #E03E20;
     border-radius: 4px;
     font-family: inherit;
     font-size: 1em;
@@ -209,8 +210,10 @@ button:disabled {
 .ai-response {
     margin-top: 15px;
     padding: 15px;
-    border: 1px solid #ccc; /* Neutral default border */
-    background-color: #f9f9f9; /* Light background */
+    /* Removed default border based on annotation */
+    border: none; /* Removed default border */
+    /* Corrected background color based on annotation */
+    background-color: #EFF6FF;
     border-radius: 4px;
     min-height: 30px; /* Give it some initial height */
     white-space: pre-wrap; /* Respect new lines */
@@ -226,13 +229,17 @@ button:disabled {
     color: #555;
     font-style: italic;
     background-color: #e9f7ff; /* Light blue */
-    border-color: #007bff; /* Blue */
+    border-color: #007bff; /* Blue - kept as it provides visual feedback */
+    border-style: dashed; /* Added border style for clarity in loading */
+    border-width: 1px; /* Added border width */
 }
 
 .ai-response.error {
     color: var(--danger-color); /* Red */
     border-color: var(--danger-color);
     background-color: #fde0df; /* Light red */
+     border-style: solid; /* Added border style */
+     border-width: 1px; /* Added border width */
 }
 
 /* Style for the generated text within Exercise 1's response */
@@ -249,7 +256,8 @@ button:disabled {
     border-top: 1px solid #eee; /* Optional light line above feedback */
     /* Default evaluation feedback style */
      padding: 10px; /* Padding inside feedback box */
-     border: 1px dashed #ccc; /* Default dashed border */
+     /* Removed default dashed border based on annotation */
+     border: none;
      border-radius: 4px;
      background-color: #fff; /* White background for feedback */
 }
@@ -259,18 +267,24 @@ button:disabled {
     border-color: var(--success-color);
     background-color: #e9fbf1; /* Light green */
     color: var(--success-color);
+    border-style: dashed; /* Added border style */
+    border-width: 1px; /* Added border width */
 }
 
 .ai-response .evaluation-feedback.evaluation-yellow {
     border-color: var(--warning-color);
     background-color: #fffbe6; /* Light yellow */
     color: var(--warning-color);
+     border-style: dashed; /* Added border style */
+     border-width: 1px; /* Added border width */
 }
 
 .ai-response .evaluation-feedback.evaluation-red {
     border-color: var(--danger-color);
     background-color: #fde0df; /* Light red */
     color: var(--danger-color);
+     border-style: dashed; /* Added border style */
+     border-width: 1px; /* Added border width */
 }
 
 
@@ -308,7 +322,8 @@ li {
     padding: 15px;
     border: 1px dashed #ccc;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    /* Corrected background color based on annotation */
+    background-color: #FFC72C;
 }
 
 .info-block h4 {
@@ -359,9 +374,10 @@ footer hr {
     margin-bottom: 10px;
 }
 
-/* Ensure textareas within the version sections also get the orange border */
+/* Ensure textareas within the version sections also get the border color based on annotation */
 .exercise3-sandbox .version-section textarea {
-     border: 1px solid var(--primary-color); /* Orange border */
+     /* Corrected border color based on annotation */
+     border: 1px solid #E03E20;
 }
 
 /* Text instructions within version sections */
