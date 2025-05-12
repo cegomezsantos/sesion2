@@ -69,71 +69,105 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- Handler for Exercise 1 (Process and Evaluate) ---
+    // --- MODIFICACIÓN: Handler for Exercise 1 (Process and Evaluate) ---
+    // Ahora espera { evaluation: { score, feedback }, explanation }
     async function handleExercise1(button) {
         const promptInput = document.getElementById('promptInput1_v2');
-        const responseElement = document.getElementById('aiResponse1_v2');
+        const responseElement = document.getElementById('aiResponse1_v2'); // Asumo que este es el div donde muestras la respuesta
         const promptText = promptInput.value.trim();
 
+        // Limpiar contenido previo y establecer estado de carga
+        setResponseState(responseElement, 'loading');
+        button.disabled = true;
+        responseElement.innerHTML = 'Cargando evaluación...'; // Mensaje inicial más específico
+
         if (!promptText) {
-            setResponseState(responseElement, 'error', 'Por favor, introduce un prompt y el texto a procesar.');
+            setResponseState(responseElement, 'error', 'Por favor, introduce el prompt (la instrucción seguida de ": Texto a procesar").');
+            button.disabled = false; // Re-habilitar botón
             return;
         }
 
-        setResponseState(responseElement, 'loading');
-        button.disabled = true;
 
         try {
-            const response = await fetch('/api/exercise1_process', { // <-- NEW backend route
+            const response = await fetch('/api/exercise1_process', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: promptText }), // Send the full textarea content
+                body: JSON.stringify({ prompt: promptText }), // Enviar el contenido completo del textarea
             });
 
+            // Si la respuesta HTTP no es OK (ej. 400, 500, 502, 504)
             if (!response.ok) {
-                const errorBody = await response.text();
-                throw new Error(`HTTP error! status: ${response.status}, body: ${errorBody}`);
-            }
-
-            const data = await response.json(); // Expecting { generatedText, evaluation: { score, feedback } }
-
-            if (data && data.generatedText !== undefined && data.evaluation) {
-                // Display both generated text and evaluation feedback
-                let evaluationClass = '';
-                if (data.evaluation.score >= 80) {
-                    evaluationClass = 'evaluation-green';
-                } else if (data.evaluation.score >= 50) {
-                    evaluationClass = 'evaluation-yellow';
-                } else {
-                    evaluationClass = 'evaluation-red';
+                let errorMsg = `Error HTTP! Estado: ${response.status}`;
+                // Intentar leer el cuerpo del error si es JSON
+                try {
+                    const errorBody = await response.json();
+                     if (errorBody && errorBody.error) {
+                         errorMsg = `Error: ${errorBody.error}`; // Usar el mensaje de error del backend si está disponible
+                     } else {
+                         const textBody = await response.text(); // Si no es JSON, leer como texto
+                         errorMsg = `Error HTTP! Estado: ${response.status}, Respuesta: ${textBody.substring(0, 100)}...`;
+                     }
+                } catch (e) {
+                    // Fallback si no se puede leer el cuerpo de la respuesta como JSON ni texto fácilmente
+                    console.error("Could not parse error body:", e);
+                    errorMsg = `Error HTTP! Estado: ${response.status}. No se pudo obtener el detalle del error.`;
                 }
 
+                console.error('Backend error for exercise 1:', errorMsg);
+                setResponseState(responseElement, 'error', errorMsg);
+                return; // Salir después de manejar el error HTTP
+            }
+
+            // La respuesta HTTP es OK, intentamos parsear el JSON
+            const data = await response.json(); // Ahora esperamos { evaluation: { score, feedback }, explanation }
+
+            // **--- CAMBIOS PRINCIPALES AQUÍ ---**
+            // Validar la nueva estructura esperada
+            if (data && data.evaluation && typeof data.evaluation.score === 'number' && typeof data.evaluation.feedback === 'string' && typeof data.explanation === 'string') {
+
+                // Determinar la clase CSS para el feedback basada en el score
+                let evaluationClass = '';
+                if (data.evaluation.score >= 80) {
+                    evaluationClass = 'evaluation-green'; // Clase para score alto
+                } else if (data.evaluation.score >= 50) {
+                    evaluationClass = 'evaluation-yellow'; // Clase para score medio
+                } else {
+                    evaluationClass = 'evaluation-red'; // Clase para score bajo
+                }
+
+                // Mostrar la evaluación y la explicación
                 responseElement.innerHTML = `
-                    <strong>Respuesta de la IA:</strong>
-                    <div class="generated-text">${data.generatedText}</div>
-                    <hr class="feedback-divider">
-                    <strong>Evaluación del Prompt:</strong>
+                    <strong>Resultado de la Evaluación:</strong>
+                    <p>${data.explanation}</p>
                     <div class="evaluation-feedback ${evaluationClass}">
                        <p>Score: ${data.evaluation.score}/100</p>
-                       <p>${data.evaluation.feedback}</p>
+                       <p>Feedback: ${data.evaluation.feedback}</p>
                     </div>
-                `; // Use innerHTML to include formatting
-                setResponseState(responseElement, 'success'); // Clear loading/error classes
+                `; // Usar innerHTML para incluir la estructura HTML
+
+                // Limpiar estado de carga/error
+                setResponseState(responseElement, 'success');
 
             } else {
-                 setResponseState(responseElement, 'error', 'Error: Formato de respuesta inválido del servidor.');
-                 console.error('Invalid JSON response from backend for exercise 1:', data);
+                 // Si la respuesta JSON no tiene la estructura esperada
+                 setResponseState(responseElement, 'error', 'Error: Formato de respuesta inesperado de la evaluación.');
+                 console.error('Invalid JSON structure from backend for exercise 1:', data);
             }
 
         } catch (error) {
-            console.error('Error fetching AI response for exercise 1:', error);
-            setResponseState(responseElement, 'error', `Error: ${error.message || 'Error desconocido'}`);
+            // Capturar errores de fetch o parseo (si response.ok era true pero json() falló)
+            console.error('Error procesando la respuesta de la AI para el ejercicio 1:', error);
+            setResponseState(responseElement, 'error', `Error: ${error.message || 'Error desconocido durante la comunicación con el servidor'}`);
         } finally {
+            // Asegurarse de re-habilitar el botón al final
             button.disabled = false;
         }
     }
+    // --- FIN MODIFICACIÓN: Handler for Exercise 1 ---
+
 
     // --- Handler for Exercises 2 & 3 (General Generation) ---
+    // Mantida igual que en la versión original
      async function handleGeneralGeneration(button, promptInputId, responseElementId) {
         const promptInput = document.getElementById(promptInputId);
         const responseElement = document.getElementById(responseElementId);
@@ -155,21 +189,39 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                const errorBody = await response.text();
-                throw new Error(`HTTP error! status: ${response.status}, body: ${errorBody}`);
+                // Mejorar manejo de errores HTTP para general generation
+                 let errorMsg = `Error HTTP! Estado: ${response.status}`;
+                 try {
+                     const errorBody = await response.json();
+                     if (errorBody && errorBody.error) {
+                         errorMsg = `Error: ${errorBody.error}`;
+                     } else {
+                         const textBody = await response.text();
+                         errorMsg = `Error HTTP! Estado: ${response.status}, Respuesta: ${textBody.substring(0, 100)}...`;
+                     }
+                 } catch (e) {
+                     console.error("Could not parse error body:", e);
+                     errorMsg = `Error HTTP! Estado: ${response.status}. No se pudo obtener el detalle del error.`;
+                 }
+                 console.error('Backend error (general generation):', errorMsg);
+                 setResponseState(responseElement, 'error', errorMsg);
+                 return; // Exit after handling HTTP error
             }
 
+            // La respuesta HTTP es OK, intentamos parsear el JSON
             const data = await response.json(); // Expecting { text: "..." }
 
             if (data && data.text !== undefined) {
                 responseElement.textContent = data.text; // Use textContent for plain text response
                 setResponseState(responseElement, 'success');
             } else {
+                 // Si la respuesta JSON no tiene la estructura esperada
                  setResponseState(responseElement, 'error', 'Error: Formato de respuesta inválido del servidor.');
                  console.error('Invalid JSON response from backend (general generation):', data);
             }
 
         } catch (error) {
+            // Capturar errores de fetch o parseo
             console.error('Error fetching AI response (general generation):', error);
             setResponseState(responseElement, 'error', `Error: ${error.message || 'Error desconocido'}`);
         } finally {
@@ -177,7 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
     // --- Main event listener for all evaluate buttons ---
+    // Mantido igual que en la versión original
     document.querySelectorAll('.evaluate-btn').forEach(button => {
         button.addEventListener('click', () => {
             const exerciseNum = button.dataset.exercise;
@@ -185,14 +239,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             switch (exerciseNum) {
                 case '1':
-                    handleExercise1(button);
+                    handleExercise1(button); // Llama a la función modificada para el ejercicio 1
                     break;
                 case '2':
-                     // For exercise 2, the input is in promptInput2_v2 and response in aiResponse2_v2
+                     // Para el ejercicio 2, el input está en promptInput2_v2 y la respuesta en aiResponse2_v2
                     handleGeneralGeneration(button, 'promptInput2_v2', 'aiResponse2_v2');
                     break;
                 case '3':
-                    // For exercise 3, inputs and responses depend on version (v1 or v2)
+                    // Para el ejercicio 3, los inputs y respuestas dependen de la versión (v1 o v2)
                     if (version === 'v1') {
                         handleGeneralGeneration(button, 'promptInput3_v2_v1', 'aiResponse3_v2_v1');
                     } else if (version === 'v2') {
@@ -201,8 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 default:
                     console.error('Unknown exercise number:', exerciseNum);
-                    // Optionally display an error in a relevant div if possible
-                    const defaultResponseDiv = button.nextElementSibling; // Assuming response div is next sibling
+                    // Opcionalmente mostrar un error en un div relevante si es posible
+                    const defaultResponseDiv = button.nextElementSibling; // Asumiendo que el div de respuesta es el hermano siguiente
                     if (defaultResponseDiv && defaultResponseDiv.classList.contains('ai-response')) {
                          setResponseState(defaultResponseDiv, 'error', 'Error: Ejercicio no configurado.');
                     }
