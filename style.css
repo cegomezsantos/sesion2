@@ -1,4 +1,4 @@
-/* style.css */
+/* style.css - Revised based on second screenshot aesthetic */
 
 /* General styles for the body */
 body {
@@ -6,7 +6,7 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0; /* Remove default body padding */
-    background-color: #00aaff; /* Bright blue background */
+    background-color: #00aaff; /* Bright blue background from screenshot */
     color: #333; /* Default text color */
     display: flex; /* Use flexbox to center content */
     flex-direction: column;
@@ -44,7 +44,6 @@ header hr {
     margin-top: 20px;
 }
 
-
 /* Main content container */
 main {
     width: 100%;
@@ -70,7 +69,7 @@ section {
     left: -15px; /* Position outside the card on the left */
     width: 40px;
     height: 40px;
-    background-color: #ff5722; /* Orange color */
+    background-color: #ff5722; /* Orange color from screenshot */
     color: white;
     border-radius: 50%; /* Make it a circle */
     display: flex;
@@ -82,8 +81,12 @@ section {
 }
 
 /* Adjust padding inside section to make space for the number circle */
+/* Also slightly adjust heading margin */
 section {
     padding-left: 40px; /* Give space for the number on the left */
+}
+section h2 {
+    margin-left: 10px; /* Adjust slightly because number is on left */
 }
 
 
@@ -94,7 +97,6 @@ section h2 {
     margin-bottom: 15px;
     padding-bottom: 0; /* Remove border/padding from previous style */
     border-bottom: none; /* Remove border from previous style */
-    margin-left: 10px; /* Adjust slightly because number is on left */
 }
 
 section h3 {
@@ -104,62 +106,52 @@ section h3 {
     font-size: 1.2em;
 }
 
-/* Specific styling for the yellow prompt component box (Exercise 2) */
+/* Style for the yellow prompt component box (if added back - based on screenshot sec 2) */
 .prompt-components-box {
-    background-color: #ffeb3b; /* Yellow background */
+    background-color: #ffeb3b; /* Yellow background from screenshot */
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
 }
 
-.prompt-component {
-    display: flex; /* Use flexbox for label and input */
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.prompt-component label {
-    font-weight: bold;
-    margin-right: 15px;
-    min-width: 80px; /* Give labels a minimum width for alignment */
-    color: #333;
-}
-
-.prompt-component input {
-    flex-grow: 1; /* Allow input to take remaining space */
+/* Style for input fields within the yellow box (based on screenshot sec 2) */
+.prompt-components-box input {
+    flex-grow: 1;
     padding: 10px;
-    border: 1px solid #ff9800; /* Orange border */
+    border: 1px solid #ff9800; /* Orange border from screenshot */
     border-radius: 4px;
     font-size: 1em;
+    box-sizing: border-box;
 }
 
-/* Style for the prompt example text area (Exercise 2) */
-.prompt-example-area {
-    background-color: #fff3e0; /* Light orange background */
-    padding: 15px;
-    border-left: 4px solid #ff9800; /* Orange left border */
-    overflow-x: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    margin-bottom: 15px;
-    font-size: 0.9em;
-    color: #555; /* Slightly muted text color */
-    border-radius: 4px; /* Add rounded corners */
+
+/* Style for PRE elements (examples) */
+pre {
+     background-color: #fff3e0; /* Light orange background (similar to screenshot) */
+     padding: 15px;
+     border-left: 4px solid #ff9800; /* Orange left border from screenshot */
+     overflow-x: auto;
+     white-space: pre-wrap;
+     word-wrap: break-word;
+     margin-bottom: 15px;
+     font-size: 0.9em;
+     border-radius: 4px;
+     color: #555; /* Muted text color */
 }
 
-/* Style for the "Resultado Ejemplo de la IA" heading */
+/* Style for the "Resultado Ejemplo de la IA" heading (based on screenshot sec 2) */
 .resultado-heading {
-    color: #ff5722; /* Orange color */
+    color: #ff5722; /* Orange color from screenshot */
     font-size: 1.2em;
     font-weight: bold;
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
-/* Style for the orange buttons */
+/* Style for buttons */
 button {
     padding: 12px 20px; /* Slightly larger padding */
-    background-color: #007bff; /* Default button blue */
+    background-color: #007bff; /* Default button blue (as seen in some screenshot buttons) */
     color: white;
     border: none;
     border-radius: 5px; /* Slightly more rounded */
@@ -169,8 +161,9 @@ button {
     margin-right: 10px;
 }
 
+/* Style for orange buttons (as seen in screenshot for evaluation/analysis) */
 button.orange-button {
-     background-color: #ff5722; /* Orange color for specific buttons */
+     background-color: #ff5722; /* Orange color from screenshot */
 }
 
 button:hover {
@@ -187,13 +180,13 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Textarea styles (General for all textareas) */
-textarea {
-    width: calc(100% - 24px); /* Adjust for padding */
+/* Style for the main textareas within the sandbox where the user writes the prompt/text */
+.sandbox textarea {
+    width: calc(100% - 22px); /* Adjust for padding and border */
     min-height: 150px; /* Make textareas larger */
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #ff5722; /* Thin RED border from screenshot (sections 4 & 5 inputs/textareas) */
     border-radius: 4px;
     font-family: inherit;
     font-size: 1em;
@@ -201,18 +194,18 @@ textarea {
     box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
-textarea::placeholder {
+.sandbox textarea::placeholder {
     color: #999; /* Placeholder text color */
     font-style: italic;
 }
 
 
-/* Style for the AI response area (if you add one) */
+/* Style for the AI response area */
 .ai-response {
     margin-top: 15px;
     padding: 15px;
-    border: 1px solid #007bff;
-    background-color: #e9f7ff; /* Light blue background for response */
+    border: 1px solid #007bff; /* Blue border */
+    background-color: #e9f7ff; /* Light blue background */
     border-radius: 4px;
     min-height: 30px;
     white-space: pre-wrap;
@@ -226,7 +219,7 @@ textarea::placeholder {
 }
 
 .ai-response.error {
-    color: #d9534f;
+    color: #d9534f; /* Red for errors */
     border-color: #d9534f;
     background-color: #fde0df; /* Light red background for error */
 }
@@ -241,6 +234,30 @@ li {
     margin-bottom: 8px;
 }
 
+/* Info blocks (used in Iteration section based on current HTML) */
+.exercise-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px; /* Add margin above */
+}
+
+.info-block {
+    flex: 1;
+    min-width: 200px; /* Adjusted min-width */
+    padding: 15px;
+    border: 1px dashed #ccc; /* Dashed border */
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.info-block h4 {
+    margin-top: 0;
+    color: #003366;
+}
+
+
 /* Footer styles */
 footer {
     width: 100%;
@@ -251,32 +268,52 @@ footer {
     margin-top: 30px;
 }
 
-/* Styles specific to the layout in Exercise 4 (Define your prompt) */
-.prompt-definition-area {
-    /* Can add specific styling if needed, but basic inputs work */
+footer hr {
+    border: none;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin: 0 auto 15px auto; /* Center the hr above footer text */
+    width: 80%; /* Make hr shorter */
 }
 
-.prompt-definition-area label {
-    display: block; /* Label above the input */
-    font-weight: bold;
-    margin-bottom: 5px;
-    margin-top: 15px; /* Space above each input group */
-    color: #333;
+
+/* Styles specific to the layout in Exercise 3 (formerly 4 - Iteration) */
+.exercise4-sandbox {
+    display: flex;
+    gap: 20px; /* Space between V1 and V2 sections */
+    flex-wrap: wrap;
+    margin-top: 20px; /* Space above the sandbox area */
 }
 
-.prompt-definition-area input[type="text"] {
-    width: calc(100% - 22px); /* Adjust width for padding/border */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box;
+.exercise4-sandbox .version-section {
+    flex: 1; /* Make sections take equal space */
+    min-width: 300px; /* Minimum width before wrapping */
+    padding: 15px;
+    border: 1px dashed #003366; /* Darker dashed border */
+    border-radius: 5px;
+    background-color: #e0f7fa; /* Light blue background */
 }
 
-/* Styles specific to the Reto Final (Exercise 5) textarea */
-#ejercicio5 textarea {
-     min-height: 100px; /* Maybe slightly smaller textarea for this section */
+.exercise4-sandbox .version-section h4 {
+    margin-top: 0;
+    color: #003366;
+    margin-bottom: 10px; /* Space below heading */
 }
+
+/* Ensure textareas within the version sections also get the red border */
+.exercise4-sandbox .version-section textarea {
+     border: 1px solid #ff5722; /* Red border */
+}
+
+
+/* Motivational text style */
+.motivational {
+    font-style: italic;
+    color: #555;
+    text-align: center;
+    margin-top: 20px;
+}
+
 
 /* Adjustments for smaller screens */
 @media (max-width: 768px) {
@@ -297,24 +334,24 @@ footer {
          left: 10px; /* Position inside the card on smaller screens */
     }
 
-     section h2 {
+    section h2 {
         margin-left: 35px; /* Adjust heading margin to clear the number */
-     }
-
-    .prompt-component {
-        flex-direction: column; /* Stack label and input */
-        align-items: flex-start;
     }
 
-    .prompt-component label {
-        margin-right: 0;
-        margin-bottom: 5px;
-        min-width: auto;
+    .exercise-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .info-block {
+        min-width: auto; /* Allow blocks to shrink */
     }
 
      textarea,
-     .prompt-definition-area input[type="text"] {
-        width: 100%; /* Make inputs take full width */
+     .sandbox textarea,
+     .exercise4-sandbox .version-section textarea {
+        width: 100%; /* Make textareas take full width */
+        min-height: 100px; /* Slightly smaller on mobile */
      }
 
     button {
@@ -322,4 +359,13 @@ footer {
         margin-right: 0;
         margin-bottom: 10px;
     }
+
+     .exercise4-sandbox {
+        flex-direction: column;
+        gap: 15px;
+     }
+
+     .exercise4-sandbox .version-section {
+        min-width: auto;
+     }
 }
