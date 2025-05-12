@@ -1,4 +1,4 @@
-// consulta.js – Backend Node.js para Deepseek (Usando Chat Completions) - Versión Corregida
+// consulta.js – Backend Node.js para Deepseek (Usando Chat Completions) - Modificación para Ejercicio 1 (Solo Evaluación)
 
 // --- IMPORTACIONES (CommonJS) ---
 const express = require('express');
@@ -117,8 +117,8 @@ app.use(express.json());
 const router = express.Router();
 
 
-// --- NUEVA RUTA: /generate (Para Ejercicios 2 & 3 - Generación General) ---
-// Copiado directamente de consulta.js (funcionando)
+// --- RUTA: /generate (Para Ejercicios 2 & 3 - Generación General) ---
+// Mantida igual que en la versión corregida anterior
 router.post('/generate', async (req, res) => {
     try {
         const { prompt } = req.body;
@@ -155,47 +155,41 @@ router.post('/generate', async (req, res) => {
 });
 
 
-// --- NUEVA RUTA: /exercise1_process (Para Ejercicio 1 - Generación + Evaluación de Prompt) ---
-// Copiado directamente de consulta.js (funcionando)
+// --- INICIO MODIFICACIÓN: RUTA /exercise1_process (Solo Evaluación de Prompt + Explicación) ---
 router.post('/exercise1_process', async (req, res) => {
     try {
         const { prompt: fullInput } = req.body;
         if (!fullInput?.trim()) {
-            return res.status(400).json({ error: 'Contenido vacío. Introduce tu prompt y el texto.' });
+            return res.status(400).json({ error: 'Contenido vacío. Introduce tu prompt y el texto (aunque solo se evaluará el prompt).' });
         }
 
         // 1. Separar instrucción del texto a procesar
+        // Mantenemos esta lógica porque la EVALUACIÓN se basa en la 'instruction'.
         const separatorIndex = fullInput.indexOf(':');
         let instruction = fullInput.trim();
-        let sourceText = '';
+        let sourceText = ''; // Ya no usaremos sourceText para generar, pero lo separamos igualmente.
 
         if (separatorIndex !== -1) {
             instruction = fullInput.substring(0, separatorIndex).trim();
             sourceText = fullInput.substring(separatorIndex + 1).trim();
         }
-         // If no colon, treat the whole thing as the instruction and try to process it without source text.
-         // This might lead to a poor AI response, but the evaluation will catch it.
+        // Si no hay ":", se asume que todo el input es la instrucción.
 
         if (!instruction) {
+             // Ajustamos el mensaje de error ya que ahora nos centramos en la instrucción.
              return res.status(400).json({ error: 'No se encontró la instrucción (¿Falta el prompt o el separador ":"?).' });
         }
-        // Source text can be empty, which is valid for some prompts.
+        // sourceText puede estar vacío, lo cual es válido para la evaluación.
 
-        // 2. Llamar a la IA para GENERAR la respuesta (el resumen para padres)
-        const generationSystemMessage = `
-        Eres un asistente útil que resume y adapta textos educativos para padres.
-        Tu tarea es seguir la instrucción proporcionada para procesar el texto dado.
-        Responde directamente con el texto generado, sin preámbulos ni explicaciones adicionales.
-        `;
-        const generationUserMessage = `
-        Instrucción: ${instruction}
-        Texto a procesar: ${sourceText}
-        `;
-
-        const generatedText = await callDeepseekChat(generationSystemMessage, generationUserMessage, 0.5, 200); // Moderate temperature, lower tokens for summary
+        // --- ELIMINADO: La llamada a la IA para GENERAR la respuesta (el resumen para padres) ---
+        // const generationSystemMessage = `...`;
+        // const generationUserMessage = `...`;
+        // const generatedText = await callDeepseekChat(generationSystemMessage, generationUserMessage, 0.5, 200);
+        // --- FIN ELIMINADO ---
 
 
-        // 3. Llamar a la IA para EVALUAR el prompt del usuario (la 'instruction')
+        // 2. Llamar a la IA para EVALUAR el prompt del usuario (la 'instruction')
+        // Mantenemos este System Message y User Message, ya que son para la evaluación del prompt
         const evaluationSystemMessage = `
         Eres un profesor de IA especializado en diseño de prompts educativos.
         Tu tarea es evaluar la calidad de la *instrucción* que te da un profesor para que tú (como IA) resumas un texto para padres.
@@ -211,6 +205,7 @@ router.post('/exercise1_process', async (req, res) => {
         `;
          const evaluationUserMessage = `Evalúa esta instrucción para resumir texto para padres:\n\n---\n${instruction}\n---`;
 
+         // Mantenemos la llamada a la IA para la evaluación
          let evaluationResponseContent = await callDeepseekChat(evaluationSystemMessage, evaluationUserMessage, 0.2, 100); // Low temperature, few tokens for evaluation JSON
 
          // Intentar parsear el JSON de la respuesta de evaluación
@@ -223,7 +218,9 @@ router.post('/exercise1_process', async (req, res) => {
             // Validar estructura mínima
             if (typeof evaluation.score !== 'number' || typeof evaluation.feedback !== 'string') {
                  console.error('[ERROR] JSON de evaluación con formato inesperado:', evaluation);
-                 evaluation = { score: 20, feedback: "Error: Formato de evaluación inesperado de la IA. Revisa tu prompt." };
+                 // Fallback si el JSON es inválido pero hubo respuesta
+                 const fallbackFeedback = evaluationResponseContent.length > 5 && evaluationResponseContent.length < 150 ? evaluationResponseContent : "Error: Formato de evaluación inesperado de la IA. Revisa tu prompt.";
+                 evaluation = { score: 20, feedback: `[FALLBACK] ${fallbackFeedback}` };
             } else {
                 // Clamp score to 0-100
                 evaluation.score = Math.max(0, Math.min(100, evaluation.score));
@@ -232,40 +229,57 @@ router.post('/exercise1_process', async (req, res) => {
         } catch (parseError) {
             console.error('[ERROR] Fallo al parsear JSON de la respuesta de evaluación:', parseError);
             console.error('[ERROR] Respuesta de evaluación que falló el parseo:', evaluationResponseContent);
-            // Fallback en caso de parse error
-            const fallbackFeedback = evaluationResponseContent.length > 5 && evaluationResponseContent.length < 150 ? evaluationResponseContent : "Error interno al evaluar el prompt. Intenta de nuevo.";
-            evaluation = { score: 10, feedback: `[FALLBACK] ${fallbackFeedback}` }; // Very low score on parse error
+            // Fallback robusto si falla el parseo
+            const feedbackFallback = evaluationResponseContent.length > 5 && evaluationResponseContent.length < 200 ? evaluationResponseContent : "Error interno al evaluar el prompt. Intenta de nuevo.";
+            evaluation = { score: 10, feedback: `[FALLBACK] ${feedbackFallback}` }; // Very low score on parse error
+        }
+
+        // 3. Crear una explicación simple basada en el score
+        let explanation = "";
+        if (evaluation.score >= 80) {
+            explanation = "¡Excelente! Tu instrucción es muy clara y específica para la IA.";
+        } else if (evaluation.score >= 50) {
+            explanation = "Bien, pero hay aspectos a mejorar. Revisa el feedback para hacer tu instrucción más efectiva.";
+        } else {
+            explanation = "Tu instrucción necesita más detalles. Revisa el feedback para guiar mejor a la IA.";
         }
 
 
-        // 4. Devolver ambos resultados al frontend
+        // 4. Devolver solo el resultado de la evaluación y la explicación al frontend
         res.json({
-            generatedText: generatedText,
-            evaluation: evaluation
+            evaluation: evaluation, // Objeto con score y feedback de la IA
+            explanation: explanation // String con la explicación simple basada en el score
         });
 
     } catch (error) {
         console.error('--- ERROR DETALLADO en /exercise1_process ---');
         console.error('Mensaje:', error.message);
-        let errorMsg = 'Fallo en el proceso del ejercicio 1 con Deepseek Chat';
+        let errorMsg = 'Fallo en el proceso de evaluación del prompt con Deepseek Chat';
         let statusCode = error.statusCode || 500; // Use attached status code if available
 
          if (axios.isAxiosError(error) && error.response?.data?.error?.message) {
              errorMsg = error.response.data.error.message;
-        } else if (error.message.toLowerCase().includes('timeout')) {
+         } else if (error.message.toLowerCase().includes('timeout') || error.message.toLowerCase().includes('no response')) {
              errorMsg = 'Timeout Deepseek Chat.';
+             statusCode = 504; // Ensure 504 for timeouts/no response
         } else {
              errorMsg = `Error inesperado: ${error.message}`;
         }
 
-
-        res.status(statusCode).json({ error: errorMsg });
+        // Enviar una respuesta de error estructurada al frontend
+        res.status(statusCode).json({
+            // Para errores de backend, podemos enviar un resultado de evaluación básico indicando el fallo
+            evaluation: { score: 0, feedback: `Error interno al evaluar el prompt: ${errorMsg}` },
+            explanation: `No se pudo completar la evaluación debido a un error: ${errorMsg}. Intenta de nuevo más tarde.`,
+            error: errorMsg // Mensaje de error detallado para depuración
+        });
     }
 });
+// --- FIN MODIFICACIÓN: RUTA /exercise1_process ---
 
 
 // --- RUTA: /analyze (Paso 4: Evaluación Estructural vía Chat) ---
-// Corregida para usar el helper y los prompts del archivo que funciona
+// Mantida igual que en la versión corregida anterior
 router.post('/analyze', async (req, res) => {
   // La verificación de clave API ya está en callDeepseekChat, pero la dejamos aquí también por claridad.
   if (!DEEPSEEK_KEY) return res.status(500).json({ error: 'Configuración incompleta (sin clave API)' });
@@ -393,7 +407,7 @@ router.post('/analyze', async (req, res) => {
 });
 
 // --- RUTA: /evaluate (Paso 5: Evaluación Alineación vía Chat) ---
-// Corregida para usar el helper y los prompts del archivo que funciona
+// Mantida igual que en la versión corregida anterior
 router.post('/evaluate', async (req, res) => {
   // La verificación de clave API ya está en callDeepseekChat, pero la dejamos aquí también por claridad.
   if (!DEEPSEEK_KEY) return res.status(500).json({ error: 'Configuración incompleta (sin clave API)' });
@@ -461,15 +475,31 @@ router.post('/evaluate', async (req, res) => {
     let errorMsg = 'Fallo en evaluación de prompt con Deepseek Chat';
     let statusCode = error.statusCode || 500; // Use attached status code from helper if available
 
-    if (axios.isAxiosError(error) && error.response?.data?.error?.message) {
-        errorMsg = error.response.data.error.message;
-    } else if (error.message.toLowerCase().includes('timeout') || error.message.toLowerCase().includes('no response')) {
+    if (axios.isAxiosError(error)) { // Manejar errores de Axios específicamente
+        if (error.response) {
+            // El servidor Deepseek respondió con un status code fuera del 2xx
+            errorMsg = error.response.data?.error?.message || `Error HTTP ${error.response.status} de Deepseek`;
+            statusCode = error.response.status;
+            console.error('Respuesta de error de Deepseek:', error.response.data);
+        } else if (error.request) {
+            // La petición fue hecha pero no se recibió respuesta
+             errorMsg = 'No se recibió respuesta de Deepseek.';
+             statusCode = 503; // Service Unavailable - O 504 si es timeout específico
+             console.error('No se recibió respuesta de Deepseek:', error.request);
+        } else {
+            // Algo pasó al configurar la petición
+             errorMsg = `Error al preparar la petición a Deepseek: ${error.message}`;
+             statusCode = 500;
+             console.error('Error de Axios al preparar petición:', error.message);
+        }
+    } else if (error.code === 'ETIMEDOUT' || error.message.toLowerCase().includes('timeout') || error.message.toLowerCase().includes('no response')) {
        errorMsg = 'Tiempo de espera agotado con Deepseek Chat.';
-       statusCode = 504; // Ensure 504 for timeouts/no response
+       statusCode = 504; // Gateway Timeout
     }
      else {
         // Otros errores inesperados
          errorMsg = `Error inesperado: ${error.message}`;
+         statusCode = 500;
      }
 
     // Enviar una respuesta de error estructurada al frontend
@@ -480,6 +510,7 @@ router.post('/evaluate', async (req, res) => {
     });
   }
 });
+
 
 // --- MONTAJE Y EXPORTACIÓN (CommonJS) ---
 app.use('/api', router);
