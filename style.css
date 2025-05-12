@@ -1,4 +1,4 @@
-/* style.css - Revised based on second screenshot aesthetic */
+/* style.css - Final Revision based on screenshot annotations */
 
 /* General styles for the body */
 body {
@@ -55,7 +55,8 @@ main {
 /* Section styles (the white cards) */
 section {
     background-color: white;
-    padding: 30px;
+    padding: 30px; /* Keep standard padding for content */
+    padding-left: 50px; /* Add extra left padding to make space for internal number */
     margin-bottom: 30px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
@@ -65,28 +66,20 @@ section {
 /* Style for the numbered circles */
 .section-number {
     position: absolute;
-    top: 25px; /* Position from the top */
-    left: -15px; /* Position outside the card on the left */
-    width: 40px;
-    height: 40px;
+    top: 15px; /* Position from the top */
+    left: 15px; /* Position *inside* the card on the left as per annotation */
+    width: 35px; /* Slightly smaller than before */
+    height: 35px; /* Slightly smaller than before */
     background-color: #ff5722; /* Orange color from screenshot */
     color: white;
     border-radius: 50%; /* Make it a circle */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5em;
+    font-size: 1.3em; /* Adjust font size */
     font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow on the circle */
-}
-
-/* Adjust padding inside section to make space for the number circle */
-/* Also slightly adjust heading margin */
-section {
-    padding-left: 40px; /* Give space for the number on the left */
-}
-section h2 {
-    margin-left: 10px; /* Adjust slightly because number is on left */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Less intense shadow */
+    z-index: 1; /* Ensure it's above other content if needed */
 }
 
 
@@ -94,10 +87,22 @@ section h2 {
 section h2 {
     color: #ff5722; /* Orange color for section titles */
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 0; /* Remove bottom margin as HR will provide space */
     padding-bottom: 0; /* Remove border/padding from previous style */
     border-bottom: none; /* Remove border from previous style */
+    margin-left: 0; /* Reset margin-left */
+    font-size: 1.6em; /* Adjust size */
 }
+
+/* Subtle gray line below the section title (as per annotation) */
+.section-divider {
+    border: none; /* Remove default hr border */
+    height: 1px; /* Make it a thin line */
+    background-color: #ddd; /* Light gray color from annotation */
+    margin: 15px 0; /* Space above and below the line */
+    width: 100%; /* Full width within the section's padding */
+}
+
 
 section h3 {
     color: #555; /* Slightly darker grey for subheadings */
@@ -106,7 +111,7 @@ section h3 {
     font-size: 1.2em;
 }
 
-/* Style for the yellow prompt component box (if added back - based on screenshot sec 2) */
+/* Style for the yellow prompt component box (based on screenshot sec 2) - Keeping these styles just in case needed later */
 .prompt-components-box {
     background-color: #ffeb3b; /* Yellow background from screenshot */
     padding: 20px;
@@ -137,6 +142,7 @@ pre {
      font-size: 0.9em;
      border-radius: 4px;
      color: #555; /* Muted text color */
+     /* Removed height/width constraints if any existed from previous versions */
 }
 
 /* Style for the "Resultado Ejemplo de la IA" heading (based on screenshot sec 2) */
@@ -159,6 +165,7 @@ button {
     font-size: 1em;
     transition: background-color 0.3s ease;
     margin-right: 10px;
+    display: inline-block; /* Ensure buttons can sit side-by-side */
 }
 
 /* Style for orange buttons (as seen in screenshot for evaluation/analysis) */
@@ -186,7 +193,7 @@ button:disabled {
     min-height: 150px; /* Make textareas larger */
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ff5722; /* Thin RED border from screenshot (sections 4 & 5 inputs/textareas) */
+    border: 1px solid #ff5722; /* Thin RED border from screenshot */
     border-radius: 4px;
     font-family: inherit;
     font-size: 1em;
@@ -199,6 +206,12 @@ button:disabled {
     font-style: italic;
 }
 
+/* Text instructions above textareas */
+.sandbox p {
+    margin-bottom: 5px; /* Reduce space below instructions */
+    font-size: 0.95em;
+    color: #555;
+}
 
 /* Style for the AI response area */
 .ai-response {
@@ -234,7 +247,7 @@ li {
     margin-bottom: 8px;
 }
 
-/* Info blocks (used in Iteration section based on current HTML) */
+/* Info blocks (used in Iteration section) */
 .exercise-info {
     display: flex;
     flex-wrap: wrap;
@@ -277,15 +290,15 @@ footer hr {
 }
 
 
-/* Styles specific to the layout in Exercise 3 (formerly 4 - Iteration) */
-.exercise4-sandbox {
+/* Styles specific to the layout in Exercise 3 (Iteration) */
+.exercise3-sandbox { /* Using the new exercise number 3 */
     display: flex;
     gap: 20px; /* Space between V1 and V2 sections */
     flex-wrap: wrap;
     margin-top: 20px; /* Space above the sandbox area */
 }
 
-.exercise4-sandbox .version-section {
+.exercise3-sandbox .version-section {
     flex: 1; /* Make sections take equal space */
     min-width: 300px; /* Minimum width before wrapping */
     padding: 15px;
@@ -294,15 +307,22 @@ footer hr {
     background-color: #e0f7fa; /* Light blue background */
 }
 
-.exercise4-sandbox .version-section h4 {
+.exercise3-sandbox .version-section h4 {
     margin-top: 0;
     color: #003366;
     margin-bottom: 10px; /* Space below heading */
 }
 
 /* Ensure textareas within the version sections also get the red border */
-.exercise4-sandbox .version-section textarea {
+.exercise3-sandbox .version-section textarea {
      border: 1px solid #ff5722; /* Red border */
+}
+
+/* Text instructions within version sections */
+.exercise3-sandbox .version-section p {
+     margin-bottom: 5px; /* Reduce space below instructions */
+     font-size: 0.9em; /* Slightly smaller font */
+     color: #555;
 }
 
 
@@ -312,6 +332,11 @@ footer hr {
     color: #555;
     text-align: center;
     margin-top: 20px;
+}
+
+/* Justified text for the Cierre section (as per annotation) */
+#cierre_v2 p {
+    text-align: justify;
 }
 
 
@@ -326,16 +351,20 @@ footer hr {
     }
 
     section {
-        padding: 30px 20px 20px 30px; /* Adjust section padding */
+        padding: 30px 20px 20px 20px; /* Adjust section padding */
     }
 
     .section-number {
          top: 20px;
-         left: 10px; /* Position inside the card on smaller screens */
+         left: 10px; /* Keep position inside the card on smaller screens */
+         width: 30px;
+         height: 30px;
+         font-size: 1.2em;
     }
 
     section h2 {
         margin-left: 35px; /* Adjust heading margin to clear the number */
+        font-size: 1.4em;
     }
 
     .exercise-info {
@@ -349,7 +378,7 @@ footer hr {
 
      textarea,
      .sandbox textarea,
-     .exercise4-sandbox .version-section textarea {
+     .exercise3-sandbox .version-section textarea { /* Updated class */
         width: 100%; /* Make textareas take full width */
         min-height: 100px; /* Slightly smaller on mobile */
      }
@@ -360,12 +389,12 @@ footer hr {
         margin-bottom: 10px;
     }
 
-     .exercise4-sandbox {
+     .exercise3-sandbox { /* Updated class */
         flex-direction: column;
         gap: 15px;
      }
 
-     .exercise4-sandbox .version-section {
+     .exercise3-sandbox .version-section { /* Updated class */
         min-width: auto;
      }
 }
