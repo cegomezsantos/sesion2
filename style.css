@@ -66,19 +66,26 @@ main {
 /* Section styles (the white cards) */
 section {
     background-color: white;
-    padding: 30px; /* Keep standard padding for content */
-    padding-left: 50px; /* Add extra left padding to make space for internal number */
+    /* Adjusted padding: removed extra left padding */
+    padding: 30px;
     margin-bottom: 30px;
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    position: relative; /* Needed for absolute positioning of number circle */
+    position: relative; /* Keep if needed for other elements */
+}
+
+/* New container for number and title */
+.section-header {
+    display: flex;
+    align-items: center; /* Vertically align number and text */
+    gap: 15px; /* Space between the number circle and the title */
+    margin-bottom: 15px; /* Space below the header block before the divider */
 }
 
 /* Style for the numbered circles inside sections */
 .section-number {
-    position: absolute;
-    top: 15px;
-    left: 15px; /* Position inside the card on the left */
+    /* Removed absolute positioning */
+    position: static;
     width: 35px;
     height: 35px;
     background-color: var(--primary-color); /* Orange */
@@ -90,19 +97,26 @@ section {
     font-size: 1.3em;
     font-weight: bold;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    z-index: 1;
+    /* Removed z-index */
+    z-index: auto;
+    /* Flexbox properties (already in display: flex above) */
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 
 /* Section Titles (Red/Orange Text) */
 section h2 {
-  color: var(--primary-color); /* Orange */
+  color: var(--primary-color); /* Orange (Already correct) */
   font-size: 1.75rem;
   font-weight: 700;
+  /* Adjusted margins to work with flex container */
   margin-top: 0;
-  margin-bottom: 0.5rem; /* Space above the line */
-  padding-left: 0; /* Remove left padding from previous versions */
-  position: relative;
+  margin-bottom: 0;
+  padding-left: 0; /* Keep as 0 */
+  /* Removed position: relative as it's likely not needed anymore */
+  position: static;
+  flex-grow: 1; /* Allow title to take up remaining space */
+  line-height: 1.2; /* Adjust line height if needed for vertical alignment */
 }
 
 /* Subtle gray line below the section title */
@@ -110,7 +124,8 @@ section h2 {
     border: none;
     height: 1px;
     background-color: var(--border-color); /* Light gray */
-    margin: 15px 0;
+    /* Adjusted margin top to remove space after new .section-header margin */
+    margin: 0 0 15px 0;
     width: 100%;
 }
 
@@ -181,11 +196,6 @@ button:disabled {
     font-size: 1em;
     resize: vertical;
     box-sizing: border-box;
-}
-
-.sandbox textarea::placeholder {
-    color: #999;
-    font-style: italic;
 }
 
 /* Text instructions above textareas */
@@ -386,31 +396,49 @@ footer hr {
         padding: 0 10px;
     }
 
+    /* Section padding reset on mobile */
     section {
-        padding: 30px 20px 20px 20px;
+        padding: 20px; /* Adjusted padding for smaller screens */
     }
 
+    /* Section Header flex layout still applies */
+    .section-header {
+        flex-wrap: wrap; /* Allow wrapping if title is very long */
+        gap: 10px; /* Slightly less gap on mobile */
+        margin-bottom: 10px; /* Less margin below header */
+    }
+
+    /* Adjusted .section-number styles for mobile */
     .section-number {
-         top: 20px;
-         left: 10px;
+         /* Removed obsolete positioning */
+         position: static;
+         top: auto;
+         left: auto;
+         /* Kept size and font adjustments */
          width: 30px;
          height: 30px;
          font-size: 1.2em;
+         flex-shrink: 0; /* Ensure it doesn't shrink */
     }
 
+    /* Adjusted section h2 for mobile */
     section h2 {
-        padding-left: 35px; /* Adjust heading padding to clear the number */
+        /* Removed obsolete padding-left */
+        padding-left: 0;
+        /* Kept font size adjustment */
         font-size: 1.4em;
+        /* Adjusted margins */
+        margin-top: 0;
+        margin-bottom: 0;
+        flex-grow: 1;
+        /* position: static; */ /* Added explicitly */
+        position: static;
     }
 
-    .exercise-info {
-        flex-direction: column;
-        gap: 15px;
-    }
+     .section-divider {
+        margin: 0 0 10px 0; /* Adjusted margin below divider */
+     }
 
-    .info-block {
-        min-width: auto;
-    }
 
      textarea,
      .sandbox textarea,
