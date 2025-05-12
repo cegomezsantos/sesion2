@@ -1,4 +1,4 @@
-// consulta.js – Backend Node.js para Deepseek (Usando Chat Completions)
+// consulta.js – Backend Node.js para Deepseek (Usando Chat Completions) - Versión Corregida
 
 // --- IMPORTACIONES (CommonJS) ---
 const express = require('express');
@@ -13,13 +13,15 @@ const DEEPSEEK_CHAT_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 const DEEPSEEK_MODEL = 'deepseek-chat'; // o 'deepseek-coder' si fuera el caso
 
 if (!DEEPSEEK_KEY) {
-  console.error("¡ERROR CRÍTICO! DEEPSEEK_KEY no definida.");
+  console.error("¡ERROR CRÍTICO! DEEPSEEK_KEY no definida. Asegúrate de que la variable de entorno DEEPSEEK_KEY esté configurada.");
 }
 
 // --- AYUDANTE para llamar a Deepseek Chat API ---
+// Encapsula la lógica de llamada, headers, timeout y manejo básico de respuesta/errores.
 async function callDeepseekChat(systemMessage, userMessage, temperature = 0.2, max_tokens = 200) {
     if (!DEEPSEEK_KEY) {
-        throw new Error('Configuración incompleta (sin clave API)');
+        console.error('callDeepseekChat: DEEPSEEK_KEY no está definida.');
+        throw new Error('Configuración incompleta (sin clave API Deepseek).');
     }
 
     const messages = [];
@@ -37,7 +39,16 @@ async function callDeepseekChat(systemMessage, userMessage, temperature = 0.2, m
         max_tokens: max_tokens,
     };
 
-    console.log('[INFO] Enviando a Deepseek Chat:', JSON.stringify(payload));
+    console.log('[INFO] Enviando a Deepseek Chat:', JSON.stringify({
+        model: payload.model,
+        temp: payload.temperature,
+        tokens: payload.max_tokens,
+        messagesCount: messages.length,
+        // Avoid logging full prompt content in case it's sensitive
+        // systemPreview: systemMessage ? systemMessage.substring(0, 100) + '...' : 'none',
+        // userPreview: userMessage ? userMessage.substring(0, 100) + '...' : 'none'
+    }));
+
 
     try {
         const dsRes = await axios.post(
@@ -48,34 +59,52 @@ async function callDeepseekChat(systemMessage, userMessage, temperature = 0.2, m
                     Authorization: `Bearer ${DEEPSEEK_KEY}`,
                     'Content-Type': 'application/json'
                 },
-                timeout: 20000 // Increased timeout for potentially longer generations/evaluations
+                timeout: 25000 // Increased timeout slightly to 25s as per observed issues
             }
         );
 
-        console.log('[INFO] Respuesta bruta de Deepseek Chat:', JSON.stringify(dsRes.data));
+        // console.log('[INFO] Respuesta bruta de Deepseek Chat:', JSON.stringify(dsRes.data)); // Log with caution for verbosity
 
         const assistantResponse = dsRes.data?.choices?.[0]?.message?.content;
-        if (assistantResponse === undefined) { // Check for undefined specifically
+        if (assistantResponse === undefined || assistantResponse === null) {
              console.error('[ERROR] Respuesta de Deepseek no contiene message.content:', dsRes.data);
+             // Check if there's an error message in the response itself
+             if (dsRes.data?.error?.message) {
+                 throw new Error(`Error del modelo Deepseek: ${dsRes.data.error.message}`);
+             }
              throw new Error("Respuesta vacía o inesperada del modelo de chat.");
          }
 
-        console.log('[DEBUG] Contenido de respuesta del asistente:', assistantResponse);
+        console.log('[DEBUG] Contenido de respuesta del asistente (preview):', assistantResponse.substring(0, 200) + (assistantResponse.length > 200 ? '...' : ''));
         return assistantResponse;
 
     } catch (error) {
         console.error('--- ERROR DETALLADO en callDeepseekChat ---');
         console.error('Mensaje:', error.message);
-        if (error.response) {
-            console.error('Status:', error.response.status);
-            console.error('Data:', error.response.data);
-            console.error('Headers:', error.response.headers);
-        } else if (error.request) {
-            console.error('Request data:', error.request);
+        if (axios.isAxiosError(error)) {
+            if (error.response) {
+                console.error('Status:', error.response.status);
+                console.error('Data:', error.response.data);
+                // console.error('Headers:', error.response.headers); // Log with caution
+                // Propagate Deepseek's specific error message if available
+                 if (error.response.data?.error?.message) {
+                     const dsError = new Error(`Deepseek API Error ${error.response.status}: ${error.response.data.error.message}`);
+                     dsError.statusCode = error.response.status; // Attach status for route handler
+                     dsError.data = error.response.data; // Attach data for route handler
+                     throw dsError;
+                 }
+            } else if (error.request) {
+                console.error('No se recibió respuesta de Deepseek.');
+                 const timeoutError = new Error('Timeout o No Response de Deepseek Chat.');
+                 timeoutError.statusCode = 504; // Gateway Timeout
+                 throw timeoutError;
+            } else {
+                 console.error('Error al preparar la petición a Deepseek:', error.message);
+            }
         } else {
-             console.error('Error config:', error.config);
+             console.error('Error no-Axios en callDeepseekChat:', error);
         }
-        throw error; // Re-throw the error to be caught by the route handler
+        throw error; // Re-throw the original or a wrapped error
     }
 }
 
@@ -89,6 +118,7 @@ const router = express.Router();
 
 
 // --- NUEVA RUTA: /generate (Para Ejercicios 2 & 3 - Generación General) ---
+// Copiado directamente de consulta.js (funcionando)
 router.post('/generate', async (req, res) => {
     try {
         const { prompt } = req.body;
@@ -99,7 +129,7 @@ router.post('/generate', async (req, res) => {
         // System message para generación general
         const systemMessage = "Eres un asistente útil que responde a las instrucciones del usuario.";
 
-        // Llamar a la API para generación
+        // Llamar a la API para generación usando el helper
         const generatedText = await callDeepseekChat(systemMessage, prompt, 0.5, 300); // Adjust temp/tokens as needed
 
         // Devolver el texto generado
@@ -109,12 +139,16 @@ router.post('/generate', async (req, res) => {
         console.error('--- ERROR DETALLADO en /generate ---');
         console.error('Mensaje:', error.message);
         let errorMsg = 'Fallo en generación con Deepseek Chat';
-        let statusCode = 500;
+        let statusCode = error.statusCode || 500; // Use attached status code if available
 
-        if (error.response?.status) statusCode = error.response.status;
-        if (error.response?.data?.error?.message) errorMsg = error.response.data.error.message;
-        else if (error.message.toLowerCase().includes('timeout')) errorMsg = 'Timeout Deepseek Chat.';
-        else errorMsg = `Error inesperado: ${error.message}`;
+        if (axios.isAxiosError(error) && error.response?.data?.error?.message) {
+             errorMsg = error.response.data.error.message;
+        } else if (error.message.toLowerCase().includes('timeout')) {
+             errorMsg = 'Timeout Deepseek Chat.';
+        } else {
+             errorMsg = `Error inesperado: ${error.message}`;
+        }
+
 
         res.status(statusCode).json({ error: errorMsg });
     }
@@ -122,6 +156,7 @@ router.post('/generate', async (req, res) => {
 
 
 // --- NUEVA RUTA: /exercise1_process (Para Ejercicio 1 - Generación + Evaluación de Prompt) ---
+// Copiado directamente de consulta.js (funcionando)
 router.post('/exercise1_process', async (req, res) => {
     try {
         const { prompt: fullInput } = req.body;
@@ -182,7 +217,7 @@ router.post('/exercise1_process', async (req, res) => {
         let evaluation = { score: 0, feedback: "Error al procesar evaluación." };
         try {
             // Limpiar posible markdown de bloque de código
-            const cleanEvaluationResponse = evaluationResponseContent.replace(/```json\n?/, '').replace(/\n?```$/, '');
+            const cleanEvaluationResponse = evaluationResponseContent.replace(/```json\n?/, '').replace(/\n?```$/, '').trim();
              evaluation = JSON.parse(cleanEvaluationResponse);
 
             // Validar estructura mínima
@@ -197,7 +232,9 @@ router.post('/exercise1_process', async (req, res) => {
         } catch (parseError) {
             console.error('[ERROR] Fallo al parsear JSON de la respuesta de evaluación:', parseError);
             console.error('[ERROR] Respuesta de evaluación que falló el parseo:', evaluationResponseContent);
-            evaluation = { score: 10, feedback: "Error interno al evaluar el prompt. Intenta de nuevo." }; // Very low score on parse error
+            // Fallback en caso de parse error
+            const fallbackFeedback = evaluationResponseContent.length > 5 && evaluationResponseContent.length < 150 ? evaluationResponseContent : "Error interno al evaluar el prompt. Intenta de nuevo.";
+            evaluation = { score: 10, feedback: `[FALLBACK] ${fallbackFeedback}` }; // Very low score on parse error
         }
 
 
@@ -211,20 +248,26 @@ router.post('/exercise1_process', async (req, res) => {
         console.error('--- ERROR DETALLADO en /exercise1_process ---');
         console.error('Mensaje:', error.message);
         let errorMsg = 'Fallo en el proceso del ejercicio 1 con Deepseek Chat';
-        let statusCode = 500;
+        let statusCode = error.statusCode || 500; // Use attached status code if available
 
-        if (error.response?.status) statusCode = error.response.status;
-        if (error.response?.data?.error?.message) errorMsg = error.response.data.error.message;
-         else if (error.message.toLowerCase().includes('timeout')) errorMsg = 'Timeout Deepseek Chat.';
-        else errorMsg = `Error inesperado: ${error.message}`;
+         if (axios.isAxiosError(error) && error.response?.data?.error?.message) {
+             errorMsg = error.response.data.error.message;
+        } else if (error.message.toLowerCase().includes('timeout')) {
+             errorMsg = 'Timeout Deepseek Chat.';
+        } else {
+             errorMsg = `Error inesperado: ${error.message}`;
+        }
+
 
         res.status(statusCode).json({ error: errorMsg });
     }
 });
 
 
-// --- RUTAS EXISTENTES (Paso 4 & 5) - Mantener por si se usan en otras partes ---
+// --- RUTA: /analyze (Paso 4: Evaluación Estructural vía Chat) ---
+// Corregida para usar el helper y los prompts del archivo que funciona
 router.post('/analyze', async (req, res) => {
+  // La verificación de clave API ya está en callDeepseekChat, pero la dejamos aquí también por claridad.
   if (!DEEPSEEK_KEY) return res.status(500).json({ error: 'Configuración incompleta (sin clave API)' });
 
   try {
@@ -233,6 +276,7 @@ router.post('/analyze', async (req, res) => {
 
     const userPromptToAnalyze = `Rol: ${rol}\nObjetivo: ${objetivo}\nContexto: ${contexto}`;
 
+    // **System Message COPIADO EXACTAMENTE del archivo que funciona (consulta.js /analyze)**
     const systemMessage = `
     Eres un tutor experto en **Prompt Design Pedagógico**. Tu objetivo es ayudar a un estudiante a construir prompts efectivos y originales para tareas educativas, evaluando la **estructura (Rol, Objetivo, Contexto)** que ha definido.
 
@@ -280,7 +324,9 @@ router.post('/analyze', async (req, res) => {
     \`\`\`
 
     Ahora, evalúa el prompt del usuario (Rol, Objetivo, Contexto) basado en estas instrucciones detalladas. Recuerda penalizar la copia del objetivo general de la tarea
-    `;
+    `; // Fin systemMessage /analyze
+
+    // **User Message COPIADO EXACTAMENTE del archivo que funciona (consulta.js /analyze)**
     const userMessage = `
     Evalúa la estructura de este prompt (Rol, Objetivo, Contexto):
     ---
@@ -289,17 +335,19 @@ router.post('/analyze', async (req, res) => {
     Genera el objeto JSON de evaluación como se te indicó en las instrucciones del sistema.
     `;
 
+    // Usamos el helper con los parámetros de la versión que funciona
     const assistantResponse = await callDeepseekChat(systemMessage, userMessage, 0.2, 150);
-
 
     // Intentar parsear el JSON de la respuesta del asistente
     let evaluation = {};
     try {
-        const cleanResponse = assistantResponse.replace(/```json\n?/, '').replace(/\n?```$/, '');
+        const cleanResponse = assistantResponse.replace(/```json\n?/, '').replace(/\n?```$/, '').trim();
         evaluation = JSON.parse(cleanResponse);
         if (typeof evaluation.score !== 'number' || typeof evaluation.ok !== 'boolean' || typeof evaluation.suggestions !== 'string') {
              console.error('[ERROR] JSON de evaluación (analyze) con formato inesperado:', evaluation);
-             evaluation = { score: 20, ok: false, suggestions: "Error: Formato de evaluación inesperado de la IA. Revisa tu prompt." };
+              // Fallback si el JSON es inválido pero hubo respuesta
+             const fallbackSuggestions = assistantResponse.length > 5 && assistantResponse.length < 150 ? assistantResponse : "Error: Formato de evaluación inesperado de la IA. Revisa tu prompt.";
+             evaluation = { score: 20, ok: false, suggestions: `[FALLBACK] ${fallbackSuggestions}` };
         } else {
              evaluation.score = Math.max(0, Math.min(100, evaluation.score)); // Clamp score
         }
@@ -307,69 +355,99 @@ router.post('/analyze', async (req, res) => {
     } catch (parseError) {
         console.error('[ERROR] Fallo al parsear JSON de la respuesta de Deepseek (analyze):', parseError);
         console.error('[ERROR] Respuesta recibida que falló el parseo:', assistantResponse);
-        // Fallback si falla el parseo
-        const suggestionsFallback = assistantResponse.length < 200 ? assistantResponse : "Revisa la estructura del prompt."; // Avoid sending very long unexpected output
+        // Fallback robusto si falla el parseo
+        const suggestionsFallback = assistantResponse.length > 5 && assistantResponse.length < 200 ? assistantResponse : "Error interno al evaluar el prompt. Intenta de nuevo.";
         const okFallback = !(suggestionsFallback.toLowerCase().includes("mejorar") || suggestionsFallback.toLowerCase().includes("falta") || suggestionsFallback.toLowerCase().includes("error"));
-        evaluation = { score: okFallback ? 70 : 30, ok: okFallback, suggestions: suggestionsFallback };
+        evaluation = { score: okFallback ? 70 : 30, ok: okFallback, suggestions: `[FALLBACK] ${suggestionsFallback}` };
     }
 
     // Devolver al frontend asegurando que los campos existan
     res.json({
         suggestions: evaluation.suggestions || "No se pudieron generar sugerencias.",
-        score: evaluation.score !== undefined ? Number(evaluation.score) : 50,
-        ok: evaluation.ok !== undefined ? Boolean(evaluation.ok) : false
+        score: evaluation.score !== undefined ? Number(evaluation.score) : 50, // Default a 50 si el score es undefined
+        ok: evaluation.ok !== undefined ? Boolean(evaluation.ok) : false // Default a false si ok es undefined
     });
 
   } catch (error) {
     console.error('--- ERROR DETALLADO en /analyze (Paso 4) ---');
     console.error('Mensaje:', error.message);
-    let errorMsg = 'Fallo en análisis de prompt con Deepseek Chat'; let statusCode = 500;
-    if (error.response?.status) statusCode = error.response.status;
-    if (error.response?.data?.error?.message) errorMsg = error.response.data.error.message;
-    else if (error.message.toLowerCase().includes('timeout')) errorMsg = 'Timeout Deepseek Chat.';
-    else errorMsg = `Error inesperado: ${error.message}`;
+    let errorMsg = 'Fallo en análisis de prompt con Deepseek Chat';
+    let statusCode = error.statusCode || 500; // Use attached status code if available
 
-    res.status(statusCode).json({ error: errorMsg });
+    if (axios.isAxiosError(error) && error.response?.data?.error?.message) {
+        errorMsg = error.response.data.error.message;
+    } else if (error.message.toLowerCase().includes('timeout')) {
+        errorMsg = 'Timeout Deepseek Chat.';
+    } else {
+        errorMsg = `Error inesperado: ${error.message}`;
+    }
+
+    // Enviar una respuesta de error estructurada al frontend
+    res.status(statusCode).json({
+         // Para errores de backend, el resultado para el alumno es siempre rojo
+        level: 'red', // Esto es más para la ruta /evaluate, pero lo incluimos aquí por consistencia si el frontend lo espera
+        feedback: `Error al evaluar tu prompt: ${errorMsg}. Intenta de nuevo más tarde.`, // Mensaje de error al usuario
+        error: errorMsg // Mensaje de error detallado para depuración
+    });
   }
 });
 
 // --- RUTA: /evaluate (Paso 5: Evaluación Alineación vía Chat) ---
+// Corregida para usar el helper y los prompts del archivo que funciona
 router.post('/evaluate', async (req, res) => {
+  // La verificación de clave API ya está en callDeepseekChat, pero la dejamos aquí también por claridad.
   if (!DEEPSEEK_KEY) return res.status(500).json({ error: 'Configuración incompleta (sin clave API)' });
 
   try {
+    // Capturamos el prompt COMPLETO que el estudiante escribió en el textarea del Paso 5
     const { prompt: studentPrompt } = req.body;
     if (!studentPrompt?.trim()) return res.status(400).json({ error: 'Prompt vacío.' });
 
+    // Definimos el objetivo específico del reto para que la IA lo tenga presente
     const targetGoal = "Generar un cuestionario breve de 5 preguntas de opción múltiple sobre la Guerra del Pacífico para alumnos de secundaria.";
 
-    const systemMessage = `Eres un asistente pedagógico. Evalúa si el prompt del usuario está bien alineado con el siguiente objetivo: "${targetGoal}". Responde ÚNICAMENTE con un objeto JSON que contenga las claves "level" (string: "red", "yellow", o "green" basado en la alineación) y "feedback" (string: una sugerencia concisa en español, máximo 2 frases). Red si está mal alineado, Yellow si está parcialmente alineado o le falta claridad, Green si está bien alineado.`;
+    // **System Message COPIADO EXACTAMENTE del archivo que funciona (consulta.js /evaluate)**
+    const systemMessage = `Eres un asistente pedagógico. Evalúa si el prompt del usuario está bien alineado con el siguiente objetivo: "${targetGoal}". Responde ÚNICAMENTE con un objeto JSON que contenga las claves "level" (string: "red", "yellow", o "green" basado en la alineación) y "feedback" (string: una sugerencia concisa en español, máximo 2 frases). Red si está mal alineado, Yellow si está parcialmente alineado o le falta claridad, Green si está bien alineado.`; // Fin del systemMessage para Paso 5
+
+    // **User Message COPIADO EXACTAMENTE del archivo que funciona (consulta.js /evaluate)**
+    // Envuelve el prompt del estudiante para darle contexto a la IA
     const userMessage = `Evalúa la alineación del siguiente prompt con el objetivo:\n\n---\n${studentPrompt}\n---\n\nGenera el objeto JSON como se te indicó.`;
 
+    // Usamos el helper con los parámetros de la versión que funciona (temp 0.2, max_tokens 100)
     const assistantResponse = await callDeepseekChat(systemMessage, userMessage, 0.2, 100);
 
-    // Intentar parsear el JSON
+    // Intentar parsear el JSON esperado { "level": "...", "feedback": "..." }
     let evaluation = {};
      try {
-         const cleanResponse = assistantResponse.replace(/```json\n?/, '').replace(/\n?```$/, '');
+         // Limpiar posible markdown de bloque de código (```json)
+         const cleanResponse = assistantResponse.replace(/```json\n?/, '').replace(/\n?```$/, '').trim();
          evaluation = JSON.parse(cleanResponse);
+
+         // Validar que las claves esperadas existan después del parseo
          if (typeof evaluation.level !== 'string' || typeof evaluation.feedback !== 'string') {
-             console.error('[ERROR] JSON de evaluación (evaluate) con formato inesperado:', evaluation);
-             evaluation = { level: 'red', feedback: "Error: Formato de evaluación inesperado de la IA. Revisa tu prompt." };
-         }
+              console.error('[ERROR] JSON de evaluación (evaluate) con formato inesperado:', evaluation);
+              // Fallback si el JSON es inválido pero hubo respuesta
+              const fallbackFeedback = assistantResponse.length > 5 && assistantResponse.length < 150 ? assistantResponse : "Error: Formato de evaluación inesperado de la IA. Revisa tu prompt.";
+              evaluation = { level: 'red', feedback: `[FALLBACK] ${fallbackFeedback}` };
+          }
 
      } catch (parseError) {
-        console.error('[ERROR] Fallo al parsear JSON de la respuesta de Deepseek (evaluate):', parseError);
+        console.error('[ERROR] Fallo al parsear/validar JSON de la respuesta de Deepseek (Paso 5):', parseError);
         console.error('[ERROR] Respuesta recibida que falló el parseo:', assistantResponse);
-        // Fallback si falla el parseo
-        const levelFallback = assistantResponse.toLowerCase().includes("excelente") || assistantResponse.toLowerCase().includes("bien") || assistantResponse.toLowerCase().includes("green") ? "green" : (assistantResponse.toLowerCase().includes("casi") || assistantResponse.toLowerCase().includes("mejorar") || assistantResponse.toLowerCase().includes("yellow") ? "yellow" : "red");
-        const feedbackFallback = assistantResponse.length < 150 ? assistantResponse : "La evaluación automática tuvo un problema. Intenta de nuevo o simplifica tu prompt."; // Evitar feedback muy largo
-        evaluation = { level: levelFallback, feedback: feedbackFallback };
+        // Fallback robusto si falla el parseo o validación del JSON
+        const feedbackFallback = assistantResponse.length > 5 && assistantResponse.length < 200 ? assistantResponse : "La evaluación automática tuvo un problema. Revisa tu prompt."; // Usar la respuesta cruda si no es muy larga
+        const lowerCaseFeedback = feedbackFallback.toLowerCase();
+
+        // Intentar determinar el nivel basado en palabras clave si el JSON falla
+        const levelFallback = lowerCaseFeedback.includes("excelente") || lowerCaseFeedback.includes("verde") || lowerCaseFeedback.includes("cumple") ? "green" :
+                              (lowerCaseFeedback.includes("mejorar") || lowerCaseFeedback.includes("amarillo") || lowerCaseFeedback.includes("falta") || lowerCaseFeedback.includes("poco claro") ? "yellow" : "red");
+
+        evaluation = { level: levelFallback, feedback: `[FALLBACK] ${feedbackFallback}` }; // Prefijo para indicar fallback
     }
 
-    // Validar nivel antes de enviar
+    // Asegurar que el nivel sea siempre uno de los válidos ('red', 'yellow', 'green')
     const validLevels = ['red', 'yellow', 'green'];
-    const finalLevel = validLevels.includes(evaluation.level) ? evaluation.level : 'red'; // Default a red si es inválido
+    const finalLevel = validLevels.includes(evaluation.level?.toLowerCase()) ? evaluation.level.toLowerCase() : 'red'; // Default a red si es inválido o level era nulo/undefined
 
     // Devolver al frontend
     res.json({
@@ -380,15 +458,28 @@ router.post('/evaluate', async (req, res) => {
   } catch (error) {
     console.error('--- ERROR DETALLADO en /evaluate (Paso 5) ---');
     console.error('Mensaje:', error.message);
-    let errorMsg = 'Fallo en evaluación de prompt con Deepseek Chat'; let statusCode = 500;
-    if (error.response?.status) statusCode = error.response.status;
-    if (error.response?.data?.error?.message) errorMsg = error.response.data.error.message;
-    else if (error.message.toLowerCase().includes('timeout')) errorMsg = 'Timeout Deepseek Chat.';
-     else { errorMsg = `Error inesperado: ${error.message}`; }
-    res.status(statusCode).json({ error: errorMsg });
+    let errorMsg = 'Fallo en evaluación de prompt con Deepseek Chat';
+    let statusCode = error.statusCode || 500; // Use attached status code from helper if available
+
+    if (axios.isAxiosError(error) && error.response?.data?.error?.message) {
+        errorMsg = error.response.data.error.message;
+    } else if (error.message.toLowerCase().includes('timeout') || error.message.toLowerCase().includes('no response')) {
+       errorMsg = 'Tiempo de espera agotado con Deepseek Chat.';
+       statusCode = 504; // Ensure 504 for timeouts/no response
+    }
+     else {
+        // Otros errores inesperados
+         errorMsg = `Error inesperado: ${error.message}`;
+     }
+
+    // Enviar una respuesta de error estructurada al frontend
+    res.status(statusCode).json({
+        level: 'red', // En caso de error del backend, el resultado para el alumno es siempre rojo
+        feedback: `Error al evaluar tu prompt: ${errorMsg}. Intenta de nuevo más tarde.`,
+        error: errorMsg // Opcional: enviar el mensaje de error detallado para depuración
+    });
   }
 });
-
 
 // --- MONTAJE Y EXPORTACIÓN (CommonJS) ---
 app.use('/api', router);
