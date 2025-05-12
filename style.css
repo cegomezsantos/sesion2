@@ -16,7 +16,8 @@ body {
 
 /* Variables for consistent colors (Optional but good practice) */
 :root {
-    --primary-color: #ff5722; /* Orange */
+    /* Updated primary color based on annotation */
+    --primary-color: #F54526; /* Orange from annotation */
     --secondary-color: #003366; /* Dark Blue */
     --border-color: #ddd; /* Light Gray */
     --success-color: #28a745; /* Green */
@@ -65,6 +66,7 @@ main {
 
 /* Section styles (the white cards) */
 section {
+    /* Confirmed background is white based on annotation */
     background-color: white;
     /* Adjusted padding: removed extra left padding */
     padding: 30px;
@@ -88,7 +90,8 @@ section {
     position: static;
     width: 35px;
     height: 35px;
-    background-color: var(--primary-color); /* Orange */
+    /* Changed background color based on annotation */
+    background-color: var(--primary-color); /* Now #F54526 */
     color: white;
     border-radius: 50%;
     display: flex;
@@ -106,7 +109,8 @@ section {
 
 /* Section Titles (Red/Orange Text) */
 section h2 {
-  color: var(--primary-color); /* Orange (Already correct) */
+  /* Changed color based on annotation */
+  color: var(--primary-color); /* Now #F54526 */
   font-size: 1.75rem;
   font-weight: 700;
   /* Adjusted margins to work with flex container */
@@ -139,14 +143,17 @@ section h3 {
 
 /* Style for PRE elements (examples) */
 pre {
-     background-color: #fff3e0; /* Light orange background */
+     /* Updated background color based on annotation */
+     background-color: #FFF7ED; /* Light orange background from annotation */
      padding: 15px;
-     border-left: 4px solid #ff9800; /* Orange left border */
+     /* Updated border color and width based on annotation */
+     border-left: 1px solid #FFA726; /* Orange left border from annotation */
      overflow-x: auto;
      white-space: pre-wrap;
      word-wrap: break-word;
      margin-bottom: 15px;
      font-size: 0.9em;
+     /* Added border-radius based on annotation */
      border-radius: 4px;
      color: #555; /* Muted text color */
 }
@@ -167,7 +174,8 @@ button {
 
 /* Style for orange buttons */
 button.orange-button {
-     background-color: var(--primary-color); /* Orange */
+     /* Changed background color based on annotation */
+     background-color: var(--primary-color); /* Now #F54526 */
 }
 
 button:hover {
@@ -175,7 +183,8 @@ button:hover {
 }
 
 button.orange-button:hover {
-     background-color: #e04e1b; /* Darker orange on hover */
+     /* Adjusted hover color to darken new primary color */
+     background-color: #DC3C20;
 }
 
 
@@ -190,7 +199,7 @@ button:disabled {
     min-height: 150px;
     padding: 10px;
     margin-bottom: 15px;
-    /* Corrected border color based on annotation */
+    /* Border color from previous annotation (#E03E20) - Keep this */
     border: 1px solid #E03E20;
     border-radius: 4px;
     font-family: inherit;
@@ -210,43 +219,98 @@ button:disabled {
 .ai-response {
     margin-top: 15px;
     padding: 15px;
-    /* Removed default border based on annotation */
+    /* Removed default border based on previous annotation - Keep this */
     border: none; /* Removed default border */
-    /* Corrected background color based on annotation */
+    /* Changed background color based on previous annotation (#EFF6FF) - Keep this */
     background-color: #EFF6FF;
     border-radius: 4px;
-    min-height: 30px; /* Give it some initial height */
+    /* Initially hidden as per annotation */
+    display: none;
+    /* min-height: 30px; Removed min-height when hidden */
     white-space: pre-wrap; /* Respect new lines */
     word-wrap: break-word;
     color: #333;
     /* Ensure content inside takes full width */
-    display: block;
     box-sizing: border-box;
+    position: relative; /* Needed for absolute positioning of spinner */
+    text-align: center; /* Center content/spinner */
+    overflow: hidden; /* Hide anything outside */
 }
 
-/* Specific styles for different response states */
+/* AI Response becomes visible when not hidden */
+.ai-response:not([style*="display: none"]) {
+    display: block;
+    min-height: 30px; /* Add min-height back when visible */
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* Specific styles for loading state */
 .ai-response.loading {
     color: #555;
     font-style: italic;
-    background-color: #e9f7ff; /* Light blue */
-    border-color: #007bff; /* Blue - kept as it provides visual feedback */
-    border-style: dashed; /* Added border style for clarity in loading */
-    border-width: 1px; /* Added border width */
+    background-color: #e9f7ff; /* Light blue loading background */
+    border-color: #007bff; /* Blue border for loading */
+    border-style: dashed; /* Dashed border for loading */
+    border-width: 1px; /* 1px border for loading */
+    /* Adjust padding/height for spinner */
+    min-height: 50px; /* Ensure enough space for spinner */
+    padding: 20px; /* Adjust padding for spinner */
+    text-align: center; /* Center the spinner */
+    position: relative; /* Ensure pseudo-element is positioned relative to this */
 }
+
+/* Hide content inside when loading */
+.ai-response.loading > *:not(.spinner) {
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+
+/* Style for the spinner pseudo-element */
+.ai-response.loading::before {
+    content: '';
+    display: inline-block; /* Or block with margin auto */
+    width: 20px; /* Spinner size */
+    height: 20px; /* Spinner size */
+    border: 3px solid #007bff; /* Spinner color (blue) */
+    border-top-color: transparent; /* Make part transparent for spinning effect */
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite; /* Apply animation */
+    position: absolute; /* Center the spinner */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Perfect centering */
+}
+
 
 .ai-response.error {
     color: var(--danger-color); /* Red */
     border-color: var(--danger-color);
     background-color: #fde0df; /* Light red */
-     border-style: solid; /* Added border style */
-     border-width: 1px; /* Added border width */
+    border-style: solid; /* Added border style */
+    border-width: 1px; /* Added border width */
+    display: block; /* Ensure error state is visible */
+    min-height: 30px; /* Ensure it has height when visible */
 }
 
+
 /* Style for the generated text within Exercise 1's response */
+/* This will be the actual text inserted by JS */
 .ai-response .generated-text {
-    margin-bottom: 15px;
-    padding-bottom: 15px; /* Add padding below text before the divider */
-    border-bottom: 1px solid #eee; /* Optional light line below generated text */
+     /* Removed padding/border as these should apply to the whole .ai-response container */
+     margin: 0;
+     padding: 0;
+     border: none;
+    /* Ensure it's visible when not loading */
+    display: block;
 }
 
 /* Style for the evaluation feedback within Exercise 1's response */
@@ -256,10 +320,15 @@ button:disabled {
     border-top: 1px solid #eee; /* Optional light line above feedback */
     /* Default evaluation feedback style */
      padding: 10px; /* Padding inside feedback box */
-     /* Removed default dashed border based on annotation */
+     /* Removed default dashed border based on annotation - Keep this */
      border: none;
      border-radius: 4px;
      background-color: #fff; /* White background for feedback */
+     /* Ensure it's visible when not loading */
+     visibility: visible !important; /* Override hiding from .loading */
+     opacity: 1 !important;
+     height: auto !important;
+     overflow: visible !important;
 }
 
 /* Specific styles for feedback based on score */
@@ -301,10 +370,12 @@ button:disabled {
 ul, ol {
     margin-bottom: 15px;
     padding-left: 25px;
+    /* No changes here based on annotations */
 }
 
 li {
     margin-bottom: 8px;
+     /* No changes here based on annotations */
 }
 
 /* Info blocks (used in Iteration section) */
@@ -322,7 +393,7 @@ li {
     padding: 15px;
     border: 1px dashed #ccc;
     border-radius: 5px;
-    /* Corrected background color based on annotation */
+    /* Changed background color based on previous annotation (#FFC72C) - Keep this */
     background-color: #FFC72C;
 }
 
@@ -376,7 +447,7 @@ footer hr {
 
 /* Ensure textareas within the version sections also get the border color based on annotation */
 .exercise3-sandbox .version-section textarea {
-     /* Corrected border color based on annotation */
+     /* Border color from previous annotation (#E03E20) - Keep this */
      border: 1px solid #E03E20;
 }
 
