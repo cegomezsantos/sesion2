@@ -4,24 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandbox Inteligente – SESIÓN 2</title>
-    <link rel="stylesheet" href="style.css"> {/* Link to the CSS from the previous step */}
+    <!-- Link to the CSS from the previous step -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        {/* Header content as seen in the "BIEN" screenshot header */}
-        <h1>¡Hola, Cesar ernesto!</h1> {/* Assuming this is the desired header title */}
-        <p>Bienvenido/a al Sandbox Inteligente. Aprende a interactuar con la IA paso a paso</p> {/* Assuming this is the desired header subtitle */}
-        <hr> {/* Main header divider line */}
+        <!-- Header content as seen in the "BIEN" screenshot header -->
+        <h1>¡Hola, Cesar ernesto!</h1>
+        <p>Bienvenido/a al Sandbox Inteligente. Aprende a interactuar con la IA paso a paso</p>
+        <!-- Main header divider line -->
+        <hr>
     </header>
 
     <main>
-        {/* This text should be placed after the header, before the first section */}
+        <!-- This text should be placed after the header, before the first section -->
         <p>En esta práctica realizaremos 3 actividades pensadas para docentes de educación secundaria. Cada una combina una breve explicación y un ejercicio directo en el entorno de IA.</p>
 
         <section id="ejercicio1_v2">
-            <div class="section-number">1</div> {/* Number inside the card as per "BIEN" and annotations */}
-            <h2>Resume una explicación para padres</h2> {/* Title without the number, as per "BIEN" and annotations */}
-            <hr class="section-divider"> {/* Gray line after the title, as per "BIEN" and annotations */}
+            <!-- Number inside the card as per "BIEN" and annotations -->
+            <div class="section-number">1</div>
+            <!-- Title without the number, as per "BIEN" and annotations -->
+            <h2>Resume una explicación para padres</h2>
+            <!-- Gray line after the title, as per "BIEN" and annotations -->
+            <hr class="section-divider">
 
             <h3>¿Para qué sirve?</h3>
             <p>Para comunicar de forma clara y concisa a los padres el progreso y las actividades de sus hijos en clase, facilitando su involucración y comprensión.</p>
@@ -43,27 +48,29 @@ Gracias por su colaboración.</pre>
                     <button class="copy-btn" data-target="textoResumir1_v2">Copiar texto</button>
                 </li>
                 <li><strong>Prompt Completo (Ejemplo):</strong>
-                    {/* Prompt Example without copy button */}
+                    <!-- Prompt Example without copy button -->
                     <pre>Actúa como comunicador escolar. Resume este texto en 60 palabras
 para que los padres entiendan la actividad de sus hijos y la tarea asignada:</pre>
                 </li>
             </ul>
 
             <div class="sandbox">
-                {/* Clarified instructions as requested previously */}
+                <!-- Clarified instructions as requested previously -->
                 <h3>Escribe tu instrucción (Prompt) y luego pega el texto a procesar a continuación:</h3>
                  <p>Ejemplo de estructura: <strong>[Tu instrucción aquí] : [El texto completo que quieres que la IA procese]</strong></p>
                 <textarea id="promptInput1_v2" placeholder="Escribe tu prompt y pega el texto aquí..."></textarea>
                 <button class="evaluate-btn orange-button" data-exercise="1">Evaluar Prompt</button>
                 <div class="ai-response" id="aiResponse1_v2"></div>
             </div>
-             {/* Removed the text '[ Evaluar Prompt ] -> Adjusta...' as it wasn't in the original sections 2/3/4 layout */}
         </section>
 
         <section id="ejercicio2_v2">
-             <div class="section-number">2</div> {/* Number inside */}
-            <h2>Adapta un fragmento al nivel de secundaria</h2> {/* Title without number */}
-            <hr class="section-divider"> {/* Gray line */}
+             <!-- Number inside -->
+             <div class="section-number">2</div>
+            <!-- Title without number -->
+            <h2>Adapta un fragmento al nivel de secundaria</h2>
+            <!-- Gray line -->
+            <hr class="section-divider">
 
             <h3>¿Para qué sirve?</h3>
             <p>Hacer accesible cualquier contenido usando palabras sencillas y ejemplos familiares.</p>
@@ -76,7 +83,7 @@ una sustancia."</pre>
                      <button class="copy-btn" data-target="textoOriginal2_v2">Copiar texto</button>
                 </li>
                 <li><strong>Prompt Completo (Ejemplo):</strong>
-                    {/* Prompt Example without copy button */}
+                    <!-- Prompt Example without copy button -->
                     <pre>"Eres un profesor de secundaria. Reescribe este texto con palabras
 sencillas y un ejemplo práctico cotidiano sobre oxidación:”</pre>
                 </li>
@@ -89,13 +96,15 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</pre>
                 <button class="evaluate-btn orange-button" data-exercise="2">Evaluar Prompt</button>
                 <div class="ai-response" id="aiResponse2_v2"></div>
             </div>
-            {/* Removed the text '[ Evaluar Prompt ] -> Verifica...' */}
         </section>
 
         <section id="ejercicio3_v2">
-             <div class="section-number">3</div> {/* Number inside */}
-            <h2>Itera y mejora tu prompt: reflexiona sobre las interacciones</h2> {/* Title without number */}
-            <hr class="section-divider"> {/* Gray line */}
+             <!-- Number inside -->
+             <div class="section-number">3</div>
+            <!-- Title without number -->
+            <h2>Itera y mejora tu prompt: reflexiona sobre las interacciones</h2>
+            <!-- Gray line -->
+            <hr class="section-divider">
 
             <h3>¿Qué es “iterar” con IA generativa?</h3>
             <p>Piensa en la iteración como pulir una joya:</p>
@@ -124,7 +133,7 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</pre>
                     </ul>
                 </div>
                 <div class="info-block">
-                    <h4>Instrucciones mágicas</h4> {/* Updated from 'Pregunta mágica' */}
+                    <h4>Instrucciones mágicas</h4>
                     <ul>
                         <li>"¿Cómo puedo hacerlo más específico?"</li>
                         <li>"Muéstrame una versión alternativa"</li>
@@ -169,10 +178,10 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</pre>
                 <li>Comparación: Anota en qué mejoró la respuesta (más clara, más breve, mejor estructura).</li>
             </ol>
 
-            <div class="sandbox exercise3-sandbox"> {/* Updated class name */}
+            <div class="sandbox exercise3-sandbox">
                 <div class="version-section">
                     <h4>Tu Prompt Inicial (V1):</h4>
-                     <p>Escribe tu instrucción (Prompt) y luego pega el texto si es necesario a continuación:</p> {/* Updated instructions */}
+                     <p>Escribe tu instrucción (Prompt) y luego pega el texto si es necesario a continuación:</p>
                     <textarea id="promptInput3_v2_v1" placeholder="Escribe tu prompt inicial y pega el texto aquí..."></textarea>
                     <button class="evaluate-btn orange-button" data-exercise="3" data-version="v1">Evaluar V1</button>
                     <div class="ai-response" id="aiResponse3_v2_v1"></div>
@@ -180,7 +189,7 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</pre>
                 </div>
                 <div class="version-section">
                     <h4>Tu Prompt Refinado (V2):</h4>
-                     <p>Escribe tu instrucción refinada (Prompt) y luego pega el texto si es necesario a continuación:</p> {/* Updated instructions */}
+                     <p>Escribe tu instrucción refinada (Prompt) y luego pega el texto si es necesario a continuación:</p>
                     <textarea id="promptInput3_v2_v2" placeholder="Escribe tu prompt refinado y pega el texto aquí..."></textarea>
                     <button class="evaluate-btn orange-button" data-exercise="3" data-version="v2">Evaluar V2</button>
                     <div class="ai-response" id="aiResponse3_v2_v2"></div>
@@ -190,18 +199,23 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</pre>
         </section>
 
         <section id="cierre_v2">
-            <h2>Cierre:</h2> {/* Title without number */}
-            <hr class="section-divider"> {/* Gray line */}
-            <p>Con este ejercicio ha comprobado que la iteración es la dinámica habitual al trabajar con IA: cada ajuste convierte un prompt impreciso en una instrucción clara y potente. Con la práctica, este ciclo se volverá cada vez más rápido y eficaz. Le invitamos a seguir experimentando en cualquiera de los modelos de IA que encontrará en esta página.</p> {/* Justified text */}
+            <!-- Title without number -->
+            <h2>Cierre:</h2>
+            <!-- Gray line -->
+            <hr class="section-divider">
+            <!-- Justified text -->
+            <p>Con este ejercicio ha comprobado que la iteración es la dinámica habitual al trabajar con IA: cada ajuste convierte un prompt impreciso en una instrucción clara y potente. Con la práctica, este ciclo se volverá cada vez más rápido y eficaz. Le invitamos a seguir experimentando en cualquiera de los modelos de IA que encontrará en esta página.</p>
         </section>
 
     </main>
 
     <footer>
-        <hr> {/* Footer divider line */}
+        <!-- Footer divider line -->
+        <hr>
         <p>Sandbox Inteligente - ¡Sigue practicando!</p>
     </footer>
 
-    <script src="script.js" defer></script> {/* Link to the JS from the previous step */}
+    <!-- Link to the JS from the previous step -->
+    <script src="script.js" defer></script>
 </body>
 </html>
