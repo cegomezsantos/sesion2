@@ -1,141 +1,223 @@
+/* style.css */
+
+/* General styles for the body */
 body {
-    font-family: sans-serif;
+    font-family: 'Arial', sans-serif; /* Using a common web font */
     line-height: 1.6;
     margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
-    color: #333;
+    padding: 0; /* Remove default body padding */
+    background-color: #00aaff; /* Bright blue background */
+    color: #333; /* Default text color */
+    display: flex; /* Use flexbox to center content */
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    padding-bottom: 40px; /* Add padding at the bottom */
 }
 
+/* Header styles */
 header {
+    width: 100%; /* Occupy full width */
+    max-width: 900px; /* Match main content width */
     text-align: center;
     margin-bottom: 40px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+    padding: 40px 20px 20px 20px; /* Add padding */
+    color: white; /* White text for header */
+    box-sizing: border-box; /* Include padding in width */
 }
 
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    margin-bottom: 5px;
+}
+
+header p {
+    margin: 0;
+    font-size: 1.1em;
+    opacity: 0.9; /* Slightly faded subtitle */
+}
+
+header hr {
+    border: none;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white line */
+    margin-top: 20px;
+}
+
+
+/* Main content container */
 main {
-    max-width: 900px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 900px; /* Max width for the content area */
+    padding: 0 20px; /* Add horizontal padding */
+    box-sizing: border-box; /* Include padding in width */
 }
 
+/* Section styles (the white cards) */
 section {
-    background-color: #fff;
-    padding: 25px;
+    background-color: white;
+    padding: 30px;
     margin-bottom: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    position: relative; /* Needed for absolute positioning of number circle */
 }
 
-h1, h2, h3, h4 {
-    color: #0056b3; /* A shade of blue */
+/* Style for the numbered circles */
+.section-number {
+    position: absolute;
+    top: 25px; /* Position from the top */
+    left: -15px; /* Position outside the card on the left */
+    width: 40px;
+    height: 40px;
+    background-color: #ff5722; /* Orange color */
+    color: white;
+    border-radius: 50%; /* Make it a circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow on the circle */
+}
+
+/* Adjust padding inside section to make space for the number circle */
+section {
+    padding-left: 40px; /* Give space for the number on the left */
+}
+
+
+/* Headings within sections */
+section h2 {
+    color: #ff5722; /* Orange color for section titles */
     margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 0; /* Remove border/padding from previous style */
+    border-bottom: none; /* Remove border from previous style */
+    margin-left: 10px; /* Adjust slightly because number is on left */
 }
 
-h2 {
-    border-bottom: 2px solid #007bff; /* A brighter blue line */
-    padding-bottom: 10px;
+section h3 {
+    color: #555; /* Slightly darker grey for subheadings */
+    margin-top: 25px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+/* Specific styling for the yellow prompt component box (Exercise 2) */
+.prompt-components-box {
+    background-color: #ffeb3b; /* Yellow background */
+    padding: 20px;
+    border-radius: 8px;
     margin-bottom: 20px;
 }
 
-h3 {
+.prompt-component {
+    display: flex; /* Use flexbox for label and input */
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.prompt-component label {
+    font-weight: bold;
+    margin-right: 15px;
+    min-width: 80px; /* Give labels a minimum width for alignment */
+    color: #333;
+}
+
+.prompt-component input {
+    flex-grow: 1; /* Allow input to take remaining space */
+    padding: 10px;
+    border: 1px solid #ff9800; /* Orange border */
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+/* Style for the prompt example text area (Exercise 2) */
+.prompt-example-area {
+    background-color: #fff3e0; /* Light orange background */
+    padding: 15px;
+    border-left: 4px solid #ff9800; /* Orange left border */
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    color: #555; /* Slightly muted text color */
+    border-radius: 4px; /* Add rounded corners */
+}
+
+/* Style for the "Resultado Ejemplo de la IA" heading */
+.resultado-heading {
+    color: #ff5722; /* Orange color */
+    font-size: 1.2em;
+    font-weight: bold;
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
-.exercise-info {
-    display: flex;
-    flex-wrap: wrap; /* Allows wrapping on smaller screens */
-    gap: 20px; /* Space between info blocks */
-    margin-bottom: 20px;
-}
-
-.info-block {
-    flex: 1; /* Allows blocks to grow and shrink */
-    min-width: 250px; /* Minimum width before wrapping */
-    padding: 15px;
-    border: 1px dashed #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-.info-block h4 {
-    margin-top: 0;
-    color: #003366; /* Darker blue for subheadings */
-}
-
-
-ul, ol {
-    margin-bottom: 15px;
-    padding-left: 20px;
-}
-
-li {
-    margin-bottom: 8px;
-}
-
-pre {
-    background-color: #eee;
-    padding: 15px;
-    border-left: 4px solid #007bff;
-    overflow-x: auto; /* Add scroll for long lines */
-    white-space: pre-wrap; /* Wrap long lines */
-    word-wrap: break-word; /* Break words if necessary */
-    margin-bottom: 10px;
-    font-size: 0.9em;
-}
-
-.sandbox {
-    border: 2px dashed #007bff;
-    padding: 20px;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    background-color: #e9f7ff; /* Light blue background */
-    border-radius: 8px;
-}
-
-textarea {
-    width: calc(100% - 24px); /* Adjust for padding */
-    min-height: 100px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-family: inherit;
-    font-size: 1em;
-    resize: vertical; /* Allow only vertical resizing */
-}
-
+/* Style for the orange buttons */
 button {
-    padding: 10px 15px;
-    background-color: #007bff;
+    padding: 12px 20px; /* Slightly larger padding */
+    background-color: #007bff; /* Default button blue */
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px; /* Slightly more rounded */
     cursor: pointer;
     font-size: 1em;
     transition: background-color 0.3s ease;
-    margin-right: 10px; /* Space between buttons */
+    margin-right: 10px;
+}
+
+button.orange-button {
+     background-color: #ff5722; /* Orange color for specific buttons */
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Darker blue on hover */
 }
+
+button.orange-button:hover {
+     background-color: #e04e1b; /* Darker orange on hover */
+}
+
 
 button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
 }
 
+/* Textarea styles (General for all textareas) */
+textarea {
+    width: calc(100% - 24px); /* Adjust for padding */
+    min-height: 150px; /* Make textareas larger */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1em;
+    resize: vertical;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+textarea::placeholder {
+    color: #999; /* Placeholder text color */
+    font-style: italic;
+}
+
+
+/* Style for the AI response area (if you add one) */
 .ai-response {
     margin-top: 15px;
     padding: 15px;
     border: 1px solid #007bff;
-    background-color: #fff;
+    background-color: #e9f7ff; /* Light blue background for response */
     border-radius: 4px;
-    min-height: 30px; /* Give it some minimum height */
-    white-space: pre-wrap; /* Preserve formatting and wrap lines */
+    min-height: 30px;
+    white-space: pre-wrap;
     word-wrap: break-word;
+    color: #333;
 }
 
 .ai-response.loading {
@@ -144,50 +226,100 @@ button:disabled {
 }
 
 .ai-response.error {
-    color: #d9534f; /* Red for errors */
+    color: #d9534f;
     border-color: #d9534f;
+    background-color: #fde0df; /* Light red background for error */
 }
 
-.check-icon {
-    color: green;
-    font-weight: bold;
+/* Lists */
+ul, ol {
+    margin-bottom: 15px;
+    padding-left: 25px; /* Slightly more padding for list markers */
 }
 
-.highlight {
-    font-weight: bold;
-    color: #007bff;
+li {
+    margin-bottom: 8px;
 }
 
-hr {
-    border: none;
-    height: 1px;
-    background-color: #ccc;
-    margin: 40px 0;
-}
-
-.motivational {
-    font-style: italic;
-    color: #555;
+/* Footer styles */
+footer {
+    width: 100%;
     text-align: center;
-    margin-top: 20px;
+    padding: 20px;
+    color: rgba(255, 255, 255, 0.8); /* Light white text */
+    font-size: 0.9em;
+    margin-top: 30px;
 }
 
-.exercise4-sandbox {
-    display: flex;
-    gap: 20px; /* Space between V1 and V2 sections */
-    flex-wrap: wrap;
+/* Styles specific to the layout in Exercise 4 (Define your prompt) */
+.prompt-definition-area {
+    /* Can add specific styling if needed, but basic inputs work */
 }
 
-.version-section {
-    flex: 1; /* Make sections take equal space */
-    min-width: 300px; /* Minimum width before wrapping */
-    padding: 15px;
-    border: 1px dashed #003366;
-    border-radius: 5px;
-    background-color: #e0f7fa; /* Lighter blue */
+.prompt-definition-area label {
+    display: block; /* Label above the input */
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 15px; /* Space above each input group */
+    color: #333;
 }
 
-.version-section h4 {
-    margin-top: 0;
-    color: #003366;
+.prompt-definition-area input[type="text"] {
+    width: calc(100% - 22px); /* Adjust width for padding/border */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+/* Styles specific to the Reto Final (Exercise 5) textarea */
+#ejercicio5 textarea {
+     min-height: 100px; /* Maybe slightly smaller textarea for this section */
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    main {
+        padding: 0 10px;
+    }
+
+    section {
+        padding: 30px 20px 20px 30px; /* Adjust section padding */
+    }
+
+    .section-number {
+         top: 20px;
+         left: 10px; /* Position inside the card on smaller screens */
+    }
+
+     section h2 {
+        margin-left: 35px; /* Adjust heading margin to clear the number */
+     }
+
+    .prompt-component {
+        flex-direction: column; /* Stack label and input */
+        align-items: flex-start;
+    }
+
+    .prompt-component label {
+        margin-right: 0;
+        margin-bottom: 5px;
+        min-width: auto;
+    }
+
+     textarea,
+     .prompt-definition-area input[type="text"] {
+        width: 100%; /* Make inputs take full width */
+     }
+
+    button {
+        width: 100%; /* Full width buttons */
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
 }
