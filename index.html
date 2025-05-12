@@ -4,76 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandbox Inteligente – SESIÓN 2</title>
-    <!-- Link to the CSS from the previous step -->
+    <!-- Link to the CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <!-- Header content as seen in the "BIEN" screenshot header -->
         <h1>¡Hola, Cesar ernesto!</h1>
         <p>Bienvenido/a al Sandbox Inteligente. Aprende a interactuar con la IA paso a paso</p>
-        <!-- Main header divider line -->
         <hr>
     </header>
 
     <main>
-        <!-- This text should be placed after the header, before the first section -->
-        <p>En esta práctica realizaremos 3 actividades pensadas para docentes de educación secundaria. Cada una combina una breve explicación y un ejercicio directo en el entorno de IA.</p>
 
         <section id="ejercicio1_v2">
-            <!-- Number inside the card as per "BIEN" and annotations -->
             <div class="section-number">1</div>
-            <!-- Title without the number, as per "BIEN" and annotations -->
             <h2>Resume una explicación para padres</h2>
-            <!-- Gray line after the title, as per "BIEN" and annotations -->
             <hr class="section-divider">
 
             <h3>¿Para qué sirve?</h3>
-            <p>Para comunicar de forma clara y concisa a los padres el progreso y las actividades de sus hijos en clase, facilitando su involucración y comprensión.</p>
+            <p>Para comunicar de forma clara y concisa a los padres el progreso y las actividades de sus hijos en clase, facilitando su involucración y comprensión. Parte de nuestra labor como docentes es tomar anotaciones sobre el desempeño de nuestros estudiantes. Estas anotaciones realizadas durante las clases pueden ser fácilmente llevadas a un texto que podamos usar para registrar o comunicar a los padres de familia.</p>
 
             <h3>Ejercicio</h3>
             <ul>
                 <li><strong>Texto a resumir (el apunte del profesor):</strong>
-                    <pre id="textoResumir1_v2">Estimados padres,
+                    <pre id="textoResumir1_v2">apuntes de la clase de Historia: iniciamos el tema de las civilizaciones antiguas, centrándonos específicamente en Mesopotamia. Cubrimos aspectos clave como su ubicación geográfica entre los ríos Tigris y Éufrates, la invención de la escritura (cuneiforme) y la importancia de la agricultura de regadío para su desarrollo.
 
-Quería compartir con ustedes una breve actualización sobre la clase de hoy de Historia, donde iniciamos el fascinante tema de las civilizaciones antiguas, centrándonos específicamente en Mesopotamia. Cubrimos aspectos clave como su ubicación geográfica entre los ríos Tigris y Éufrates, la invención de la escritura (cuneiforme) y la importancia de la agricultura de regadío para su desarrollo.
-
-Durante la clase, noté que algunos estudiantes tuvieron dificultades para diferenciar entre los distintos imperios que surgieron en la región (Sumerios, Acadios, Babilonios). La línea de tiempo parece ser un punto confuso.
+Durante la clase:  algunos estudiantes tuvieron dificultades para diferenciar entre los distintos imperios que surgieron en la región (Sumerios, Acadios, Babilonios). La línea de tiempo parece ser un punto confuso.
 
 Para ayudarles a consolidar este conocimiento fundamental, he asignado como tarea leer las páginas 35-40 del libro de texto y completar el mapa conceptual del capítulo 3 en sus cuadernos para la próxima sesión. Es vital que repasen estos conceptos, ya que son la base para entender las civilizaciones posteriores que estudiaremos.
-
-Les agradecería mucho si pudieran animar a sus hijos a dedicar tiempo a esta tarea y ofrecerles apoyo si surgen dudas. Una comprensión sólida ahora facilitará enormemente el aprendizaje futuro.
-
-Gracias por su colaboración.</pre>
+</pre>
                     <button class="copy-btn" data-target="textoResumir1_v2">Copiar texto</button>
                 </li>
-                <li><strong>Prompt Completo (Ejemplo):</strong>
-                    <!-- Prompt Example without copy button -->
-                    <pre>Actúa como comunicador escolar. Resume este texto en 60 palabras
-para que los padres entiendan la actividad de sus hijos y la tarea asignada:</pre>
+                <li><strong>Prompt Completo (Ejemplo - ¡Combina esta instrucción con el texto de arriba en el área de escritura!):</strong>
+                    <pre>Actúa como comunicador escolar. Resume este texto en 60 palabras con un contenido amable y muy claro para que los padres entiendan la actividad de sus hijos y la tarea asignada</pre>
                 </li>
             </ul>
 
             <div class="sandbox">
-                <!-- Clarified instructions as requested previously -->
                 <h3>Escribe tu instrucción (Prompt) y luego pega el texto a procesar a continuación:</h3>
                  <p>Ejemplo de estructura: <strong>[Tu instrucción aquí] : [El texto completo que quieres que la IA procese]</strong></p>
-                <textarea id="promptInput1_v2" placeholder="Escribe tu prompt y pega el texto aquí..."></textarea>
+                <textarea id="promptInput1_v2" placeholder="Escribe tu prompt (ej: 'Resume amablemente') seguido de dos puntos (:) y luego pega el texto a procesar..."></textarea>
                 <button class="evaluate-btn orange-button" data-exercise="1">Evaluar Prompt</button>
                 <div class="ai-response" id="aiResponse1_v2"></div>
             </div>
         </section>
 
         <section id="ejercicio2_v2">
-             <!-- Number inside -->
              <div class="section-number">2</div>
-            <!-- Title without number -->
-            <h2>Adapta un fragmento al nivel de secundaria</h2>
-            <!-- Gray line -->
+            <h2>Adapta contenidos para convertirlos en recursos educativos</h2>
             <hr class="section-divider">
 
             <h3>¿Para qué sirve?</h3>
-            <p>Hacer accesible cualquier contenido usando palabras sencillas y ejemplos familiares.</p>
+            <p>Hacer accesible cualquier contenido usando palabras sencillas y ejemplos familiares para los estudiantes</p>
 
             <h3>Ejercicio</h3>
             <ul>
@@ -82,8 +64,7 @@ para que los padres entiendan la actividad de sus hijos y la tarea asignada:</pr
 una sustancia."</pre>
                      <button class="copy-btn" data-target="textoOriginal2_v2">Copiar texto</button>
                 </li>
-                <li><strong>Prompt Completo (Ejemplo):</strong>
-                    <!-- Prompt Example without copy button -->
+                <li><strong>Prompt Completo (Ejemplo - Combina esta instrucción con el texto de arriba en el área de escritura):</strong>
                     <pre>"Eres un profesor de secundaria. Reescribe este texto con palabras
 sencillas y un ejemplo práctico cotidiano sobre oxidación:”</pre>
                 </li>
@@ -92,18 +73,15 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</pre>
             <div class="sandbox">
                  <h3>Escribe tu instrucción (Prompt) y luego pega el texto original a continuación:</h3>
                  <p>Ejemplo de estructura: <strong>[Tu instrucción aquí] : [El texto original]</strong></p>
-                <textarea id="promptInput2_v2" placeholder="Escribe tu prompt y pega el texto original aquí..."></textarea>
+                <textarea id="promptInput2_v2" placeholder="Escribe tu prompt (ej: 'Explica para niños de 10 años') seguido de dos puntos (:) y luego pega el texto a adaptar..."></textarea>
                 <button class="evaluate-btn orange-button" data-exercise="2">Evaluar Prompt</button>
                 <div class="ai-response" id="aiResponse2_v2"></div>
             </div>
         </section>
 
         <section id="ejercicio3_v2">
-             <!-- Number inside -->
              <div class="section-number">3</div>
-            <!-- Title without number -->
-            <h2>Itera y mejora tu prompt: reflexiona sobre las interacciones</h2>
-            <!-- Gray line -->
+            <h2>Itera y mejora tu prompt</h2>
             <hr class="section-divider">
 
             <h3>¿Qué es “iterar” con IA generativa?</h3>
@@ -152,21 +130,19 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</pre>
             <p class="motivational">Motívate: ¡Cada iteración es un paso visible de progreso! En minutos verás cómo una idea borrosa se convierte en un recurso brillante y listo para tu clase. ¡Empieza a iterar hoy y deja que la IA sea tu taller creativo portátil!</p>
 
             <h3>¿Para qué sirve?</h3>
-            <p>Aprenderás a refinar un prompt paso a paso, aplicando los criterios de un buen prompt vistos en la Sesión 2:</p>
+            <p>Aprenderás a refinar un prompt paso a paso, aplicando los criterios de un buen prompt vistos en la Sesión 1:</p>
             <ul>
                 <li><strong>Rol:</strong> quién habla (por ejemplo, “Eres un profesor...").</li>
                 <li><strong>Objetivo:</strong> qué quieres lograr (resumir, clasificar, adaptar...).</li>
                 <li><strong>Contexto:</strong> situación o audiencia (alumnos de secundaria, padres...).</li>
-                <li><strong>Claridad y especificidad:</strong> instrucciones detalladas, pasos concretos.</li>
-                <li><strong>Formato deseado:</strong> si pides tabla, lista, ejemplo, analogía...</li>
-                <li><strong>Refinamiento:</strong> solicita ajustar tono, extensión o complejidad.</li>
+
             </ul>
 
             <h3>Ejercicio</h3>
             <ol>
                 <li>Version 1: Escribe un prompt genérico para “explicar el ciclo del agua".</li>
-                <li>Evaluación: Ejecuta en el sandbox y observa la respuesta.</li>
-                <li>Refinamiento: Aplica cada criterio de un buen prompt:
+                <li>Evaluación: Ejecutalo en <strong>"Tu prompt Inicial (V1)"</strong> y observa la respuesta.</li>
+                <li>Refinamiento: Aplica cada criterio de un buen prompt en <strong>"Tu Prompt Refinado (V2)"</strong>:
                     <ul>
                         <li>Añade Rol (“Eres un profesor de ciencias...").</li>
                         <li>Define Objetivo (“Explica el ciclo del agua en 5 pasos”).</li>
@@ -181,41 +157,37 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</pre>
             <div class="sandbox exercise3-sandbox">
                 <div class="version-section">
                     <h4>Tu Prompt Inicial (V1):</h4>
-                     <p>Escribe tu instrucción (Prompt) y luego pega el texto si es necesario a continuación:</p>
-                    <textarea id="promptInput3_v2_v1" placeholder="Escribe tu prompt inicial y pega el texto aquí..."></textarea>
+                     <p>Escribe tu instrucción (Prompt). No se necesita texto adicional aquí a menos que tu prompt lo especifique:</p>
+                    <textarea id="promptInput3_v2_v1" placeholder="Escribe tu prompt inicial aquí..."></textarea>
                     <button class="evaluate-btn orange-button" data-exercise="3" data-version="v1">Evaluar V1</button>
                     <div class="ai-response" id="aiResponse3_v2_v1"></div>
-                    <p>[ Evaluar V1 ] → Observa respuesta.</p>
+                    <p><strong>[ Evaluar V1 ] → Observa respuesta.</strong></p>
                 </div>
                 <div class="version-section">
                     <h4>Tu Prompt Refinado (V2):</h4>
-                     <p>Escribe tu instrucción refinada (Prompt) y luego pega el texto si es necesario a continuación:</p>
-                    <textarea id="promptInput3_v2_v2" placeholder="Escribe tu prompt refinado y pega el texto aquí..."></textarea>
+                     <p>Escribe tu instrucción refinada (Prompt). No se necesita texto adicional aquí a menos que tu prompt lo especifique:</p>
+                    <textarea id="promptInput3_v2_v2" placeholder="Escribe tu prompt refinado aquí..."></textarea>
                     <button class="evaluate-btn orange-button" data-exercise="3" data-version="v2">Evaluar V2</button>
                     <div class="ai-response" id="aiResponse3_v2_v2"></div>
-                    <p>[ Evaluar V2 ] → Observa respuesta mejorada.</p>
+                    <p><strong>[ Evaluar V2 ] → Observa respuesta mejorada.</strong></p>
                 </div>
             </div>
         </section>
 
         <section id="cierre_v2">
-            <!-- Title without number -->
             <h2>Cierre:</h2>
-            <!-- Gray line -->
             <hr class="section-divider">
-            <!-- Justified text -->
             <p>Con este ejercicio ha comprobado que la iteración es la dinámica habitual al trabajar con IA: cada ajuste convierte un prompt impreciso en una instrucción clara y potente. Con la práctica, este ciclo se volverá cada vez más rápido y eficaz. Le invitamos a seguir experimentando en cualquiera de los modelos de IA que encontrará en esta página.</p>
         </section>
 
     </main>
 
     <footer>
-        <!-- Footer divider line -->
         <hr>
         <p>Sandbox Inteligente - ¡Sigue practicando!</p>
     </footer>
 
-    <!-- Link to the JS from the previous step -->
+    <!-- Link to the JS -->
     <script src="script.js" defer></script>
 </body>
 </html>

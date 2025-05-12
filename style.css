@@ -1,4 +1,4 @@
-/* style.css - Final Revision based on screenshot annotations */
+/* style.css - Final Revision based on screenshot annotations + New styles for Exercise 1 Evaluation */
 
 /* General styles for the body */
 body {
@@ -6,13 +6,24 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0; /* Remove default body padding */
-    background-color: #00aaff; /* Bright blue background from screenshot */
+    background-color: #00AEF0; /* Bright blue background from screenshot */
     color: #333; /* Default text color */
     display: flex; /* Use flexbox to center content */
     flex-direction: column;
     align-items: center; /* Center content horizontally */
     padding-bottom: 40px; /* Add padding at the bottom */
 }
+
+/* Variables for consistent colors (Optional but good practice) */
+:root {
+    --primary-color: #ff5722; /* Orange */
+    --secondary-color: #003366; /* Dark Blue */
+    --border-color: #ddd; /* Light Gray */
+    --success-color: #28a745; /* Green */
+    --warning-color: #ffc107; /* Yellow */
+    --danger-color: #dc3545; /* Red */
+}
+
 
 /* Header styles */
 header {
@@ -63,44 +74,44 @@ section {
     position: relative; /* Needed for absolute positioning of number circle */
 }
 
-/* Style for the numbered circles */
+/* Style for the numbered circles inside sections */
 .section-number {
     position: absolute;
-    top: 15px; /* Position from the top */
-    left: 15px; /* Position *inside* the card on the left as per annotation */
-    width: 35px; /* Slightly smaller than before */
-    height: 35px; /* Slightly smaller than before */
-    background-color: #ff5722; /* Orange color from screenshot */
+    top: 15px;
+    left: 15px; /* Position inside the card on the left */
+    width: 35px;
+    height: 35px;
+    background-color: var(--primary-color); /* Orange */
     color: white;
-    border-radius: 50%; /* Make it a circle */
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.3em; /* Adjust font size */
+    font-size: 1.3em;
     font-weight: bold;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Less intense shadow */
-    z-index: 1; /* Ensure it's above other content if needed */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 1;
 }
 
 
-/* Headings within sections */
+/* Section Titles (Red/Orange Text) */
 section h2 {
-    color: #ff5722; /* Orange color for section titles */
-    margin-top: 0;
-    margin-bottom: 0; /* Remove bottom margin as HR will provide space */
-    padding-bottom: 0; /* Remove border/padding from previous style */
-    border-bottom: none; /* Remove border from previous style */
-    margin-left: 0; /* Reset margin-left */
-    font-size: 1.6em; /* Adjust size */
+  color: var(--primary-color); /* Orange */
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.5rem; /* Space above the line */
+  padding-left: 0; /* Remove left padding from previous versions */
+  position: relative;
 }
 
-/* Subtle gray line below the section title (as per annotation) */
+/* Subtle gray line below the section title */
 .section-divider {
-    border: none; /* Remove default hr border */
-    height: 1px; /* Make it a thin line */
-    background-color: #ddd; /* Light gray color from annotation */
-    margin: 15px 0; /* Space above and below the line */
-    width: 100%; /* Full width within the section's padding */
+    border: none;
+    height: 1px;
+    background-color: var(--border-color); /* Light gray */
+    margin: 15px 0;
+    width: 100%;
 }
 
 
@@ -111,30 +122,11 @@ section h3 {
     font-size: 1.2em;
 }
 
-/* Style for the yellow prompt component box (based on screenshot sec 2) - Keeping these styles just in case needed later */
-.prompt-components-box {
-    background-color: #ffeb3b; /* Yellow background from screenshot */
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-/* Style for input fields within the yellow box (based on screenshot sec 2) */
-.prompt-components-box input {
-    flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #ff9800; /* Orange border from screenshot */
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box;
-}
-
-
 /* Style for PRE elements (examples) */
 pre {
-     background-color: #fff3e0; /* Light orange background (similar to screenshot) */
+     background-color: #fff3e0; /* Light orange background */
      padding: 15px;
-     border-left: 4px solid #ff9800; /* Orange left border from screenshot */
+     border-left: 4px solid #ff9800; /* Orange left border */
      overflow-x: auto;
      white-space: pre-wrap;
      word-wrap: break-word;
@@ -142,35 +134,25 @@ pre {
      font-size: 0.9em;
      border-radius: 4px;
      color: #555; /* Muted text color */
-     /* Removed height/width constraints if any existed from previous versions */
-}
-
-/* Style for the "Resultado Ejemplo de la IA" heading (based on screenshot sec 2) */
-.resultado-heading {
-    color: #ff5722; /* Orange color from screenshot */
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-top: 20px;
-    margin-bottom: 10px;
 }
 
 /* Style for buttons */
 button {
-    padding: 12px 20px; /* Slightly larger padding */
-    background-color: #007bff; /* Default button blue (as seen in some screenshot buttons) */
+    padding: 12px 20px;
+    background-color: #007bff; /* Default blue */
     color: white;
     border: none;
-    border-radius: 5px; /* Slightly more rounded */
+    border-radius: 5px;
     cursor: pointer;
     font-size: 1em;
     transition: background-color 0.3s ease;
     margin-right: 10px;
-    display: inline-block; /* Ensure buttons can sit side-by-side */
+    display: inline-block;
 }
 
-/* Style for orange buttons (as seen in screenshot for evaluation/analysis) */
+/* Style for orange buttons */
 button.orange-button {
-     background-color: #ff5722; /* Orange color from screenshot */
+     background-color: var(--primary-color); /* Orange */
 }
 
 button:hover {
@@ -187,28 +169,28 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Style for the main textareas within the sandbox where the user writes the prompt/text */
+/* Style for the main textareas within the sandbox */
 .sandbox textarea {
     width: calc(100% - 22px); /* Adjust for padding and border */
-    min-height: 150px; /* Make textareas larger */
+    min-height: 150px;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ff5722; /* Thin RED border from screenshot */
+    border: 1px solid var(--primary-color); /* Orange border */
     border-radius: 4px;
     font-family: inherit;
     font-size: 1em;
     resize: vertical;
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    box-sizing: border-box;
 }
 
 .sandbox textarea::placeholder {
-    color: #999; /* Placeholder text color */
+    color: #999;
     font-style: italic;
 }
 
 /* Text instructions above textareas */
 .sandbox p {
-    margin-bottom: 5px; /* Reduce space below instructions */
+    margin-bottom: 5px;
     font-size: 0.95em;
     color: #555;
 }
@@ -217,30 +199,84 @@ button:disabled {
 .ai-response {
     margin-top: 15px;
     padding: 15px;
-    border: 1px solid #007bff; /* Blue border */
-    background-color: #e9f7ff; /* Light blue background */
+    border: 1px solid #ccc; /* Neutral default border */
+    background-color: #f9f9f9; /* Light background */
     border-radius: 4px;
-    min-height: 30px;
-    white-space: pre-wrap;
+    min-height: 30px; /* Give it some initial height */
+    white-space: pre-wrap; /* Respect new lines */
     word-wrap: break-word;
     color: #333;
+    /* Ensure content inside takes full width */
+    display: block;
+    box-sizing: border-box;
 }
 
+/* Specific styles for different response states */
 .ai-response.loading {
     color: #555;
     font-style: italic;
+    background-color: #e9f7ff; /* Light blue */
+    border-color: #007bff; /* Blue */
 }
 
 .ai-response.error {
-    color: #d9534f; /* Red for errors */
-    border-color: #d9534f;
-    background-color: #fde0df; /* Light red background for error */
+    color: var(--danger-color); /* Red */
+    border-color: var(--danger-color);
+    background-color: #fde0df; /* Light red */
 }
+
+/* Style for the generated text within Exercise 1's response */
+.ai-response .generated-text {
+    margin-bottom: 15px;
+    padding-bottom: 15px; /* Add padding below text before the divider */
+    border-bottom: 1px solid #eee; /* Optional light line below generated text */
+}
+
+/* Style for the evaluation feedback within Exercise 1's response */
+.ai-response .evaluation-feedback {
+    margin-top: 15px;
+    padding-top: 15px; /* Add padding above feedback after the divider */
+    border-top: 1px solid #eee; /* Optional light line above feedback */
+    /* Default evaluation feedback style */
+     padding: 10px; /* Padding inside feedback box */
+     border: 1px dashed #ccc; /* Default dashed border */
+     border-radius: 4px;
+     background-color: #fff; /* White background for feedback */
+}
+
+/* Specific styles for feedback based on score */
+.ai-response .evaluation-feedback.evaluation-green {
+    border-color: var(--success-color);
+    background-color: #e9fbf1; /* Light green */
+    color: var(--success-color);
+}
+
+.ai-response .evaluation-feedback.evaluation-yellow {
+    border-color: var(--warning-color);
+    background-color: #fffbe6; /* Light yellow */
+    color: var(--warning-color);
+}
+
+.ai-response .evaluation-feedback.evaluation-red {
+    border-color: var(--danger-color);
+    background-color: #fde0df; /* Light red */
+    color: var(--danger-color);
+}
+
+
+/* Separator line between generated text and evaluation feedback */
+.ai-response hr.feedback-divider {
+    border: none;
+    height: 1px;
+    background-color: #ddd;
+    margin: 10px 0; /* Space above and below the divider */
+}
+
 
 /* Lists */
 ul, ol {
     margin-bottom: 15px;
-    padding-left: 25px; /* Slightly more padding for list markers */
+    padding-left: 25px;
 }
 
 li {
@@ -253,21 +289,21 @@ li {
     flex-wrap: wrap;
     gap: 20px;
     margin-bottom: 20px;
-    margin-top: 20px; /* Add margin above */
+    margin-top: 20px;
 }
 
 .info-block {
     flex: 1;
-    min-width: 200px; /* Adjusted min-width */
+    min-width: 200px;
     padding: 15px;
-    border: 1px dashed #ccc; /* Dashed border */
+    border: 1px dashed #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
 }
 
 .info-block h4 {
     margin-top: 0;
-    color: #003366;
+    color: var(--secondary-color); /* Dark Blue */
 }
 
 
@@ -276,7 +312,7 @@ footer {
     width: 100%;
     text-align: center;
     padding: 20px;
-    color: rgba(255, 255, 255, 0.8); /* Light white text */
+    color: rgba(255, 255, 255, 0.8);
     font-size: 0.9em;
     margin-top: 30px;
 }
@@ -285,43 +321,43 @@ footer hr {
     border: none;
     height: 1px;
     background-color: rgba(255, 255, 255, 0.5);
-    margin: 0 auto 15px auto; /* Center the hr above footer text */
-    width: 80%; /* Make hr shorter */
+    margin: 0 auto 15px auto;
+    width: 80%;
 }
 
 
 /* Styles specific to the layout in Exercise 3 (Iteration) */
-.exercise3-sandbox { /* Using the new exercise number 3 */
+.exercise3-sandbox {
     display: flex;
-    gap: 20px; /* Space between V1 and V2 sections */
+    gap: 20px;
     flex-wrap: wrap;
-    margin-top: 20px; /* Space above the sandbox area */
+    margin-top: 20px;
 }
 
 .exercise3-sandbox .version-section {
-    flex: 1; /* Make sections take equal space */
-    min-width: 300px; /* Minimum width before wrapping */
+    flex: 1;
+    min-width: 300px;
     padding: 15px;
-    border: 1px dashed #003366; /* Darker dashed border */
+    border: 1px dashed var(--secondary-color); /* Darker dashed blue */
     border-radius: 5px;
-    background-color: #e0f7fa; /* Light blue background */
+    background-color: #e0f7fa; /* Light blue */
 }
 
 .exercise3-sandbox .version-section h4 {
     margin-top: 0;
-    color: #003366;
-    margin-bottom: 10px; /* Space below heading */
+    color: var(--secondary-color);
+    margin-bottom: 10px;
 }
 
-/* Ensure textareas within the version sections also get the red border */
+/* Ensure textareas within the version sections also get the orange border */
 .exercise3-sandbox .version-section textarea {
-     border: 1px solid #ff5722; /* Red border */
+     border: 1px solid var(--primary-color); /* Orange border */
 }
 
 /* Text instructions within version sections */
 .exercise3-sandbox .version-section p {
-     margin-bottom: 5px; /* Reduce space below instructions */
-     font-size: 0.9em; /* Slightly smaller font */
+     margin-bottom: 5px;
+     font-size: 0.9em;
      color: #555;
 }
 
@@ -334,7 +370,7 @@ footer hr {
     margin-top: 20px;
 }
 
-/* Justified text for the Cierre section (as per annotation) */
+/* Justified text for the Cierre section */
 #cierre_v2 p {
     text-align: justify;
 }
@@ -351,19 +387,19 @@ footer hr {
     }
 
     section {
-        padding: 30px 20px 20px 20px; /* Adjust section padding */
+        padding: 30px 20px 20px 20px;
     }
 
     .section-number {
          top: 20px;
-         left: 10px; /* Keep position inside the card on smaller screens */
+         left: 10px;
          width: 30px;
          height: 30px;
          font-size: 1.2em;
     }
 
     section h2 {
-        margin-left: 35px; /* Adjust heading margin to clear the number */
+        padding-left: 35px; /* Adjust heading padding to clear the number */
         font-size: 1.4em;
     }
 
@@ -373,28 +409,28 @@ footer hr {
     }
 
     .info-block {
-        min-width: auto; /* Allow blocks to shrink */
+        min-width: auto;
     }
 
      textarea,
      .sandbox textarea,
-     .exercise3-sandbox .version-section textarea { /* Updated class */
-        width: 100%; /* Make textareas take full width */
-        min-height: 100px; /* Slightly smaller on mobile */
+     .exercise3-sandbox .version-section textarea {
+        width: 100%;
+        min-height: 100px;
      }
 
     button {
-        width: 100%; /* Full width buttons */
+        width: 100%;
         margin-right: 0;
         margin-bottom: 10px;
     }
 
-     .exercise3-sandbox { /* Updated class */
+     .exercise3-sandbox {
         flex-direction: column;
         gap: 15px;
      }
 
-     .exercise3-sandbox .version-section { /* Updated class */
+     .exercise3-sandbox .version-section {
         min-width: auto;
      }
 }
