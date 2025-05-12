@@ -5,7 +5,7 @@
   # Si tu index.html está en la raíz, "." está bien.
   # Si tienes una carpeta como 'dist' o 'public', úsala aquí.
   publish   = "."
-
+timeout = 30
 # Configuración para desarrollo local con Netlify Dev (opcional pero útil)
 # [dev]
 #   functions = "netlify/functions"
