@@ -17,7 +17,7 @@ if (!DEEPSEEK_KEY) {
 }
 
 // --- AYUDANTE para llamar a Deepseek Chat API ---
-async function callDeepseekChat(systemMessage, userMessage, temperature = 0.7, max_tokens = 500) {
+async function callDeepseekChat(systemMessage, userMessage, temperature = 0.2, max_tokens = 200) {
     if (!DEEPSEEK_KEY) {
         throw new Error('Configuración incompleta (sin clave API)');
     }
