@@ -100,7 +100,7 @@ router.post('/generate', async (req, res) => {
         const systemMessage = "Eres un asistente útil que responde a las instrucciones del usuario.";
 
         // Llamar a la API para generación
-        const generatedText = await callDeepseekChat(systemMessage, prompt, 0.7, 800); // Adjust temp/tokens as needed
+        const generatedText = await callDeepseekChat(systemMessage, prompt, 0.5, 300); // Adjust temp/tokens as needed
 
         // Devolver el texto generado
         res.json({ text: generatedText });
@@ -176,7 +176,7 @@ router.post('/exercise1_process', async (req, res) => {
         `;
          const evaluationUserMessage = `Evalúa esta instrucción para resumir texto para padres:\n\n---\n${instruction}\n---`;
 
-         let evaluationResponseContent = await callDeepseekChat(evaluationSystemMessage, evaluationUserMessage, 0.2, 150); // Low temperature, few tokens for evaluation JSON
+         let evaluationResponseContent = await callDeepseekChat(evaluationSystemMessage, evaluationUserMessage, 0.2, 100); // Low temperature, few tokens for evaluation JSON
 
          // Intentar parsear el JSON de la respuesta de evaluación
         let evaluation = { score: 0, feedback: "Error al procesar evaluación." };
