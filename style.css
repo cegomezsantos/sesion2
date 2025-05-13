@@ -1,18 +1,6 @@
 /* style.css - Final Revision based on screenshot annotations + New styles for Exercise 1 Evaluation */
 
-/* General styles for the body */
-body {
-    font-family: 'Arial', sans-serif; /* Using a common web font */
-    line-height: 1.6;
-    margin: 0;
-    padding: 0; /* Remove default body padding */
-    background-color: #00AEF0; /* Bright blue background from screenshot */
-    color: #333; /* Default text color */
-    display: flex; /* Use flexbox to center content */
-    flex-direction: column;
-    align-items: center; /* Center content horizontally */
-    padding-bottom: 40px; /* Add padding at the bottom */
-}
+
 
 /* Variables for consistent colors (Optional but good practice) */
 :root {
@@ -23,8 +11,30 @@ body {
     --success-color: #28a745; /* Green */
     --warning-color: #ffc107; /* Yellow */
     --danger-color: #dc3545; /* Red */
+    /* Colores específicos para el prompt text box */
+  --prompt-box-bg: #fff9e6; /* Amarillo muy pálido, similar a #ffc62c con alpha bajo */
+  --prompt-box-border: #ffeccf; /* Borde amarillo un poco más oscuro */
+  --prompt-box-text: #b45309; /* Texto oscuro para contraste en fondo amarillo */
+
+  /* texto */
+    --text-color: #374151; /* Gris oscuro para texto general */
+    --text-light: #6b7280; /* Gris medio para subtítulos, etc. */
+
 }
 
+/* General styles for the body */
+body {
+    font-family: 'Arial', sans-serif; /* Using a common web font */
+    line-height: 1.6;
+    margin: 0;
+    padding: 0; /* Remove default body padding */
+    background-color: #00AEF0; /* Bright blue background from screenshot */
+    color: var(--text-color); /* Default text color */
+    display: flex; /* Use flexbox to center content */
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    padding-bottom: 40px; /* Add padding at the bottom */
+}
 
 /* Header styles */
 header {
@@ -235,6 +245,18 @@ button:disabled {
     position: relative; /* Needed for absolute positioning of spinner */
     text-align: center; /* Center content/spinner */
     overflow: hidden; /* Hide anything outside */
+}
+/* PROMPT TEXT BOX CON ESTILO ESTANDAR */
+
+.prompt-text-box {
+  background-color: var(--prompt-box-bg); /* MODIFICADO: Amarillo muy pálido */
+  border: 1px solid var(--prompt-box-border); /* MODIFICADO: Borde amarillo sutil */
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  font-family: monospace;
+  font-size: 1.1em;
+  line-height: 1.5;
+  color: var(--prompt-box-text); /* MODIFICADO: Texto oscuro para contraste */
 }
 
 /* AI Response becomes visible when not hidden */
