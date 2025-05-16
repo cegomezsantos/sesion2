@@ -180,6 +180,7 @@ button {
     transition: background-color 0.3s ease;
     margin-right: 10px;
     display: inline-block;
+    margin-bottom: 20px; /* ajusta este valor según lo que necesites */
 }
 
 /* Style for orange buttons */
