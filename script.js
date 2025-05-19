@@ -4,8 +4,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.copy-btn').forEach(button => {
         button.addEventListener('click', () => {
             const targetId = button.dataset.target;
-            // Use textContent for <pre> as it preserves whitespace
-            const textToCopy = document.getElementById(targetId).textContent;
+            // Use textContent for divs as it gets plain text
+            // Ensure the targetId element exists
+            const textElement = document.getElementById(targetId);
+
+            if (!textElement) {
+                 console.error(`Target element with ID "${targetId}" not found for copy button.`);
+                 // Optional: Provide user feedback that copy failed
+                 const originalText = button.textContent;
+                 button.textContent = '¡Error al copiar!';
+                 setTimeout(() => {
+                     button.textContent = originalText;
+                 }, 2000);
+                 return; // Stop if the target element isn't found
+            }
+
+            const textToCopy = textElement.textContent;
+
 
             // Use Clipboard API for modern browsers
             if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -20,16 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }).catch(err => {
                     console.error('Could not copy text: ', err);
                     // Fallback if Clipboard API fails or is not available
-                    fallbackCopyTextToClipboard(textToCopy);
+                    fallbackCopyTextToClipboard(textToCopy, button); // Pass the button for feedback
                 });
             } else {
                  // Fallback for older browsers
-                 fallbackCopyTextToClipboard(textToCopy);
+                 fallbackCopyTextToClipboard(textToCopy, button); // Pass the button for feedback
             }
         });
     });
 
-     function fallbackCopyTextToClipboard(text) {
+    // Pass button to fallback for feedback
+     function fallbackCopyTextToClipboard(text, button) {
         const textArea = document.createElement("textarea");
         textArea.value = text;
         // Avoid scrolling to bottom
@@ -45,97 +61,111 @@ document.addEventListener('DOMContentLoaded', () => {
             const msg = successful ? 'successful' : 'unsuccessful';
             console.log('Fallback: Copying text command was ' + msg);
             // Fallback feedback
-            alert('Texto copiado al portapapeles (método fallback).');
+            const originalText = button.textContent; // Use the button passed
+            button.textContent = successful ? '¡Copiado!' : '¡Error al copiar!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
         } catch (err) {
             console.error('Fallback: Oops, unable to copy', err);
-            alert('Error al copiar. Por favor, selecciona el texto manualmente y cópialo.');
+             const originalText = button.textContent; // Use the button passed
+            button.textContent = '¡Error al copiar!';
+             setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
         }
         document.body.removeChild(textArea);
     }
 
-    // --- Generic function to set loading/error states ---
+    // --- MODIFIED: Generic function to set loading/error/success states ---
+    // This function now manages classes that control display and styles via CSS
     function setResponseState(responseElement, state, message = '') {
-        responseElement.className = 'ai-response'; // Reset classes
+        // Always start by removing previous states and clearing content
+        responseElement.classList.remove('loading', 'error', 'success');
+        responseElement.innerHTML = ''; // Clear previous content
+        responseElement.style.display = 'none'; // Default to hidden
+
         if (state === 'loading') {
             responseElement.classList.add('loading');
-            responseElement.textContent = message || 'Cargando respuesta de la IA...';
+            responseElement.innerHTML = message || 'Cargando respuesta de la IA...'; // Loading message is visible
+            responseElement.style.display = 'block'; // Make the element block to be visible
         } else if (state === 'error') {
             responseElement.classList.add('error');
-            responseElement.textContent = message || 'Error al obtener respuesta.';
-        } else { // 'success' or 'initial'
-             // No specific class for success, just remove loading/error
-             // Message will be set by the specific handler
+            responseElement.innerHTML = message || 'Error al obtener respuesta.'; // Error message is visible
+            responseElement.style.display = 'block'; // Make the element block to be visible
+        } else if (state === 'success') {
+             responseElement.classList.add('success');
+             // Content will be set by the specific handler after this call
+             responseElement.style.display = 'block'; // Make the element block *before* content is inserted
+             // CSS handles background, padding, animation via .ai-response.success
         }
+        // If state is not handled (e.g., initial), it remains display: none
     }
 
 
-    // --- MODIFICACIÓN: Handler for Exercise 1 (Process and Evaluate) ---
-    // Ahora espera { evaluation: { score, feedback }, explanation }
+    // --- MODIFIED: Handler for Exercise 1 (Process and Evaluate) ---
     async function handleExercise1(button) {
         const promptInput = document.getElementById('promptInput1_v2');
-        const responseElement = document.getElementById('aiResponse1_v2'); // Asumo que este es el div donde muestras la respuesta
+        const responseElement = document.getElementById('aiResponse1_v2');
         const promptText = promptInput.value.trim();
 
-        // Limpiar contenido previo y establecer estado de carga
-        setResponseState(responseElement, 'loading');
-        button.disabled = true;
-        responseElement.innerHTML = 'Cargando evaluación...'; // Mensaje inicial más específico
-
         if (!promptText) {
+            // Use setResponseState for error message
             setResponseState(responseElement, 'error', 'Por favor, introduce el prompt (la instrucción seguida de ": Texto a procesar").');
-            button.disabled = false; // Re-habilitar botón
             return;
         }
+
+        // Set loading state using the modified function
+        setResponseState(responseElement, 'loading', 'Cargando evaluación...');
+        button.disabled = true;
 
 
         try {
             const response = await fetch('/api/exercise1_process', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: promptText }), // Enviar el contenido completo del textarea
+                body: JSON.stringify({ prompt: promptText }),
             });
 
-            // Si la respuesta HTTP no es OK (ej. 400, 500, 502, 504)
             if (!response.ok) {
                 let errorMsg = `Error HTTP! Estado: ${response.status}`;
-                // Intentar leer el cuerpo del error si es JSON
                 try {
                     const errorBody = await response.json();
                      if (errorBody && errorBody.error) {
-                         errorMsg = `Error: ${errorBody.error}`; // Usar el mensaje de error del backend si está disponible
+                         errorMsg = `Error: ${errorBody.error}`;
                      } else {
-                         const textBody = await response.text(); // Si no es JSON, leer como texto
+                         const textBody = await response.text();
                          errorMsg = `Error HTTP! Estado: ${response.status}, Respuesta: ${textBody.substring(0, 100)}...`;
                      }
                 } catch (e) {
-                    // Fallback si no se puede leer el cuerpo de la respuesta como JSON ni texto fácilmente
                     console.error("Could not parse error body:", e);
                     errorMsg = `Error HTTP! Estado: ${response.status}. No se pudo obtener el detalle del error.`;
                 }
 
                 console.error('Backend error for exercise 1:', errorMsg);
+                // Use setResponseState for backend errors
                 setResponseState(responseElement, 'error', errorMsg);
-                return; // Salir después de manejar el error HTTP
+                return;
             }
 
-            // La respuesta HTTP es OK, intentamos parsear el JSON
-            const data = await response.json(); // Ahora esperamos { evaluation: { score, feedback }, explanation }
+            const data = await response.json();
 
-            // **--- CAMBIOS PRINCIPALES AQUÍ ---**
-            // Validar la nueva estructura esperada
             if (data && data.evaluation && typeof data.evaluation.score === 'number' && typeof data.evaluation.feedback === 'string' && typeof data.explanation === 'string') {
 
-                // Determinar la clase CSS para el feedback basada en el score
+                // Set state to success *before* setting content
+                setResponseState(responseElement, 'success');
+
+                // Determine feedback class
                 let evaluationClass = '';
                 if (data.evaluation.score >= 80) {
-                    evaluationClass = 'evaluation-green'; // Clase para score alto
+                    evaluationClass = 'evaluation-green';
                 } else if (data.evaluation.score >= 50) {
-                    evaluationClass = 'evaluation-yellow'; // Clase para score medio
+                    evaluationClass = 'evaluation-yellow';
                 } else {
-                    evaluationClass = 'evaluation-red'; // Clase para score bajo
+                    evaluationClass = 'evaluation-red';
                 }
 
-                // Mostrar la evaluación y la explicación
+                // Set the content after setting the state
                 responseElement.innerHTML = `
                     <strong>Resultado de la Evaluación:</strong>
                     <p>${data.explanation}</p>
@@ -143,31 +173,26 @@ document.addEventListener('DOMContentLoaded', () => {
                        <p>Score: ${data.evaluation.score}/100</p>
                        <p>Feedback: ${data.evaluation.feedback}</p>
                     </div>
-                `; // Usar innerHTML para incluir la estructura HTML
+                `;
 
-                // Limpiar estado de carga/error
-                setResponseState(responseElement, 'success');
+                // The success state was already set above
 
             } else {
-                 // Si la respuesta JSON no tiene la estructura esperada
                  setResponseState(responseElement, 'error', 'Error: Formato de respuesta inesperado de la evaluación.');
                  console.error('Invalid JSON structure from backend for exercise 1:', data);
             }
 
         } catch (error) {
-            // Capturar errores de fetch o parseo (si response.ok era true pero json() falló)
             console.error('Error procesando la respuesta de la AI para el ejercicio 1:', error);
             setResponseState(responseElement, 'error', `Error: ${error.message || 'Error desconocido durante la comunicación con el servidor'}`);
         } finally {
-            // Asegurarse de re-habilitar el botón al final
             button.disabled = false;
         }
     }
-    // --- FIN MODIFICACIÓN: Handler for Exercise 1 ---
+    // --- END MODIFIED: Handler for Exercise 1 ---
 
 
-    // --- Handler for Exercises 2 & 3 (General Generation) ---
-    // Mantida igual que en la versión original
+    // --- MODIFIED: Handler for Exercises 2 & 3 (General Generation) ---
      async function handleGeneralGeneration(button, promptInputId, responseElementId) {
         const promptInput = document.getElementById(promptInputId);
         const responseElement = document.getElementById(responseElementId);
@@ -178,18 +203,18 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Set loading state using the modified function
         setResponseState(responseElement, 'loading');
         button.disabled = true;
 
         try {
-            const response = await fetch('/api/generate', { // <-- NEW general generation route
+            const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: promptText }), // Send the full textarea content as the prompt
+                body: JSON.stringify({ prompt: promptText }),
             });
 
             if (!response.ok) {
-                // Mejorar manejo de errores HTTP para general generation
                  let errorMsg = `Error HTTP! Estado: ${response.status}`;
                  try {
                      const errorBody = await response.json();
@@ -205,48 +230,56 @@ document.addEventListener('DOMContentLoaded', () => {
                  }
                  console.error('Backend error (general generation):', errorMsg);
                  setResponseState(responseElement, 'error', errorMsg);
-                 return; // Exit after handling HTTP error
+                 return;
             }
 
-            // La respuesta HTTP es OK, intentamos parsear el JSON
-            const data = await response.json(); // Expecting { text: "..." }
+            const data = await response.json();
 
             if (data && data.text !== undefined) {
-                responseElement.textContent = data.text; // Use textContent for plain text response
+                // Set state to success *before* setting content
                 setResponseState(responseElement, 'success');
+                // Set the content after setting the state
+                responseElement.textContent = data.text; // Use textContent for plain text response
+
             } else {
-                 // Si la respuesta JSON no tiene la estructura esperada
                  setResponseState(responseElement, 'error', 'Error: Formato de respuesta inválido del servidor.');
                  console.error('Invalid JSON response from backend (general generation):', data);
             }
 
         } catch (error) {
-            // Capturar errores de fetch o parseo
             console.error('Error fetching AI response (general generation):', error);
             setResponseState(responseElement, 'error', `Error: ${error.message || 'Error desconocido'}`);
         } finally {
             button.disabled = false;
         }
     }
+    // --- END MODIFIED: Handler for Exercises 2 & 3 ---
 
 
     // --- Main event listener for all evaluate buttons ---
-    // Mantido igual que en la versión original
     document.querySelectorAll('.evaluate-btn').forEach(button => {
         button.addEventListener('click', () => {
             const exerciseNum = button.dataset.exercise;
             const version = button.dataset.version; // Exists for exercise 3
 
+            // Get the response element for the specific button clicked
+             // Assuming the response div is always the next sibling with class 'ai-response'
+            const responseElement = button.nextElementSibling;
+             if (!responseElement || !responseElement.classList.contains('ai-response')) {
+                 console.error('Could not find AI response element for this button.');
+                 // Maybe set an error state somewhere visible?
+                 return;
+             }
+
+
             switch (exerciseNum) {
                 case '1':
-                    handleExercise1(button); // Llama a la función modificada para el ejercicio 1
+                    handleExercise1(button);
                     break;
                 case '2':
-                     // Para el ejercicio 2, el input está en promptInput2_v2 y la respuesta en aiResponse2_v2
                     handleGeneralGeneration(button, 'promptInput2_v2', 'aiResponse2_v2');
                     break;
                 case '3':
-                    // Para el ejercicio 3, los inputs y respuestas dependen de la versión (v1 o v2)
                     if (version === 'v1') {
                         handleGeneralGeneration(button, 'promptInput3_v2_v1', 'aiResponse3_v2_v1');
                     } else if (version === 'v2') {
@@ -255,14 +288,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 default:
                     console.error('Unknown exercise number:', exerciseNum);
-                    // Opcionalmente mostrar un error en un div relevante si es posible
-                    const defaultResponseDiv = button.nextElementSibling; // Asumiendo que el div de respuesta es el hermano siguiente
-                    if (defaultResponseDiv && defaultResponseDiv.classList.contains('ai-response')) {
-                         setResponseState(defaultResponseDiv, 'error', 'Error: Ejercicio no configurado.');
-                    }
+                    setResponseState(responseElement, 'error', 'Error: Ejercicio no configurado.');
                     break;
             }
         });
     });
+
+    // Optional: Initialize all ai-response divs to be hidden on page load
+    // This is redundant if CSS starts them as display: none, but ensures consistency
+     document.querySelectorAll('.ai-response').forEach(div => {
+         setResponseState(div, 'initial'); // Use a state that results in display: none
+     });
+
 
 });

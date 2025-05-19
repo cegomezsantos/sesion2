@@ -32,7 +32,8 @@
                 <li><strong>Texto a resumir (el apunte del profesor):</strong><p>
 
 </p>
-                <div class="prompt-text-box">apuntes del docente sobre la clase de Historia: iniciamos el tema de las civilizaciones antiguas, centrándonos específicamente en Mesopotamia. Cubrimos aspectos clave como su ubicación geográfica entre los ríos Tigris y Éufrates, la invención de la escritura (cuneiforme) y la importancia de la agricultura de regadío para su desarrollo.
+                <!-- !!! CAMBIO AQUI: Añadido el ID que falta !!! -->
+                <div class="prompt-text-box" id="textoResumir1_v2">apuntes del docente sobre la clase de Historia: iniciamos el tema de las civilizaciones antiguas, centrándonos específicamente en Mesopotamia. Cubrimos aspectos clave como su ubicación geográfica entre los ríos Tigris y Éufrates, la invención de la escritura (cuneiforme) y la importancia de la agricultura de regadío para su desarrollo.
 
 Durante la clase:  algunos estudiantes tuvieron dificultades para diferenciar entre los distintos imperios que surgieron en la región (Sumerios, Acadios, Babilonios). La línea de tiempo parece ser un punto confuso.
 
@@ -71,7 +72,8 @@ Para ayudarles a consolidar este conocimiento fundamental, he asignado como tare
             <h3>Ejercicio</h3>
             <ul>
                 <li><strong>Texto original (el que la IA adaptará):</strong><p> </p>
-                    <div class="prompt-text-box">"El proceso de oxidación implica la pérdida de electrones por parte de
+                    <!-- ID ya presente y correcto para este ejercicio -->
+                    <div class="prompt-text-box" id="textoOriginal2_v2">"El proceso de oxidación implica la pérdida de electrones por parte de
 una sustancia."</div>
 </p>
                      <button class="copy-btn" data-target="textoOriginal2_v2">Copiar texto</button>
@@ -94,25 +96,28 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</div>
         <section id="ejercicio3_v2">
              <div class="section-header">
                 <div class="section-number">3</div>
-                <h2>Itera y mejora tu prompt</h2>
+                <h2>¡Aprende a hablar con la IA: Mejora tus preguntas (Prompts)!</h2>
             </div>
             <hr class="section-divider">
             <img src="images/step1-prompt-concept.png" alt="Concepto de prompt AI" class="section-main-image">
 
-            <h3>¿Qué es “iterar” con IA generativa?</h3>
-            <p>Piensa en la iteración como pulir una joya:</p>
+            <!-- El texto explicativo para el Ejercicio 3 (Iteración) ya fue reformulado -->
+            <p>¿Alguna vez le has hecho una pregunta a una IA y la respuesta no es justo lo que esperabas? ¡Es normal! Conseguir que la IA te dé la respuesta perfecta es un arte, y este ejercicio te enseñará la técnica principal: iterar tu prompt.</p>
+            <h3>¿Qué significa "iterar"?</h3>
+            <p>Imagina que estás esculpiendo algo. Empiezas con una forma básica, miras el resultado, haces un ajuste pequeño, miras de nuevo, haces otro ajuste... Repites hasta que consigues la obra final que querías.</p><p>"Iterar con IA" es hacer lo mismo con tus preguntas (prompts):</p>
             <ol>
-                <li>Esbozas la forma (tu primer prompt).</li>
-                <li>Observas el brillo (la respuesta de la IA).</li>
-                <li>Limas otra arista (ajustas tono, añades contexto, cambias formato).</li>
-                <li>Repites hasta que la gema refleja exactamente lo que imaginaste.</li>
+                <li>Escribes una primera pregunta (Tu Prompt Inicial).</li>
+                <li>Ves la respuesta de la IA.</li>
+                <li>Piensas: ¿Cómo podría mejorar esta pregunta para que la respuesta sea mejor? (Aquí "ajustas").</li>
+                <li>Vuelves a preguntar con la versión mejorada (Tu Prompt Refinado).</li>
+                <li>¡Ves la diferencia!</li>
             </ol>
 
-            <h3>Por qué es tan poderosa</h3>
+            <h3>¿Por qué es IMPORTANTE saber iterar?</h3>
             <ul>
-                <li><strong>Aprendizaje instantáneo:</strong> cada ajuste enseña a la IA qué prefieres y te enseña a ti cómo pedirlo mejor.</li>
-                <li><strong>Creatividad sin miedo:</strong> ninguno de los intentos se “pierde”; cada versión abre una idea nueva.</li>
-                <li><strong>Resultado óptimos:</strong> con 3-4 vueltas consigues textos, guiones o imágenes de gran calidad.</li>
+                <li><strong>Resultados que REALMENTE necesitas:</strong> No te conformes con la primera respuesta. Iterando consigues que la IA te dé exactamente lo que buscas (un resumen para un trabajo, una explicación para tu hermano pequeño, una idea creativa...).</li>
+                <li><strong>Aprendes a guiar a la IA:</strong> Cada ajuste que haces te enseña qué tipo de instrucciones entiende mejor la IA y cómo pedirle las cosas de forma efectiva. ¡Te vuelves un experto pidiéndole ayuda!</li>
+                <li><strong>Ahorras tiempo a largo plazo:</strong> Aunque tardes un minuto extra en refinar, te ahorra mucho tiempo después en tener que arreglar o reescribir respuestas que no servían.</li>
             </ul>
 
             <h3>3 claves para iterar con efectividad</h3>
@@ -150,14 +155,15 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</div>
                 <li><strong>Rol:</strong> quién habla (por ejemplo, “Eres un profesor...").</li>
                 <li><strong>Objetivo:</strong> qué quieres lograr (resumir, clasificar, adaptar...).</li>
                 <li><strong>Contexto:</strong> situación o audiencia (alumnos de secundaria, padres...).</li>
-
+                 <!-- Added Formato back as it's used in the exercise steps -->
+                 <li><strong>Formato:</strong> cómo quieres la respuesta (lista, párrafo, tabla...).</li>
             </ul>
 
             <h3>Ejercicio</h3>
-            <ol>
-                <li><strong>Tu Prompt Inicial:</strong> escribe un prompt genérico para “explicar el ciclo del agua".</li>
-                <li>Evaluación: Ejecutalo en <strong>"Tu prompt Inicial (V1)"</strong> y observa la respuesta.</li>
-                <li>Refinamiento: Aplica cada criterio de un buen prompt en <strong>"Tu Prompt Refinado (V2)"</strong>:
+            <ol><p>En este ejercicio, tu forma de "iterar" (mejorar) será añadir estos ingredientes a un prompt inicial sencillo.</p>
+                <li><strong>Tu Prompt Inicial (V1):</strong> escribe un prompt genérico para “explicar el ciclo del agua".</li>
+                <li>Evaluación: Ejecutalo en <strong>"Tu prompt Inicial"</strong> y observa la respuesta.</li>
+                <li>Refinamiento: Aplica cada criterio de un buen prompt en <strong>"Tu Prompt Refinado"</strong>:
                     <ul>
                         <li>Añade Rol (“Eres un profesor de ciencias...").</li>
                         <li>Define Objetivo (“Explica el ciclo del agua en 5 pasos”).</li>
@@ -172,21 +178,21 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</div>
             <div class="sandbox exercise3-sandbox">
                 <div class="version-section">
                      <img src="images/step4-prompt-practice.png" alt="Icono de práctica en computadora" class="version-section-image">
-                    <h4>Tu prompt inicial (V1):</h4>
+                    <h4>Tu prompt inicial:</h4>
                      <p>Escribe tu instrucción inicial (Prompt). No se necesita texto adicional aquí a menos que tu prompt lo especifique:</p>
                     <textarea id="promptInput3_v2_v1" placeholder="Escribe tu prompt inicial aquí..."></textarea>
-                    <button class="evaluate-btn orange-button" data-exercise="3" data-version="v1">Evaluar V1</button>
+                    <button class="evaluate-btn orange-button" data-exercise="3" data-version="v1">Evaluar</button>
                     <div class="ai-response" id="aiResponse3_v2_v1"></div>
-                    <p><strong>[ Evaluar V1 ] → Observa respuesta.</strong></p>
+                     
                 </div>
                 <div class="version-section">
                      <img src="images/step4-prompt-practice.png" alt="Icono de práctica en computadora" class="version-section-image">
-                    <h4>Tu prompt refinado (V2):</h4>
+                    <h4>Tu prompt refinado:</h4>
                      <p>Escribe tu instrucción refinada (Prompt). No se necesita texto adicional aquí a menos que tu prompt lo especifique:</p>
                     <textarea id="promptInput3_v2_v2" placeholder="Escribe tu prompt refinado aquí..."></textarea>
-                    <button class="evaluate-btn orange-button" data-exercise="3" data-version="v2">Evaluar V2</button>
+                    <button class="evaluate-btn orange-button" data-exercise="3" data-version="v2">Evaluar</button>
                     <div class="ai-response" id="aiResponse3_v2_v2"></div>
-                    <p><strong>[ Evaluar V2 ] → Observa respuesta mejorada.</strong></p>
+                     
                 </div>
                 <p>Con este ejercicio puede comprobar que la iteración es la dinámica habitual al trabajar con IA: cada ajuste convierte un prompt impreciso en una instrucción clara y potente. Con la práctica, este ciclo se volverá cada vez más rápido y eficaz.</p>
             </div>

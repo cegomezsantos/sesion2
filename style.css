@@ -221,12 +221,10 @@ button:disabled {
     color: #555;
 }
 
-/* Style for the AI response area */
+/* --- AI Response Area Styles --- */
+/* Base style: Hidden by default, no background/padding/min-height here */
 .ai-response {
     margin-top: 15px;
-    padding: 15px;
-    border: none;
-    background-color: #EFF6FF;
     border-radius: 4px;
     display: none; /* Initially hidden */
     white-space: pre-wrap; /* Respect new lines */
@@ -234,14 +232,11 @@ button:disabled {
     color: #333;
     box-sizing: border-box;
     position: relative;
-    text-align: center;
     overflow: hidden;
-    opacity: 0; /* Initial state for animation */
-    transform: scale(0.95); /* Initial state for animation */
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out; /* Animation */
+    /* Removed padding, background-color, min-height, border from here */
 }
-/* PROMPT TEXT BOX CON ESTILO ESTANDAR */
 
+/* Styles for PROMPT TEXT BOX CON ESTILO ESTANDAR */
 .prompt-text-box {
   background-color: var(--prompt-box-bg);
   border: 1px solid var(--prompt-box-border);
@@ -253,37 +248,27 @@ button:disabled {
   color: var(--prompt-box-text);
 }
 
-/* AI Response becomes visible when not hidden (applies animation end state) */
-.ai-response:not([style*="display: none"]) {
-    display: block;
-    min-height: 30px;
-    opacity: 1; /* Animation end state */
-    transform: scale(1); /* Animation end state */
-}
-
 /* Spinner animation */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Specific styles for loading state */
+/* Specific styles for LOADING state */
 .ai-response.loading {
+    display: block; /* Show when loading */
     color: #555;
     font-style: italic;
-    background-color: #e9f7ff;
-    border-color: #007bff;
-    border-style: dashed;
-    border-width: 1px;
-    min-height: 50px;
-    padding: 20px;
+    background-color: #e9f7ff; /* Light blue background */
+    border: 1px dashed #007bff; /* Dashed blue border */
+    min-height: 50px; /* Sufficient height for spinner */
+    padding: 20px; /* Padding for loading content */
     text-align: center;
     position: relative;
-    overflow: hidden; /* Hide content */
-    /* Ensure loading state is visible and not affected by pop-in animation */
-    opacity: 1 !important;
+    overflow: hidden;
+    opacity: 1 !important; /* Ensure visible during loading */
     transform: scale(1) !important;
-    transition: none !important; /* Disable pop-in transition during loading */
+    transition: none !important; /* Disable pop-in during loading */
 }
 
 /* Hide content inside when loading */
@@ -292,47 +277,67 @@ button:disabled {
     opacity: 0;
     height: 0;
     overflow: hidden;
-    margin: 0 !important; /* Ensure no residual margin affects layout */
-    padding: 0 !important; /* Ensure no residual padding affects layout */
+    margin: 0 !important;
+    padding: 0 !important;
 }
-
 
 /* Style for the spinner pseudo-element */
 .ai-response.loading::before {
     content: '';
-    display: block; /* Changed to block for centering with margin */
+    display: block;
     width: 20px;
     height: 20px;
     border: 3px solid #007bff;
     border-top-color: transparent;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    position: absolute; /* Still using absolute to guarantee perfect center */
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* Ensure spinner is visible */
     opacity: 1 !important;
     visibility: visible !important;
 }
 
-/* AI Response Error state */
+/* Styles for ERROR state */
 .ai-response.error {
+    display: block; /* Show when error */
     color: var(--danger-color); /* Red */
-    border-color: var(--danger-color);
+    border: 1px solid var(--danger-color);
     background-color: #fde0df; /* Light red */
-    border-style: solid;
-    border-width: 1px;
-    display: block;
     min-height: 30px;
-    /* Ensure error state is immediately visible without animation */
-    opacity: 1;
-    transform: scale(1);
-    transition: none;
+    padding: 15px;
+    text-align: center;
+    opacity: 1; transform: scale(1); transition: none; /* Ensure visible immediately */
 }
 
 
-/* Style for the generated text within Exercise 1's response */
+/* Styles for SUCCESS state (this is the standard blue box with content) */
+.ai-response.success {
+    display: block; /* Show when success */
+    background-color: #EFF6FF; /* Blue background */
+    padding: 15px; /* Padding for content */
+    min-height: 30px; /* Min height for content */
+    border: none; /* No border for success state */
+    text-align: left; /* Generated text should align left by default */
+    overflow: hidden;
+    /* Pop-in animation */
+    opacity: 0;
+    transform: scale(0.95);
+    animation: popIn 0.3s ease-out forwards; /* Apply popIn animation */
+}
+
+/* Ensure content within success state is visible and correctly laid out */
+.ai-response.success > * {
+     visibility: visible !important;
+     opacity: 1 !important;
+     height: auto !important;
+     overflow: visible !important;
+     /* Reset any unintended hiding/sizing from loading state */
+}
+
+
+/* Style for the generated text within Exercise 1's response (assuming it's inside a specific element like <p>) */
 .ai-response .generated-text {
      margin: 0;
      padding: 0;
@@ -348,7 +353,7 @@ button:disabled {
     border-top: 1px solid #eee;
     padding: 10px;
     border-radius: 4px;
-    background-color: #fff;
+    background-color: #fff; /* White background for the feedback box */
     visibility: visible !important;
     opacity: 1 !important;
     height: auto !important;
@@ -486,13 +491,6 @@ footer hr {
     text-align: center;
     margin-top: 20px;
 }
-
-/* Justified text for the Cierre section (if applicable) */
-/*
-#cierre_v2 p {
-    text-align: justify;
-}
-*/
 
 
 /* --- Animations Keyframes --- */
