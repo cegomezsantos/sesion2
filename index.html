@@ -19,7 +19,7 @@
         <section id="ejercicio1_v2">
             <div class="section-header">
                 <div class="section-number">1</div>
-                <h2>Resume una explicación para padres</h2>
+                <h2>Aplicación 1: Resume una explicación para padres</h2>
             </div>
             <hr class="section-divider">
             <img src="images/step1-prompt-concept.png" alt="Concepto de prompt AI" class="section-main-image">
@@ -43,16 +43,18 @@ Para ayudarles a consolidar este conocimiento fundamental, he asignado como tare
                     <button class="copy-btn" data-target="textoResumir1_v2">Copiar texto</button>
                 </li><p>
 </p>
-                <li><strong>Prompt Completo (Ejemplo - úsalo para crear un reporte ¡Combina esta instrucción con el texto de arriba en el área de escritura!):</strong>
+                <li><strong>Prompt: úsalo para crear un reporte ¡Combina esta instrucción con el texto de arriba en el área de escritura!:</strong>
                     <p> </p>
-                <div class="prompt-text-box">Actúa como comunicador escolar. Resume este texto en 60 palabras con un contenido amable y muy claro para que los padres entiendan la actividad de sus hijos y la tarea asignada</div>
+                <div class="prompt-text-box" id="textoResumir1_v3">Actúa como comunicador escolar. Resume este texto en 60 palabras con un contenido amable y muy claro para que los padres entiendan la actividad de sus hijos y la tarea asignada</div><p>
+</p>
+                  <button class="copy-btn" data-target="textoResumir1_v3">Copiar texto</button>
                 </li>
             </ul>
 
             <div class="sandbox">
-                <h3>Escribe tu instrucción (Prompt) y luego pega el texto a procesar a continuación:</h3>
-                 <p>Ejemplo de estructura: <strong>[Tu instrucción aquí] : [El texto completo que quieres que la IA procese]</strong></p>
-                <textarea id="promptInput1_v2" placeholder="Escribe tu prompt (ej: 'Resume amablemente') seguido de dos puntos (:) y luego pega el texto a procesar..."></textarea>
+                 
+                  
+                <textarea id="promptInput1_v2" placeholder="Ejemplo de estructura: [Tu instrucción aquí] : [El texto completo que quieres que la IA procese]"></textarea>
                 <button class="evaluate-btn orange-button" data-exercise="1">Evaluar Prompt</button>
                 <div class="ai-response" id="aiResponse1_v2"></div>
             </div>
@@ -73,14 +75,13 @@ Para ayudarles a consolidar este conocimiento fundamental, he asignado como tare
             <ul>
                 <li><strong>Texto original (el que la IA adaptará):</strong><p> </p>
                     <!-- ID ya presente y correcto para este ejercicio -->
-                    <div class="prompt-text-box" id="textoOriginal2_v2">"El proceso de oxidación implica la pérdida de electrones por parte de
-una sustancia."</div>
+                    <div class="prompt-text-box" id="textoOriginal2_v2">El proceso de oxidación implica la pérdida de electrones por parte de una sustancia.</div>
 </p>
                      <button class="copy-btn" data-target="textoOriginal2_v2">Copiar texto</button>
                 </li>
                 <li><strong>Prompt Completo (Ejemplo - Combina esta instrucción con el texto de arriba en el área de escritura):</strong><p> </p>
-                   <div class="prompt-text-box">"Eres un profesor de secundaria. Reescribe este texto con palabras
-sencillas y un ejemplo práctico cotidiano sobre oxidación:”</div>
+                   <div class="prompt-text-box" id="textoOriginal2_v3">Eres un profesor de secundaria. Reescribe este texto con palabras sencillas y un ejemplo práctico cotidiano sobre oxidación: </div><p> </p>
+<button class="copy-btn" data-target="textoOriginal2_v3">Copiar texto</button>
                 </li>
             </ul>
 
@@ -194,7 +195,7 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</div>
                     <div class="ai-response" id="aiResponse3_v2_v2"></div>
                      
                 </div>
-                <p>Con este ejercicio puede comprobar que la iteración es la dinámica habitual al trabajar con IA: cada ajuste convierte un prompt impreciso en una instrucción clara y potente. Con la práctica, este ciclo se volverá cada vez más rápido y eficaz.</p>
+                <p><div class="info-block">Con este ejercicio puede comprobar que la iteración es la dinámica habitual al trabajar con IA: cada ajuste convierte un prompt impreciso en una instrucción clara y potente. Con la práctica, este ciclo se volverá cada vez más rápido y eficaz.</div></div></p>
             </div>
         </section>
 
@@ -208,5 +209,6 @@ sencillas y un ejemplo práctico cotidiano sobre oxidación:”</div>
 
     <!-- Link to the JS -->
     <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
 </body>
 </html>

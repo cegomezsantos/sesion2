@@ -256,19 +256,23 @@ button:disabled {
 
 /* Specific styles for LOADING state */
 .ai-response.loading {
-    display: block; /* Show when loading */
-    color: #555;
-    font-style: italic;
-    background-color: #e9f7ff; /* Light blue background */
-    border: 1px dashed #007bff; /* Dashed blue border */
-    min-height: 50px; /* Sufficient height for spinner */
-    padding: 20px; /* Padding for loading content */
-    text-align: center;
-    position: relative;
+    display: flex; /* CAMBIO CLAVE: Usa flexbox para alinear el spinner y el texto */
+    align-items: center; /* Alinea verticalmente el spinner y el texto al centro */
+    justify-content: flex-start; /* Alinea todo a la izquierda */
+    gap: 10px; /* Añade un espacio entre el spinner y el texto */
+    color: #555; /* Mantiene el color del texto gris oscuro */
+    flex-direction: row;
+    font-style: normal; /* Texto normal, no cursiva */
+    background-color: #f5f5f5; /* CAMBIO: Fondo gris claro como en imagen 2 */
+    border: 1px solid #ddd; /* CAMBIO: Borde sólido y suave, un gris ligeramente más oscuro que el fondo */
+    min-height: 50px;
+    padding: 20px;
+    /* text-align: center;  -> ELIMINADO: Flexbox se encarga de la alineación horizontal */
+    position: relative; /* Mantenido, aunque flexbox maneja la mayoría del posicionamiento interno */
     overflow: hidden;
-    opacity: 1 !important; /* Ensure visible during loading */
+    opacity: 1 !important;
     transform: scale(1) !important;
-    transition: none !important; /* Disable pop-in during loading */
+    transition: none !important;
 }
 
 /* Hide content inside when loading */
@@ -285,18 +289,16 @@ button:disabled {
 .ai-response.loading::before {
     content: '';
     display: block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid #007bff;
-    border-top-color: transparent;
+    width: 10px;
+    height: 10px;
+    border: 3px solid #eee; /* CAMBIO: Color gris claro para la mayor parte del borde del círculo */
+    border-top-color: #888; /* CAMBIO: Color gris oscuro para el segmento que rota */
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    /* Las propiedades de posicionamiento absoluto ya no son necesarias gracias a flexbox en el padre */
     opacity: 1 !important;
     visibility: visible !important;
+    flex-shrink: 0; /* Asegura que el spinner no se achate en el contexto flex */
 }
 
 /* Styles for ERROR state */

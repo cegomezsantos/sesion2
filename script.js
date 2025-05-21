@@ -103,92 +103,80 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- MODIFIED: Handler for Exercise 1 (Process and Evaluate) ---
-    async function handleExercise1(button) {
-        const promptInput = document.getElementById('promptInput1_v2');
-        const responseElement = document.getElementById('aiResponse1_v2');
-        const promptText = promptInput.value.trim();
+   // NUEVO CÓDIGO PARA SCRIPT.JS (FUNCIÓN handleExercise1)
+async function handleExercise1(button) {
+    const promptInput = document.getElementById('promptInput1_v2');
+    const responseElement = document.getElementById('aiResponse1_v2');
+    const promptText = promptInput.value.trim();
 
-        if (!promptText) {
-            // Use setResponseState for error message
-            setResponseState(responseElement, 'error', 'Por favor, introduce el prompt (la instrucción seguida de ": Texto a procesar").');
+    if (!promptText) {
+        setResponseState(responseElement, 'error', 'Por favor, introduce el prompt (la instrucción seguida de ": Texto a procesar").');
+        return;
+    }
+
+    // El mensaje de carga "Evaluando tu prompt..." se mantiene, pero ahora generaremos contenido.
+    setResponseState(responseElement, 'loading', 'Generando contenido...'); // Cambiamos el mensaje para reflejar generación
+    button.disabled = true;
+
+    try {
+        // CAMBIO CRÍTICO: Ahora este ejercicio también llama al endpoint /api/generate
+        const response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: promptText }),
+        });
+
+        if (!response.ok) {
+            let errorMsg = `Error HTTP! Estado: ${response.status}`;
+            try {
+                const errorBody = await response.json();
+                 if (errorBody && errorBody.error) {
+                     errorMsg = `Error: ${errorBody.error}`;
+                 } else {
+                     const textBody = await response.text();
+                     errorMsg = `Error HTTP! Estado: ${response.status}, Respuesta: ${textBody.substring(0, 100)}...`;
+                 }
+            } catch (e) {
+                console.error("Could not parse error body:", e);
+                errorMsg = `Error HTTP! Estado: ${response.status}. No se pudo obtener el detalle del error.`;
+            }
+
+            console.error('Backend error para Ejercicio 1 (generación):', errorMsg);
+            setResponseState(responseElement, 'error', errorMsg);
             return;
         }
 
-        // Set loading state using the modified function
-        setResponseState(responseElement, 'loading', 'Cargando evaluación...');
-        button.disabled = true;
+        const data = await response.json();
 
+        // Lógica de visualización de respuesta (igual que en handleGeneralGeneration)
+        if (data && data.text !== undefined) { // Ahora esperamos 'data.text' de /api/generate
+            setResponseState(responseElement, 'success');
+            
+            // Paso 1: Convertir el Markdown a HTML usando marked.js
+            let htmlContent = marked.parse(data.text); // Usamos data.text aquí
 
-        try {
-            const response = await fetch('/api/exercise1_process', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: promptText }),
-            });
+            // Paso 2: Post-procesamiento para limpiar el HTML
+            htmlContent = htmlContent.replace(/<\/strong><br>/g, '</strong>'); 
+            htmlContent = htmlContent.replace(/<\/h3><br>/g, '</h3>'); 
+            htmlContent = htmlContent.replace(/\s{2,}<\/p>/g, '</p>');
+            htmlContent = htmlContent.replace(/<p>\s*<\/p>/g, '');
 
-            if (!response.ok) {
-                let errorMsg = `Error HTTP! Estado: ${response.status}`;
-                try {
-                    const errorBody = await response.json();
-                     if (errorBody && errorBody.error) {
-                         errorMsg = `Error: ${errorBody.error}`;
-                     } else {
-                         const textBody = await response.text();
-                         errorMsg = `Error HTTP! Estado: ${response.status}, Respuesta: ${textBody.substring(0, 100)}...`;
-                     }
-                } catch (e) {
-                    console.error("Could not parse error body:", e);
-                    errorMsg = `Error HTTP! Estado: ${response.status}. No se pudo obtener el detalle del error.`;
-                }
+            // Paso 3: Insertar el HTML limpio en el elemento de respuesta
+            responseElement.innerHTML = htmlContent; 
 
-                console.error('Backend error for exercise 1:', errorMsg);
-                // Use setResponseState for backend errors
-                setResponseState(responseElement, 'error', errorMsg);
-                return;
-            }
-
-            const data = await response.json();
-
-            if (data && data.evaluation && typeof data.evaluation.score === 'number' && typeof data.evaluation.feedback === 'string' && typeof data.explanation === 'string') {
-
-                // Set state to success *before* setting content
-                setResponseState(responseElement, 'success');
-
-                // Determine feedback class
-                let evaluationClass = '';
-                if (data.evaluation.score >= 80) {
-                    evaluationClass = 'evaluation-green';
-                } else if (data.evaluation.score >= 50) {
-                    evaluationClass = 'evaluation-yellow';
-                } else {
-                    evaluationClass = 'evaluation-red';
-                }
-
-                // Set the content after setting the state
-                responseElement.innerHTML = `
-                    <strong>Resultado de la Evaluación:</strong>
-                    <p>${data.explanation}</p>
-                    <div class="evaluation-feedback ${evaluationClass}">
-                       <p>Score: ${data.evaluation.score}/100</p>
-                       <p>Feedback: ${data.evaluation.feedback}</p>
-                    </div>
-                `;
-
-                // The success state was already set above
-
-            } else {
-                 setResponseState(responseElement, 'error', 'Error: Formato de respuesta inesperado de la evaluación.');
-                 console.error('Invalid JSON structure from backend for exercise 1:', data);
-            }
-
-        } catch (error) {
-            console.error('Error procesando la respuesta de la AI para el ejercicio 1:', error);
-            setResponseState(responseElement, 'error', `Error: ${error.message || 'Error desconocido durante la comunicación con el servidor'}`);
-        } finally {
-            button.disabled = false;
+        } else {
+             // Si la respuesta de /api/generate no tiene el formato esperado (ej. falta 'text')
+             setResponseState(responseElement, 'error', 'Error: Formato de respuesta inválido del servidor para el Ejercicio 1 (generación).');
+             console.error('Invalid JSON structure from backend for Exercise 1:', data);
         }
+        
+    } catch (error) {
+        console.error('Error al obtener respuesta de la AI para el Ejercicio 1 (generación):', error);
+        setResponseState(responseElement, 'error', `Error: ${error.message || 'Error desconocido durante la comunicación con el servidor'}`);
+    } finally {
+        button.disabled = false;
     }
+}
     // --- END MODIFIED: Handler for Exercise 1 ---
 
 
@@ -236,12 +224,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data && data.text !== undefined) {
-                // Set state to success *before* setting content
-                setResponseState(responseElement, 'success');
-                // Set the content after setting the state
-                responseElement.textContent = data.text; // Use textContent for plain text response
+            setResponseState(responseElement, 'success');
+            
+            // Paso 1: Convertir el Markdown a HTML usando marked.js
+            let htmlContent = marked.parse(data.text);
 
-            } else {
+            // Paso 2: Post-procesamiento para limpiar el HTML
+            // Regex 1: Eliminar cualquier '<br>' inmediatamente después de un '<strong>' (o similar)
+            // Esto es para patrones como '<strong>Título:</strong><br>' que el AI podría generar
+            htmlContent = htmlContent.replace(/<\/strong><br>/g, '</strong>');
+            htmlContent = htmlContent.replace(/<\/h3><br>/g, '</h3>'); // Si también tienes h3 con br
+
+            // Regex 2: Eliminar dos o más espacios en blanco antes de un cierre de '</p>'
+            // Esto es para patrones como '<p>Mi texto.  </p>' que causa espaciado extra
+            htmlContent = htmlContent.replace(/\s{2,}<\/p>/g, '</p>');
+            
+            // Regex 3: Eliminar <p> tags que contengan solo espacios en blanco o estén vacíos
+            // Esto es para <p> </p> o <p></p> que pueden aparecer por dobles saltos de línea excesivos
+            htmlContent = htmlContent.replace(/<p>\s*<\/p>/g, '');
+
+            // Paso 3: Insertar el HTML limpio en el elemento de respuesta
+            responseElement.innerHTML = htmlContent; 
+
+        } else {
                  setResponseState(responseElement, 'error', 'Error: Formato de respuesta inválido del servidor.');
                  console.error('Invalid JSON response from backend (general generation):', data);
             }

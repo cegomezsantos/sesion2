@@ -199,9 +199,8 @@ router.post('/exercise1_process', async (req, res) => {
         - Solicitud de tono (¿pide un tono amable, claro, etc.?).
         - Petición de formato/extensión (¿pide un resumen, en X palabras/líneas?).
 
-        Asigna un score de 0 a 100. Un score alto significa que la instrucción es muy clara, específica, y considera la audiencia y el formato deseado. Un score bajo significa que es vaga, genérica o le faltan elementos clave.
-        Proporciona una sugerencia de mejora concisa (máximo 2 frases).
-        Responde ÚNICAMENTE con un objeto JSON válido con las claves "score" (integer 0-100) y "feedback" (string).
+        
+        Responde ÚNICAMENTE con un objeto JSON válido con el "feedback" (string).
         `;
          const evaluationUserMessage = `Evalúa esta instrucción para resumir texto para padres:\n\n---\n${instruction}\n---`;
 
