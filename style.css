@@ -663,7 +663,9 @@ section {
     margin: 40px 0;
     text-align: center;
     box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
-    animation: fadeInUp 0.8s ease-out;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
 }
 
 .congratulations-card {
@@ -696,7 +698,7 @@ section {
 .btn-congratulations {
     display: inline-block;
     background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
+    color: white !important;
     text-decoration: none;
     padding: 15px 40px;
     border-radius: 50px;
@@ -708,12 +710,16 @@ section {
     letter-spacing: 1px;
     border: none;
     cursor: pointer;
+    opacity: 1;
+    visibility: visible;
 }
 
 .btn-congratulations:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
     background: linear-gradient(45deg, #764ba2, #667eea);
+    color: white !important;
+    text-decoration: none;
 }
 
 .btn-congratulations:active {
