@@ -678,7 +678,7 @@ section {
 }
 
 .congratulations-card h2 {
-    color: #FFC72C;
+    color: #667eea;
     font-size: 2.5em;
     margin-bottom: 15px;
     font-weight: bold;
@@ -697,7 +697,7 @@ section {
 
 .btn-congratulations {
     display: inline-block;
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #667eea, #FFC72C);
     color: white !important;
     text-decoration: none;
     padding: 15px 40px;
