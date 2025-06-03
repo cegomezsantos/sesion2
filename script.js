@@ -1,4 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // Función para obtener parámetros de URL
+    function obtenerParametroURL(nombre) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(nombre);
+    }
+    
+    // Obtener el nombre del usuario desde el parámetro 'naus'
+    function actualizarNombreUsuario() {
+        const nombreUsuario = obtenerParametroURL('naus');
+        const idAula = obtenerParametroURL('idaula');
+        
+        // Buscar el elemento h1 en el header
+        const headerH1 = document.querySelector('header h1');
+        
+        if (headerH1) {
+            if (nombreUsuario) {
+                // Actualizar el saludo con el nombre del usuario
+                headerH1.textContent = `¡Hola, ${nombreUsuario}!`;
+            } else {
+                // Si no hay parámetro, mantener un saludo genérico
+                headerH1.textContent = '¡Hola!';
+            }
+        }
+        
+        // Log para debugging (opcional)
+        console.log('Parámetros URL:', { nombreUsuario, idAula });
+    }
+    
+    // Llamar la función al cargar la página
+    actualizarNombreUsuario();
 
     // Add functionality to "Copy Example" buttons
     document.querySelectorAll('.copy-btn').forEach(button => {
